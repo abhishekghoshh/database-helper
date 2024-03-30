@@ -14,7 +14,9 @@
 - [Kafka Architecture in Depth | Apache Kafka Architecture | Understanding Kafka Architecture | DataCouch](https://www.youtube.com/watch?v=-19l6PisNGc)
 - [Exploring Kafka Internals | Kafka | DataCouch](https://www.youtube.com/watch?v=i6aVAqaVcmU)
 - [Apache Kafka Crash Course | What is Kafka? | Piyush Garg](https://www.youtube.com/watch?v=ZJJHm_bd9Zo)
-
+- [Confluent](https://www.youtube.com/@Confluent/playlists)
+  - [Microservices 101](https://www.youtube.com/playlist?list=PLa7VYi0yPIH0IpUKXb3q7NSjpJGO9GGGZ)
+- [Kafka Streams Tutorials | Kafka Streams 101 (2023)](https://www.youtube.com/playlist?list=PLa7VYi0yPIH35IrbJ7Y0U2YLrR9u4QO-s)
 
 
 

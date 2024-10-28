@@ -10,12 +10,12 @@
 - [I've been using Redis wrong this whole time...](https://www.youtube.com/watch?v=WQ61RL1GpEE)
 
 #### Tutorial
-- [Redis Course - In-Memory Database Tutorial](https://www.youtube.com/watch?v=XCsS_NVAa1g)
 - [Redis Crash Course](https://www.youtube.com/watch?v=Vx2zPMPvmug)
+- [Learn Redis in ONE video](https://www.youtube.com/watch?v=Y46wlauVH_o)
 - [Redis Enterprise Cloud](https://www.youtube.com/playlist?list=PL83Wfqi-zYZG6uGxBagsbqjpsi2XBEj1K)
 
 
 ## Udemy
 - [Modern Redis Unleashed](https://www.udemy.com/course/redis-cloud/)
-- [Redis Beginners to Advance With Free Lab](https://thoughtworks.udemy.com/course/redis-latest/)
+- [Redis Beginners to Advance With Free Lab](https://udemy.com/course/redis-latest/)
 - [Redis: The Complete Developer's Guide](https://www.udemy.com/course/redis-the-complete-developers-guide-p/)

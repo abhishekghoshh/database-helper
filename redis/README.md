@@ -1,7 +1,10 @@
 # Redis basics
 
-## Youtube
+## Resources
+- [introduction](./resources/introduction.md)
 
+
+## Youtube
 #### Introduction
 - [System Design: Why is single-threaded Redis so fast?](https://www.youtube.com/watch?v=5TRFpFBccQM)
 - [Top 5 Redis Use Cases](https://www.youtube.com/watch?v=a4yX7RUgTxI)
@@ -12,6 +15,7 @@
 #### Tutorial
 - [Redis Crash Course](https://www.youtube.com/watch?v=Vx2zPMPvmug)
 - [Learn Redis in ONE video](https://www.youtube.com/watch?v=Y46wlauVH_o)
+- [Redis Internals](https://www.youtube.com/playlist?list=PLsdq-3Z1EPT0eElcdOON9fdaeaQjlyXDt)
 - [Redis Enterprise Cloud](https://www.youtube.com/playlist?list=PL83Wfqi-zYZG6uGxBagsbqjpsi2XBEj1K)
 
 

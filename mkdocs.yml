@@ -35,6 +35,7 @@ theme:
 plugins:
   - social
   - search
+  - mkdocs-pdf
 
 extra:
   social:
@@ -46,6 +47,7 @@ extra:
       link: https://www.linkedin.com/in/abhishek-ghosh-220679132/
 
 markdown_extensions:
+  - attr_list
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite

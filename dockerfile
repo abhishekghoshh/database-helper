@@ -21,10 +21,10 @@ RUN python3.13 -m venv /venv
 
 
 # Create the workspace directory
-RUN mkdir -p /home/abhishek/workspace/database
+RUN mkdir -p /home/abhishek/workspace/database-helper
 
 # Set the working directory to workspace
-WORKDIR /home/abhishek/workspace/database
+WORKDIR /home/abhishek/workspace/database-helper
 
 # Copy requirements.txt
 COPY requirements.txt requirements.txt 

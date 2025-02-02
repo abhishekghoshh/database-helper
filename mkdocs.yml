@@ -3,7 +3,12 @@ site_url: https://abhishekghoshh.github.io/database-helper
 
 nav:
   - Home: index.md
-
+  - mongodb:
+    - introduction: mongodb/introduction.md
+    - crud: mongodb/crud.md
+    - data types: mongodb/data-types.md
+    - create: mongodb/create.md
+    - read: mongodb/read.md
 
 theme:
   name: material

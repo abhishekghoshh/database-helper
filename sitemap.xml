@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://abhishekghoshh.github.io/database-helper/</loc>
+         <lastmod>2025-02-02</lastmod>
+    </url>
+    <url>
+         <loc>https://abhishekghoshh.github.io/database-helper/mongodb/create/</loc>
+         <lastmod>2025-02-02</lastmod>
+    </url>
+    <url>
+         <loc>https://abhishekghoshh.github.io/database-helper/mongodb/crud/</loc>
+         <lastmod>2025-02-02</lastmod>
+    </url>
+    <url>
+         <loc>https://abhishekghoshh.github.io/database-helper/mongodb/data-types/</loc>
+         <lastmod>2025-02-02</lastmod>
+    </url>
+    <url>
+         <loc>https://abhishekghoshh.github.io/database-helper/mongodb/introduction/</loc>
+         <lastmod>2025-02-02</lastmod>
+    </url>
+    <url>
+         <loc>https://abhishekghoshh.github.io/database-helper/mongodb/read/</loc>
+         <lastmod>2025-02-02</lastmod>
+    </url>
+</urlset>

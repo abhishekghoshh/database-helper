@@ -180,3 +180,161 @@ We can use if, then an inside $cond and the $expr will evaluate everything.
 
 
 ## Querying to Arrays
+
+Let's say experience is an array having many fields like college name, company name, start date end date etc
+
+it will search the document where in experiences array there will be a object in which companyName field will be Kreeti
+```js
+db.products.find({"experiences.companyName": "Kreeti"}) 
+```
+
+We can use dot operator with array and embedded documents
+
+find all the documents where experience is length of 3
+```js
+db.products.find({"experiences": {$size: 3}}) 
+```
+
+`$size` operator takes only equality it will not work with `$gt` or `$lt` like the following query
+
+It will give us the exception.
+```js
+db.products.find({"experiences": {$size: {$gt: 2}}}) 
+```
+
+It will only search for the documents where genres is `["Drama", "Crime", "Thriller"]` particularly in this order but if the order does not matter for us then we can use `$all`
+```js
+db.infos.find({genres: ["Drama", "Crime", "Thriller"]}) 
+```
+
+It will search for all the documents where these three items `["Drama", "Crime", "Thriller"]` are there in the genres array.
+```js
+db.infos.find({genres: {$all: ["Drama", "Crime", "Thriller"]}}) 
+```
+
+Certainly, these two queries will not give us the same result:
+```js
+db.infos.find({genres: {$all: ["Drama", "Crime"]}}).count() -> 47
+
+db.infos.find({genres: ["Drama", "Crime"]}).count() -> 12
+```
+
+Find how many persons are working in TCS or not. Probable answers are :
+```js
+db.products.find({"experiences.companyName": "TCS","experiences.currentlyInHere": true}).count()
+
+db.products.find({$and: [{"experiences.companyName": "TCS"}, {"experiences.currentlyInHere": true}]}).count()
+```
+
+If we use this query ideally it should return `1` as there is only one document where in one `experience` item `companyName` is `TCS` and `currentlyHere` is `true` but this query does not work like that it will check in the `arrays` that if any object has the `companyName` as `TCS` and `currentlyHere` is `true`. It does not need to be the same object in the array. Here we could use the `$elemMatch`. It will search for all the queries in the same item of the array.
+
+We can achieve our requirement of any person who is currently working in TCS or not with the below query:
+`$elemMatch` will match all the queries for every element in the array.
+```js
+db.products.find({experiences: {$elemMatch: {companyName: "TCS",currentlyInHere: true}}}).count()
+```
+
+## Cursor
+
+In `MongoDB`, the `find()` method return the `cursor`, now to access the document we need to iterate the `cursor`. In the `mongo shell`, if the `cursor` is not assigned to a `var` keyword then the `mongo shell` automatically iterates the `cursor` up to `20` documents. `MongoDB` also allows you to iterate cursor manually. So, to iterate a cursor manually simply assign the cursor return by the `find()` method to the `var` keyword or JavaScript variable.
+
+**Note**: If a `cursor` inactive for `10 min`, then `MongoDB` server will automatically close that cursor.
+
+It will fetch the `cursor` of first 20 elements.
+```js
+db.infos.find().pretty() 
+```
+
+It will exhaust the `cursor` and make all the documents as `array` of objects
+```js
+db.infos.find().toArray()
+```
+
+It give us the `count` of all the element
+```js
+db.infos.find().count() 
+```
+
+it will say if the `cursor` has exhausted or not
+```js
+db.infos.find().hasNext()
+```
+
+it will give the current `20` elements of the `cursor`
+```js
+db.infos.find().next() 
+```
+
+`printjson` is a method in `shell`. `forEach` is a function on the `cursor`
+```js
+db.infos.find().forEach((doc) => printjson(doc)) 
+```
+
+It will `sort` all the elements on `average` element on rating.
+```js
+db.infos.find().sort({"rating.average" :1}) 
+```
+
+It will `sort` all the elements on `average` element on rating and then runtime but backwards
+```js
+db.infos.find().sort({"rating.average" :1, "runtime": -1})
+```
+
+It will sort all the elements on `average` element on rating then skip the first 10 elements
+```js
+db.infos.find().sort({"rating.average" :1}).skip(10)  
+```
+
+It will sort all the elements on `average` element on rating then only show the first `2` elements
+```js
+db.infos.find().sort({"rating.average" :1}).limit(2) 
+```
+
+It will sort all the elements on `average` element on rating then `skip 2 elements` and show only `2` elements
+```js
+db.infos.find().sort({"rating.average" :1}).skip(2).limit(2) 
+```
+
+It will show only the `name` and the `_id` of first `20` documents. `_id` is shown by default.
+```js
+db.infos.find({},{name: 1}) 
+```
+
+It will show only the name of first `20` documents.
+```js
+db.infos.find({},{_id: 0, name: 1}) 
+```
+
+It will show only the `name` and `schedule` object with only `time` field and the `_id` of first `20` documents.
+```js
+db.infos.find({},{name: 1, "schedule.time": 1}) 
+```
+
+It will first search for the documents with `genres` with `Thriller` then with `projection` it will show only the `first` element of genres array
+```js
+db.infos.find({genres: "Thriller"},{"genres.$": 1}) 
+```
+
+It will first search for the documents with genres array with `Drama and Action` then with projection it will show only the `first` element of genres array
+```js
+db.infos.find({genres: {$all : ["Drama","Action"]}},{"genres.$": 1}) 
+```
+
+Here Querying and projecting works independently. First it will search for genres array with `Drama and Action` then with `projection` it will show only the array with `Horror` present or not.
+```js
+db.infos.find({genres: {$all : ["Drama","Action"]}},{"genres" : {$elemMatch: {$eq: "Horror"}}}) 
+```
+
+`$slice` only works array while projection. `{$slice: 2}` will slice the first `2` elements of the array.
+```js
+db.infos.find({}, {genres: {$slice: 2}, name: 1}) 
+```
+
+`{$slice: [1,3]}` will slice the `1st` to `3rd` elements of the array.
+```js
+db.infos.find({},{genres: {$slice: [1,3]},name: 1}) 
+```
+
+Since shell is made of JS so we can use JS function
+
+For reference: [Cursor Methods](https://www.mongodb.com/docs/manual/reference/method/js-cursor/)

@@ -7,7 +7,7 @@ services:
     build:
       context: .  # Set the build context to the docs directory
     ports:
-      - "8000:8000"
+      - "8002:8000"
     # volume mount so that it will get the local changes automatically
     volumes:
       - ./:/home/abhishek/workspace/database-helper  # Mounts the local docs directory to /docs in the container

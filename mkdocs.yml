@@ -9,6 +9,16 @@ nav:
     - data types: mongodb/data-types.md
     - create: mongodb/create.md
     - read: mongodb/read.md
+    - update: mongodb/update.md
+    - delete: mongodb/delete.md
+    - index: mongodb/index.md
+
+
+
+
+
+
+
 
 theme:
   name: material

@@ -3,6 +3,16 @@ site_url: https://abhishekghoshh.github.io/database-helper
 
 nav:
   - Home: index.md
+  - postgres:
+    - introduction: postgres/introduction.md  
+    - links: postgres/links.md
+  - sql:
+    - introduction: sql/introduction.md
+    - leetcode: sql/leetcode.md
+    - links: sql/links.md 
+  - redis:
+    - introduction: redis/introduction.md 
+    - links: redis/links.md
   - mongodb:
     - introduction: mongodb/introduction.md
     - crud: mongodb/crud.md
@@ -14,9 +24,15 @@ nav:
     - index: mongodb/index.md
     - geospatial data: mongodb/geospatial-data.md
     - aggregation framework: mongodb/aggregation-framework.md
-
-
-
+  - kafka:
+    - introduction: kafka/introduction.md 
+    - links: kafka/links.md
+  - neo4j:
+    - introduction: neo4j/introduction.md
+    - links: neo4j/links.md 
+  - surrielDB:
+    - introduction: surrielDB/introduction.md 
+    - links: surrielDB/links.md
 
 
 

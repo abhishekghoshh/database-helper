@@ -12,6 +12,8 @@ nav:
     - update: mongodb/update.md
     - delete: mongodb/delete.md
     - index: mongodb/index.md
+    - geospatial data: mongodb/geospatial-data.md
+    - aggregation framework: mongodb/aggregation-framework.md
 
 
 

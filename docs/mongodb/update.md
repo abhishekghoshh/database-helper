@@ -1,5 +1,3 @@
-
-
 ## Introduction
 
 In the Users db Info collection all the documents in the following type
@@ -439,4 +437,56 @@ If we want to remove the last element from the array, then we can use `$pop` ope
     "isSporty" : true, 
     "phone" : 131782734 
 }
+```
+
+
+
+## More examples
+
+### Basic Updates
+```js
+db.coll.updateOne({"_id": 1}, {$set: {"year": 2016, name: "Max"}})
+db.coll.updateOne({"_id": 1}, {$unset: {"year": 1}})
+db.coll.updateOne({"_id": 1}, {$rename: {"year": "date"} })
+db.coll.updateOne({"_id": 1}, {$inc: {"year": 5}})
+db.coll.updateOne({"_id": 1}, {$mul: {price: NumberDecimal("1.25"), qty: 2}})
+db.coll.updateOne({"_id": 1}, {$min: {"imdb": 5}})
+db.coll.updateOne({"_id": 1}, {$max: {"imdb": 8}})
+db.coll.updateOne({"_id": 1}, {$currentDate: {"lastModified": true}})
+db.coll.updateOne({"_id": 1}, {$currentDate: {"lastModified": {$type: "timestamp"}}})
+```
+
+### Array Updates
+```js
+db.coll.updateOne({"_id": 1}, {$push :{"array": 1}})
+db.coll.updateOne({"_id": 1}, {$pull :{"array": 1}})
+db.coll.updateOne({"_id": 1}, {$addToSet :{"array": 2}})
+db.coll.updateOne({"_id": 1}, {$pop: {"array": 1}})  // last element
+db.coll.updateOne({"_id": 1}, {$pop: {"array": -1}}) // first element
+db.coll.updateOne({"_id": 1}, {$pullAll: {"array" :[3, 4, 5]}})
+db.coll.updateOne({"_id": 1}, {$push: {"scores": {$each: [90, 92]}}})
+db.coll.updateOne({"_id": 2}, {$push: {"scores": {$each: [40, 60], $sort: 1}}}) // array sorted
+db.coll.updateOne({"_id": 1, "grades": 80}, {$set: {"grades.$": 82}})
+db.coll.updateMany({}, {$inc: {"grades.$[]": 10}})
+db.coll.updateMany({}, {$set: {"grades.$[element]": 100}}, {multi: true, arrayFilters: [{"element": {$gte: 100}}]})
+```
+
+### FindOneAndUpdate
+```js
+db.coll.findOneAndUpdate({"name": "Max"}, {$inc: {"points": 5}}, {returnNewDocument: true})
+```
+
+### Upsert
+```js
+db.coll.updateOne({"_id": 1}, {$set: {item: "apple"}, $setOnInsert: {defaultQty: 100}}, {upsert: true})
+```
+
+### Replace
+```js
+db.coll.replaceOne({"name": "Max"}, {"firstname": "Maxime", "surname": "Beugnet"})
+```
+
+### Write Concern
+```js
+db.coll.updateMany({}, {$set: {"x": 1}}, {"writeConcern": {"w": "majority", "wtimeout": 5000}})
 ```

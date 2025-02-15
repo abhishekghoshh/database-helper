@@ -1,4 +1,3 @@
-
 ## General
 
 **We have three methods for inserting documents**
@@ -121,3 +120,34 @@ mongoimport --db dbName --collection collectionName --file /path/fileName.json -
 ```
 
 if we add `--drop` then it will delete previous data  
+
+
+
+
+
+## More examples
+
+**Insert one document:**
+```js
+db.coll.insertOne({name: "Max"})
+```
+
+**Insert many documents (ordered bulk insert):**
+```js
+db.coll.insertMany([{name: "Max"}, {name:"Alex"}])
+```
+
+**Insert many documents (unordered bulk insert):**
+```js
+db.coll.insertMany([{name: "Max"}, {name:"Alex"}], {ordered: false})
+```
+
+**Insert a document with the current date:**
+```js
+db.coll.insertOne({date: ISODate()})
+```
+
+**Insert a document with write concern:**
+```js
+db.coll.insertOne({name: "Max"}, {"writeConcern": {"w": "majority", "wtimeout": 5000}})
+```

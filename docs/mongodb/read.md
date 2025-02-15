@@ -1,4 +1,3 @@
-
 ## Introduction
 
 **Following are the components of mongodb reads**
@@ -335,6 +334,129 @@ db.infos.find({}, {genres: {$slice: 2}, name: 1})
 db.infos.find({},{genres: {$slice: [1,3]},name: 1}) 
 ```
 
-Since shell is made of JS so we can use JS function
 
+
+## More Examples 
+
+**Find one document:**
+```js
+db.coll.findOne()
+```
+
+**Find all documents (returns a cursor - show 20 results - "it" to display more):**
+```js
+db.coll.find()
+```
+
+**Find all documents and pretty print:**
+```js
+db.coll.find().pretty()
+```
+
+**Find documents with specific criteria (implicit logical "AND"):**
+```js
+db.coll.find({name: "Max", age: 32})
+```
+
+**Find documents with a specific date:**
+```js
+db.coll.find({date: ISODate("2020-09-25T13:57:17.180Z")})
+```
+
+**Find documents with specific criteria and explain execution stats:**
+```js
+db.coll.find({name: "Max", age: 32}).explain("executionStats")
+```
+
+**Find distinct values for a field:**
+```js
+db.coll.distinct("name")
+```
+
+**Count documents with specific criteria (accurate count):**
+```js
+db.coll.countDocuments({age: 32})
+```
+
+**Estimate document count based on collection metadata:**
+```js
+db.coll.estimatedDocumentCount()
+```
+
+**Find documents with comparison operators:**
+```js
+db.coll.find({"year": {$gt: 1970}})
+db.coll.find({"year": {$gte: 1970}})
+db.coll.find({"year": {$lt: 1970}})
+db.coll.find({"year": {$lte: 1970}})
+db.coll.find({"year": {$ne: 1970}})
+db.coll.find({"year": {$in: [1958, 1959]}})
+db.coll.find({"year": {$nin: [1958, 1959]}})
+```
+
+**Find documents with logical operators:**
+```js
+db.coll.find({name: {$not: {$eq: "Max"}}})
+db.coll.find({$or: [{"year": 1958}, {"year": 1959}]})
+db.coll.find({$nor: [{price: 1.99}, {sale: true}]})
+db.coll.find({
+  $and: [
+    {$or: [{qty: {$lt :10}}, {qty :{$gt: 50}}]},
+    {$or: [{sale: true}, {price: {$lt: 5 }}]}
+  ]
+})
+```
+
+**Find documents with element operators:**
+```js
+db.coll.find({name: {$exists: true}})
+db.coll.find({"zipCode": {$type: 2 }})
+db.coll.find({"zipCode": {$type: "string"}})
+```
+
+**Aggregation Pipeline:**
+```js
+db.coll.aggregate([
+  {$match: {status: "A"}},
+  {$group: {_id: "$cust_id", total: {$sum: "$amount"}}},
+  {$sort: {total: -1}}
+])
+```
+
+**Text search with a "text" index:**
+```js
+db.coll.find({$text: {$search: "cake"}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}})
+```
+
+**Find documents with regex:**
+```js
+db.coll.find({name: /^Max/})   // regex: starts by letter "M"
+db.coll.find({name: /^Max$/i}) // regex case insensitive
+```
+
+**Find documents with array operators:**
+```js
+db.coll.find({tags: {$all: ["Realm", "Charts"]}})
+db.coll.find({field: {$size: 2}}) // impossible to index - prefer storing the size of the array & update it
+db.coll.find({results: {$elemMatch: {product: "xyz", score: {$gte: 8}}}})
+```
+
+**Projections:**
+```js
+db.coll.find({"x": 1}, {"actors": 1})               // actors + _id
+db.coll.find({"x": 1}, {"actors": 1, "_id": 0})     // actors
+db.coll.find({"x": 1}, {"actors": 0, "summary": 0}) // all but "actors" and "summary"
+```
+
+**Sort, skip, limit:**
+```js
+db.coll.find({}).sort({"year": 1, "rating": -1}).skip(10).limit(3)
+```
+
+**Read Concern:**
+```js
+db.coll.find().readConcern("majority")
+```
+
+Since shell is made of JS so we can use JS function
 For reference: [Cursor Methods](https://www.mongodb.com/docs/manual/reference/method/js-cursor/)

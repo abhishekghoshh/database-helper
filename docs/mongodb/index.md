@@ -2,10 +2,10 @@
 
 Why Indexes?
 
-An index can speed up our find update and delete query. If our query is like `db.products.find({ seller : “Max” })` then MongoDB will search for the entire collection for the seller name `“Max”`, which is also called as `COLLSCAN` and this can take a while if there is million record. 
+An index can speed up our find update and delete query. If our query is like `db.products.find({ seller : "Max" })` then MongoDB will search for the entire collection for the seller name `"Max"`, which is also called as `COLLSCAN` and this can take a while if there is million record. 
 
 So, in that case we can create a `Index` on `Selle`r field. MongoDB will create an `Ordered` list with all the values of the `Seller`s and all the items of this list will have a pointer to the actual document in the collection. 
-Now if we run the exact query then Mongodb will see that there is an `Index` on Seller so MongoDB will run `IXSCAN` and directly jump to `“M”` which will speed up the querying.
+Now if we run the exact query then Mongodb will see that there is an `Index` on Seller so MongoDB will run `IXSCAN` and directly jump to `"M"` which will speed up the querying.
 
 But we should not overdo the indexes. If we can index on all fields, then it will certainly improve the performance for the find query but for the `insert` query it will slow down. As now it will again have to update the Ordered list for every field index for every insert and update.
 
@@ -18,15 +18,15 @@ To see the all the index present on the collection:
 By default, mongodb will create an index on `_id` field.
 To create an index on specific fields:
 ```js
-db.infos.createIndex( { “dob.age” : 1} } )
+db.infos.createIndex( { "dob.age" : 1} } )
 
-db.infos.createIndex( { “dob.age” : -1} } )
+db.infos.createIndex( { "dob.age" : -1} } )
 ```
 `1` means increasing and `-1` means decreasing Though that does not matter as mongoDB can traverse both ways. 
 
 We can also create index with more than on field. The order matters here.
 ```js
-db.infos.createIndex( { “email” : 1, “dob.age” : 1} } )
+db.infos.createIndex( { "email" : 1, "dob.age" : 1} } )
 ```
 This means that mongoDb will create a `compound index` and first the `index` with email then `dob.age`
 Example: (a@test.com,23) will come before (a.@test.com,24) 
@@ -306,7 +306,7 @@ MongoDB is now able to quickly find a fitting document when you filter for its a
 
 Additionally, sorting (via sort(...)) will also be sped up because you already have a sorted list. Of course, this is only true when sorting for the age.
 
-Let’s say all our document has `age` greater than 50 and in query `[db.infos.find({"dob.age": { $gt: 20 }})]` we are trying to find the documents greater than `20` so it will return all the documents. So, in this case IXSCAN has the less performance as it will introduce an extra step. As at first the mongodb will scan the entire index then it will go to the actual mongodb collection. If we delete the index, then it will again search with COLSCAN and eventually that will have a better performance. So, it is recommended that only to use index when the query will return a `small subset` of the actual collection. 
+Let's say all our document has `age` greater than 50 and in query `[db.infos.find({"dob.age": { $gt: 20 }})]` we are trying to find the documents greater than `20` so it will return all the documents. So, in this case IXSCAN has the less performance as it will introduce an extra step. As at first the mongodb will scan the entire index then it will go to the actual mongodb collection. If we delete the index, then it will again search with COLSCAN and eventually that will have a better performance. So, it is recommended that only to use index when the query will return a `small subset` of the actual collection. 
 
 Index on Boolean value does not make much sense.
 
@@ -453,7 +453,7 @@ If we search with dob.age and gender then mongodb will use this compound index.
 ```
 
 
-If we just look for the age, then also mongodb will use this index as “dob.age” comes first in the index order.
+If we just look for the age, then also mongodb will use this index as "dob.age" comes first in the index order.
 
 ```js
 > db.infos.explain("executionStats").find({"dob.age" : 35})
@@ -705,7 +705,7 @@ Getting all the index information
 ]
 ```
 
-Drawback of this partial filter is that now when we just query for the `“dob.age”` it will not use `IXSCAN` it will use the `COLLSCAN`. But if we also mention gender male then it will use the `IXSCAN`.
+Drawback of this partial filter is that now when we just query for the `"dob.age"` it will not use `IXSCAN` it will use the `COLLSCAN`. But if we also mention gender male then it will use the `IXSCAN`.
 
 Advantage of partial filter is that now the write query is more efficient as the size of the ordered list is small.
 
@@ -780,7 +780,7 @@ If we have an indexing on name and we are only querying for name on that time mo
 
 Example of this type of query is like:
 ```js
-db.infos.findOne({ “name” : “Abhishek”}, { _id: 0, name : 1})
+db.infos.findOne({ "name" : "Abhishek"}, { _id: 0, name : 1})
 ```
 
 
@@ -792,7 +792,7 @@ To find the `winning plan` mongodb check the query and available index then it w
 
 ## Multikey index
 
-We can also create indexes on array values. Let’s say we are adding one document like this.
+We can also create indexes on array values. Let's say we are adding one document like this.
 ```js
 > db.infos.insertOne({"name" : "Abhishek", "gender" : "male", "hobbies" : ["Sports", "Coding"]})
 {
@@ -985,4 +985,108 @@ db.infos.createIndex(
     { "age" : 1 } , 
     { "background" : true }
 )
+```
+
+
+
+## More Examples
+
+### List Indexes
+
+To list all indexes on a collection:
+```js
+db.coll.getIndexes()
+```
+
+```js
+db.coll.getIndexKeys()
+```
+
+### Create Indexes
+
+To create different types of indexes:
+
+single field index
+```js
+db.coll.createIndex({"name": 1})
+```
+
+compound index
+```js
+db.coll.createIndex({"name": 1, "date": 1})
+```
+
+text index
+```js
+db.coll.createIndex({foo: "text", bar: "text"}) // 
+```
+
+wildcard text index
+```js
+db.coll.createIndex({"$**": "text"})
+```
+
+wildcard index
+```js
+db.coll.createIndex({"userMetadata.$**": 1})
+```
+
+2d index
+```js
+db.coll.createIndex({"loc": "2d"})
+```
+
+2dsphere index
+```js
+db.coll.createIndex({"loc": "2dsphere"})
+```
+
+hashed index
+```js
+db.coll.createIndex({"_id": "hashed"})
+```
+
+**Index Options**
+
+TTL index
+```js
+db.coll.createIndex({"lastModifiedDate": 1}, {expireAfterSeconds: 3600})
+```
+
+Unique index
+```js
+db.coll.createIndex({"name": 1}, {unique: true})
+```
+
+partial index
+```js
+db.coll.createIndex({"name": 1}, {partialFilterExpression: {age: {$gt: 18}}})
+```
+
+case insensitive index with strength = 1 or 2
+```js
+db.coll.createIndex({"name": 1}, {collation: {locale: 'en', strength: 1}})
+```
+
+Sparse index
+```js
+db.coll.createIndex({"name": 1 }, {sparse: true})
+```
+
+### Drop Indexes
+
+To drop an index by name:
+```js
+db.coll.dropIndex("name_1")
+```
+
+### Hide/Unhide Indexes
+
+To hide or unhide an index:
+```js
+db.coll.hideIndex("name_1")
+```
+
+```js
+db.coll.unhideIndex("name_1")
 ```

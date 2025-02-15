@@ -18,13 +18,14 @@ nav:
     - crud: mongodb/crud.md
     - data types: mongodb/data-types.md
     - create: mongodb/create.md
+    - operators: mongodb/operators.md
     - read: mongodb/read.md
     - update: mongodb/update.md
     - delete: mongodb/delete.md
     - index: mongodb/index.md
     - geospatial data: mongodb/geospatial-data.md
     - aggregation framework: mongodb/aggregation-framework.md
-    - links: mongodb/links.md
+    - advance commands: mongodb/advance-commands.md
   - kafka:
     - introduction: kafka/introduction.md 
     - links: kafka/links.md

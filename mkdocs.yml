@@ -24,6 +24,7 @@ nav:
     - index: mongodb/index.md
     - geospatial data: mongodb/geospatial-data.md
     - aggregation framework: mongodb/aggregation-framework.md
+    - links: mongodb/links.md
   - kafka:
     - introduction: kafka/introduction.md 
     - links: kafka/links.md

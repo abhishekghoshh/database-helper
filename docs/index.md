@@ -5,6 +5,7 @@
 
 
 ### Introduction
+
 - [7 Database Paradigms](https://www.youtube.com/watch?v=W2Z7fbCLSTw)
 - [How To Choose The Right Database?](https://www.youtube.com/watch?v=kkeFE6iRfMM)
 - [SQL vs NoSQL or MySQL vs MongoDB](https://www.youtube.com/watch?v=ZS_kXvOeQ5Y)
@@ -18,6 +19,7 @@
 
 
 ### Database
+
 - [w3schools](https://www.w3schools.com/sql/default.asp)
 - [Complete DBMS Course](https://www.youtube.com/playlist?list=PLrL_PSQ6q062cD0vPMGYW_AIpNg6T0_Fq)
 - [SQL Course](https://www.youtube.com/playlist?list=PLrL_PSQ6q062H5CetdplYW7xQKeq8XaR0)
@@ -32,38 +34,34 @@
 
 
 ### SQL
+
 - [SQL Tutorial - Full Database Course for Beginners](https://www.youtube.com/watch?v=HXV3zeQKqGY)
 
 
 ### PostgreSQL
-- [5 Secrets for making PostgreSQL run BLAZING FAST. How to improve database performance.](https://www.youtube.com/watch?v=YON9PliOYFk)
-- [Solving one of PostgreSQL's biggest weaknesses.](https://www.youtube.com/watch?v=ruUlK6zRwS8)
-- [Wait... PostgreSQL can do WHAT?](https://www.youtube.com/watch?v=VEWXmdjzIpQ)
-- [Learn PostgreSQL Tutorial - Full Course for Beginners](https://www.youtube.com/watch?v=qw--VYLpxG4)
-- [PostgresSQL](https://www.youtube.com/playlist?list=PLQnljOFTspQWGrOqslniFlRcwxyY94cjj)
-- [High-Performance Programming](https://www.youtube.com/@HighPerformanceProgramming/playlists)
-    - [PostgreSQL High-Availability](https://www.youtube.com/playlist?list=PLBrWqg4Ny6vVwwrxjgEtJgdreMVbWkBz0)
-    - [PostgreSQL Perfomance Tuning](https://www.youtube.com/playlist?list=PLBrWqg4Ny6vX8e2LnQbNajGSKnFDe94kg)
-    - [MySQL Performance Tuning](https://www.youtube.com/playlist?list=PLBrWqg4Ny6vXQZqsJ8qRLGRH9osEa45sw)
 
 
 
 ### NOSQL
+
 - [How do NoSQL databases work? Simply Explained!](https://www.youtube.com/watch?v=0buKQHokLK8)
 - [The Secret Sauce Behind NoSQL: LSM Tree](https://www.youtube.com/watch?v=I6jB0nM9SKU)
 - [Cassandra vs MongoDB vs HBase | Difference Between Popular NoSQL Databases | Edureka](https://www.youtube.com/watch?v=QlqylUeqeis)
 
 
 ### Graph database
+
 - [Graph Databases Will Change Your Freakin' Life (Best Intro Into Graph Databases)](https://www.youtube.com/watch?v=GekQqFZm7mA)
 
 
 ### Vector database
+
 - [The Power of Vector Databases For Knowledge Search](https://www.youtube.com/watch?v=awIm3rQOBxE)
 - [Vector databases are so hot right now. WTF are they?](https://www.youtube.com/watch?v=klTvEwg3oJ4)
 
 
 ### DBMS(IIT)
+
 - [Data Base Management System | IIT-KGP](https://www.youtube.com/playlist?list=PLIwC9bZ0rmjSkm1VRJROX4vP2YMIf4Ebh)
 - [Database Management Systems | IIT-MADRAS](https://www.youtube.com/playlist?list=PLZ2ps__7DhBYc4jkUk_yQAjYEVFzVzhdU)
 
@@ -71,11 +69,13 @@
 ## Udemy
 
 ### Introduction
+
 - [Cloud Computing for Beginners - Database Technologies](https://www.udemy.com/course/cloud-computing-for-beginners-database-technologies/)
 - [Relational Database Design](https://www.udemy.com/course/relational-database-design/)
 
 
 ### DBMS
+
 - [Fundamentals of Database Engineering](https://www.udemy.com/course/database-engines-crash-course/)
 - [Database Management System from scratch in parts]()
     - [Database Management System from scratch - Part 1](https://www.udemy.com/course/database-management-systems/)
@@ -90,6 +90,7 @@
 ## Blogs
 
 ### Introduction
+
 - [Strong Consistency vs Eventual Consistency](https://medium.com/@abhirup.acharya009/strong-consistency-vs-eventual-consistency-19ce6f87c112)
 - [6 Reasons Why PostgreSQL is Not So Popular, Yet!](https://blog.stackademic.com/6-reason-for-why-postgresql-is-not-so-popular-yet-2c46bdfd0f03)
 - [Why MongoDB is Still Popular?](https://blog.stackademic.com/why-mongodb-is-still-popular-ae8dd42bbe0e)
@@ -109,6 +110,7 @@
 
 
 ### SQL
+
 - [SQL Fundamentals](https://medium.com/@sqlfundamentals)
     - [20 Advanced SQL Techniques](https://blog.stackademic.com/20-advanced-sql-techniques-dcbe4da6c288)
     - [9 Advanced SQL Queries for Data Mastery](https://blog.stackademic.com/9-advanced-sql-queries-for-data-mastery-ce37ae78837e)

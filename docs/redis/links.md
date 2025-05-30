@@ -19,6 +19,9 @@
 - [Redis Enterprise Cloud](https://www.youtube.com/playlist?list=PL83Wfqi-zYZG6uGxBagsbqjpsi2XBEj1K)
 
 
+### Playlist
+- [redis personal](https://www.youtube.com/playlist?list=PL67qvtIf7OxurPw7WmT4jlnbcpVvFSCsU)
+
 ## Udemy
 - [Modern Redis Unleashed](https://www.udemy.com/course/redis-cloud/)
 - [Redis Beginners to Advance With Free Lab](https://udemy.com/course/redis-latest/)

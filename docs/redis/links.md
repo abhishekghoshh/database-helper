@@ -5,7 +5,9 @@
 
 
 ## Youtube
+
 #### Introduction
+
 - [System Design: Why is single-threaded Redis so fast?](https://www.youtube.com/watch?v=5TRFpFBccQM)
 - [Top 5 Redis Use Cases](https://www.youtube.com/watch?v=a4yX7RUgTxI)
 - [Can Redis be used as a Primary database?](https://www.youtube.com/watch?v=VLTPqImLapM)
@@ -13,16 +15,28 @@
 - [I've been using Redis wrong this whole time...](https://www.youtube.com/watch?v=WQ61RL1GpEE)
 - [Stop Using Redis. Use Open Source Instead **Valkey**](https://www.youtube.com/watch?v=npnagMgbruc)
 
-#### Tutorial
+
+## Usecase
+
+- [When to Use Redis as a Primary Database - Redis Special Topics (1/4) | System Design](https://www.youtube.com/watch?v=BJxtLbE5sxw)
+- [Using Redis Streams instead of Kafka - Redis Special Topics (2/4) | System Design](https://www.youtube.com/watch?v=zcCEFByssQU)
+- [Redis - In Practice | Distributed Systems Deep Dives With Ex-Google SWE](https://www.youtube.com/watch?v=k8_qxgoZ4bg)
+
+
+#### Course
+
 - [Redis Crash Course](https://www.youtube.com/watch?v=Vx2zPMPvmug)
 - [Learn Redis in ONE video](https://www.youtube.com/watch?v=Y46wlauVH_o)
 - [Redis Enterprise Cloud](https://www.youtube.com/playlist?list=PL83Wfqi-zYZG6uGxBagsbqjpsi2XBEj1K)
 
 
 ### Playlist
+
 - [redis personal](https://www.youtube.com/playlist?list=PL67qvtIf7OxurPw7WmT4jlnbcpVvFSCsU)
 
+
 ## Udemy
+
 - [Modern Redis Unleashed](https://www.udemy.com/course/redis-cloud/)
 - [Redis Beginners to Advance With Free Lab](https://udemy.com/course/redis-latest/)
 - [Redis: The Complete Developer's Guide](https://www.udemy.com/course/redis-the-complete-developers-guide-p/)

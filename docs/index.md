@@ -20,6 +20,7 @@
 - [When should you shard your database?](https://www.youtube.com/watch?v=iHNovZUZM3A)
 - [Which Database Model to Choose?](https://www.youtube.com/watch?v=9mdadNspP_M)
 - [Secret To Optimizing SQL Queries - Understand The SQL Execution Order](https://www.youtube.com/watch?v=BHwzDmr6d7s)
+- [The fascinating history of Databases](https://www.youtube.com/watch?v=6szdySvorzA)
 
 
 ### Database

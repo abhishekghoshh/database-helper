@@ -11,6 +11,15 @@
 - [MASTER Apache Kafka in just 8 minutes to Build Real-Time Apps](https://www.youtube.com/watch?v=feKBnsvO2Pk)
 
 
+## Github links
+
+### Kafka UI
+
+- [kafbat/kafka-ui/blob/main/documentation/compose/DOCKER_COMPOSE.md](https://github.com/kafbat/kafka-ui/blob/main/documentation/compose/DOCKER_COMPOSE.md)
+- [kafbat/kafka-ui/blob/main/documentation/compose/kafbat-ui.yaml](https://github.com/kafbat/kafka-ui/blob/main/documentation/compose/kafbat-ui.yaml)
+
+
+
 
 ### Playlists
 
@@ -94,6 +103,17 @@
 
 ## Medium
 
+
+### Interview question
+
+- [Comprehensive List of Kafka Interview Questions(200+)](https://codefarm0.medium.com/comprehensive-list-of-kafka-interview-questions-200-c7a484d43a3f)
+- [Mastering Apache Kafka: Top 15 Key Interview Questions, Answers, and Practical Examples](https://ramakrishna-01.medium.com/mastering-apache-kafka-top-15-key-interview-questions-answers-and-practical-examples-980f3864f7c5)
+  - [Top Kafka Interview Questions for Experienced Professionals in 2025 to 2026| Part 1](https://ramakrishna-01.medium.com/top-kafka-interview-questions-for-experienced-professionals-in-2025-to-2026-part-1-a92f53b30fe5)
+  - [From Scratch: Kafka Producer and Consumer Example with Spring Boot| Part 2](https://ramakrishna-01.medium.com/from-scratch-kafka-producer-and-consumer-example-with-spring-boot-part-2-c16b86cb869f)
+  - [In Depth Explanation : Apache Kafka Key Terminologies and Architecture Internal Working | Features | Part 3](https://ramakrishna-01.medium.com/in-depth-explanation-apache-kafka-key-terminologies-and-architecture-internal-working-features-4963f1616557)
+  - [Interview Prep: Kafka vs ActiveMQ vs RabbitMQ — Features, Use Cases & Q&A| Part 4](https://ramakrishna-01.medium.com/interview-prep-kafka-vs-activemq-vs-rabbitmq-features-use-cases-q-a-part-4-460d24a59509)
+
+
 ### Apache Kafka
 
 - [Apache Kafka: The Complete Guide to Distributed Event Streaming](https://medium.com/@tanmoysantra67/apache-kafka-the-complete-guide-to-distributed-event-streaming-d6ce9df28647)
@@ -104,6 +124,15 @@
 - [Managing Kafka Consumer Lag and Offsets](https://aws.plainenglish.io/managing-kafka-consumer-lag-and-offsets-925e9bb1f6a1)
 - [Extending Kafka's Exactly-Once Semantics to External Systems](https://medium.com/@raviatadobe/extending-kafkas-exactly-once-semantics-to-external-systems-c395267935bd)
 
+
+
+- [Building the Foundation — Initial Project Setup for Our Kafka Event Pipeline — Day 1](https://codefarm0.medium.com/building-the-foundation-initial-project-setup-for-our-kafka-event-pipeline-day-1-bff67b2b17d1)
+
+
+
+### Kafka consumer
+
+- [Kafka Consumers — Full Deep Dive (basic → advanced)](https://medium.com/@anil.goyal0057/kafka-consumers-full-deep-dive-basic-advanced-606908f60d2f)
 
 
 ### Kafka with Golang
@@ -170,6 +199,10 @@
   - [experientlabs-data-engg/streaming-data-dp-201](https://github.com/experientlabs-data-engg/streaming-data-dp-201)
 - [Docker Compose example for Kafka, Zookeeper, and Schema Registry](https://jskim1991.medium.com/docker-docker-compose-example-for-kafka-zookeeper-and-schema-registry-c516422532e7)
 
+
+### Kafka Streams
+
+- [Developer Guide to Achieve Transactional Processing in Kafka Streams](https://medium.com/@zdb.dashti/developer-guide-to-achieve-transactional-processing-in-kafka-streams-3178e642a570)
 
 
 ### Kafka cluster on kubernetes

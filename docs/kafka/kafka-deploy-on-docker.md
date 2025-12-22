@@ -4,6 +4,13 @@
 
 Apache Kafka is the standard for real-time data pipelines and streaming applications. This guide walks you through setting up a Kafka cluster using Docker Compose in KRaft mode (no Zookeeper required).
 
+
+
+
+
+
+
+
 ---
 
 ## Prerequisites
@@ -188,7 +195,7 @@ docker compose ps
 Create a topic:
 
 ```bash
-docker exec -it kafka1 kafka-topics \
+kafka-topics \
     --create \
     --topic test-topic \
     --bootstrap-server kafka1:9092,kafka2:9092,kafka3:9092 \
@@ -199,7 +206,7 @@ docker exec -it kafka1 kafka-topics \
 List topics:
 
 ```bash
-docker exec -it kafka1 kafka-topics \
+kafka-topics \
     --list \
     --bootstrap-server kafka1:9092
 ```
@@ -207,7 +214,7 @@ docker exec -it kafka1 kafka-topics \
 Describe topic:
 
 ```bash
-docker exec -it kafka1 kafka-topics \
+kafka-topics \
     --describe \
     --topic test-topic \
     --bootstrap-server kafka1:9092
@@ -219,7 +226,7 @@ docker exec -it kafka1 kafka-topics \
 You can produce messages to your topic using the Kafka CLI:
 
 ```bash
-docker exec -it kafka1 kafka-console-producer \
+kafka-console-producer \
     --broker-list kafka1:9092 \
     --topic test-topic
 ```
@@ -233,7 +240,7 @@ Type your messages and press Enter to send them.
 Consume messages from the beginning of the topic:
 
 ```bash
-docker exec -it kafka1 kafka-console-consumer \
+kafka-console-consumer \
     --bootstrap-server kafka1:9092 \
     --topic test-topic \
     --from-beginning
@@ -248,7 +255,7 @@ This will display all messages from offset 0.
 You can produce messages with a key using the Kafka CLI:
 
 ```bash
-docker exec -it kafka1 kafka-console-producer \
+kafka-console-producer \
     --broker-list kafka1:9092 \
     --topic test-topic \
     --property "parse.key=true" \
@@ -266,7 +273,7 @@ Start two consumers with the same group ID to enable partition assignment and lo
 **Consumer 1:**
 
 ```bash
-docker exec -it kafka1 kafka-console-consumer \
+kafka-console-consumer \
     --bootstrap-server kafka1:9092 \
     --topic test-topic \
     --group my-consumer-group
@@ -275,7 +282,7 @@ docker exec -it kafka1 kafka-console-consumer \
 **Consumer 2:**
 
 ```bash
-docker exec -it kafka2 kafka-console-consumer \
+kafka-console-consumer \
     --bootstrap-server kafka2:9092 \
     --topic test-topic \
     --group my-consumer-group

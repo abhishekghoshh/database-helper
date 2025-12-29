@@ -1,6 +1,13 @@
 # Welcome to Database Helper
 
 
+## Blogs and websites
+
+- [w3schools](https://www.w3schools.com/sql/default.asp)
+
+
+
+
 ## Youtube
 
 ## Short Videos
@@ -12,8 +19,6 @@
 
 - [7 Database Paradigms](https://www.youtube.com/watch?v=W2Z7fbCLSTw)
 - [How To Choose The Right Database?](https://www.youtube.com/watch?v=kkeFE6iRfMM)
-- [SQL vs NoSQL or MySQL vs MongoDB](https://www.youtube.com/watch?v=ZS_kXvOeQ5Y)
-- [Which Is Better? SQL vs NoSQL](https://www.youtube.com/watch?v=t0GlGbtMTio)
 - [Database Design Tips | Choosing the Best Database in a System Design Interview](https://www.youtube.com/watch?v=cODCpXtPHbQ)
 - [15 futuristic databases you've never heard of](https://www.youtube.com/watch?v=jb2AvF8XzII)
 - [What is Database Sharding?](https://www.youtube.com/watch?v=hdxdhCpgYo8)
@@ -23,9 +28,20 @@
 - [The fascinating history of Databases](https://www.youtube.com/watch?v=6szdySvorzA)
 
 
+### Comparisions
+
+#### SQL vs NoSQL
+
+- [SQL vs NoSQL or MySQL vs MongoDB](https://www.youtube.com/watch?v=ZS_kXvOeQ5Y)
+- [Which Is Better? SQL vs NoSQL](https://www.youtube.com/watch?v=t0GlGbtMTio)
+- [10. SQL vs NoSQL | Difference between SQL & NoSQL | SQL Vs NoSQL Tutorial | SQL, NoSQL system design](https://www.youtube.com/watch?v=fG8c-huFt70)
+
+
+
+
 ### Database
 
-- [w3schools](https://www.w3schools.com/sql/default.asp)
+
 - [Complete DBMS Course](https://www.youtube.com/playlist?list=PLrL_PSQ6q062cD0vPMGYW_AIpNg6T0_Fq)
 - [SQL Course](https://www.youtube.com/playlist?list=PLrL_PSQ6q062H5CetdplYW7xQKeq8XaR0)
 - [Databases in Depth](https://www.youtube.com/playlist?list=PLliXPok7ZonnALnedG5doBOSCXlU14yJF)

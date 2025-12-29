@@ -11,15 +11,6 @@
 - [MASTER Apache Kafka in just 8 minutes to Build Real-Time Apps](https://www.youtube.com/watch?v=feKBnsvO2Pk)
 
 
-## Github links
-
-### Kafka UI
-
-- [kafbat/kafka-ui/blob/main/documentation/compose/DOCKER_COMPOSE.md](https://github.com/kafbat/kafka-ui/blob/main/documentation/compose/DOCKER_COMPOSE.md)
-- [kafbat/kafka-ui/blob/main/documentation/compose/kafbat-ui.yaml](https://github.com/kafbat/kafka-ui/blob/main/documentation/compose/kafbat-ui.yaml)
-
-
-
 
 ### Playlists
 
@@ -28,6 +19,18 @@
   - [System Design: Apache Kafka In 3 Minutes](https://www.youtube.com/watch?v=HZklgPkboro)
   - [System Design: Why is Kafka fast?](https://www.youtube.com/watch?v=UNUz1-msbOM)
   - [Top Kafka Use Cases You Should Know](https://www.youtube.com/watch?v=Ajz6dBp_EB4)
+
+- [Piyush Garg](https://www.youtube.com/@piyushgargdev/videos)
+  - [Why do we need Kafka?](https://www.youtube.com/watch?v=pl3sJ-RoD3Q)
+  - [Apache Kafka Crash Course | What is Kafka? | Piyush Garg](https://www.youtube.com/watch?v=ZJJHm_bd9Zo)
+
+- [Kafka for beginners | Java Techie](https://www.youtube.com/playlist?list=PLVz2XdJiJQxwpWGoNokohsSW2CysI6lDc)
+
+- [DataCouch](https://www.youtube.com/@DataCouch/videos)
+  - [Kafka Architecture in Depth | Apache Kafka Architecture | Understanding Kafka Architecture | DataCouch](https://www.youtube.com/watch?v=-19l6PisNGc)
+  - [Exploring Kafka Internals | Kafka | DataCouch](https://www.youtube.com/watch?v=i6aVAqaVcmU)
+
+- [Apache Kafka Tutorials by Anton Putra](https://www.youtube.com/playlist?list=PLiMWaCMwGJXlL8-E-xu8RBwyC5YfS3V5e)
 
 - [Confluent](https://www.youtube.com/@Confluent/playlists)
   - [Data Architecture Basics with Adam Bellemare](https://www.youtube.com/playlist?list=PLa7VYi0yPIH0QypJnW0OXOnbLvzJRP34C)
@@ -51,18 +54,6 @@
   - [Apache Flink 101](https://www.youtube.com/playlist?list=PLa7VYi0yPIH1UdmQcnUr8lvjbUV8JriK0)
   - [Getting Started with Apache Flink®](https://www.youtube.com/playlist?list=PLa7VYi0yPIH2GTo3vRtX8w9tgNTTyYSux)
   - [Building Apache Flink Applications in Java](https://www.youtube.com/playlist?list=PLa7VYi0yPIH0QEIcyvZE5p4zMR0ln4aAe)
-
-- [Apache Kafka Tutorials by Anton Putra](https://www.youtube.com/playlist?list=PLiMWaCMwGJXlL8-E-xu8RBwyC5YfS3V5e)
-
-- [Piyush Garg](https://www.youtube.com/@piyushgargdev/videos)
-  - [Why do we need Kafka?](https://www.youtube.com/watch?v=pl3sJ-RoD3Q)
-  - [Apache Kafka Crash Course | What is Kafka? | Piyush Garg](https://www.youtube.com/watch?v=ZJJHm_bd9Zo)
-
-- [Kafka for beginners | Java Techie](https://www.youtube.com/playlist?list=PLVz2XdJiJQxwpWGoNokohsSW2CysI6lDc)
-
-- [DataCouch](https://www.youtube.com/@DataCouch/videos)
-  - [Kafka Architecture in Depth | Apache Kafka Architecture | Understanding Kafka Architecture | DataCouch](https://www.youtube.com/watch?v=-19l6PisNGc)
-  - [Exploring Kafka Internals | Kafka | DataCouch](https://www.youtube.com/watch?v=i6aVAqaVcmU)
 
 
 ### Comparision
@@ -112,6 +103,8 @@
   - [From Scratch: Kafka Producer and Consumer Example with Spring Boot| Part 2](https://ramakrishna-01.medium.com/from-scratch-kafka-producer-and-consumer-example-with-spring-boot-part-2-c16b86cb869f)
   - [In Depth Explanation : Apache Kafka Key Terminologies and Architecture Internal Working | Features | Part 3](https://ramakrishna-01.medium.com/in-depth-explanation-apache-kafka-key-terminologies-and-architecture-internal-working-features-4963f1616557)
   - [Interview Prep: Kafka vs ActiveMQ vs RabbitMQ — Features, Use Cases & Q&A| Part 4](https://ramakrishna-01.medium.com/interview-prep-kafka-vs-activemq-vs-rabbitmq-features-use-cases-q-a-part-4-460d24a59509)
+- [Kafka Scenario-Based Interview Questions: 10 Real-World Challenges You Must Be Ready For](https://towardsdev.com/kafka-scenario-based-interview-questions-10-real-world-challenges-you-must-be-ready-for-69165a775fb9)
+
 
 
 ### Apache Kafka
@@ -151,6 +144,11 @@
 - [Scaling Spring Boot Microservices with Kafka: A Banking Case Study](https://medium.com/@princekumar161999/scaling-spring-boot-microservices-with-kafka-a-banking-case-study-2f0a6d6d1089)
 - [How I Implemented Kafka Delayed Retries — and Silenced Our New Relic Alerts Once and for All](https://codefarm0.medium.com/how-i-implemented-kafka-delayed-retries-and-silenced-our-new-relic-alerts-once-and-for-all-fe9cd88fb6c9)
 - [Kafka Error Handling with Spring Boot: A Complete Guide to Robust Message Processing](https://blog.stackademic.com/kafka-error-handling-with-spring-boot-a-complete-guide-to-robust-message-processing-a8d45c507716)
+- [Kafka Retry & DLT in Spring Boot: A Practical Guide](https://medium.com/@moshdev2213/kafka-retry-dlt-in-spring-boot-a-practical-guide-4b2b5e931710)
+
+- [Kafka, Schema Registry, JUnit and Test Containers — Part I](https://medium.com/@nuno.mt.sousa/kafka-schema-registry-junit-and-test-containers-part-i-082d0abfc804)
+- [Kafka, Schema Registry, JUnit and Test Containers — Part II: Creating a Kafka Cluster Test Extension](https://medium.com/@nuno.mt.sousa/part-ii-creating-a-kafka-cluster-test-extension-569ed750d137)
+- [Kafka, Schema Registry, JUnit and Test Containers — Part III: Reducing test time by removing all topics between tests](https://medium.com/@nuno.mt.sousa/part-iii-reducing-test-time-by-removing-all-topics-between-tests-ec9c829f3e9b)
 
 
 
@@ -169,6 +167,8 @@
 - [Schema Registry Demystified: Why It Matters and How to Use Avro with Spring Boot + Kafka](https://medium.com/@27.rahul.k/schema-registry-demystified-why-it-matters-and-how-to-use-avro-with-spring-boot-kafka-4a432f52e42d)
 - [Kafka Schema Registry in Distributed Systems](https://medium.com/@alxkm/kafka-schema-registry-in-distributed-systems-8a99bad321b1)
 - [The Schema Registry API is not how you use schema with Kafka!](https://medium.com/google-cloud/the-schema-registry-api-is-not-how-you-use-schema-with-kafka-3adb92f09764)
+- [Schema Registry and Confluent Kafka](https://medium.com/@dpati/schema-registry-and-confluent-kafka-90b3fe7eca4e)
+- [A Guide to Kafka Schema Registry: Building with Gradle and Avro](https://medium.com/@sharatnaik1996/a-guide-to-kafka-schema-registry-building-with-gradle-and-avro-13504209d602)
 
 
 ### Kafka UI
@@ -184,11 +184,9 @@
 - [Kafka Connect: Understanding Workers and Converters](https://medium.com/@erickzanetti/kafka-connect-understanding-workers-and-converters-538abced86c8)
 
 
-### Kafka Scenario-Based Interview
+### Kafka Streams
 
-- [Kafka Scenario-Based Interview Questions: 10 Real-World Challenges You Must Be Ready For](https://towardsdev.com/kafka-scenario-based-interview-questions-10-real-world-challenges-you-must-be-ready-for-69165a775fb9)
-
-
+- [Developer Guide to Achieve Transactional Processing in Kafka Streams](https://medium.com/@zdb.dashti/developer-guide-to-achieve-transactional-processing-in-kafka-streams-3178e642a570)
 
 
 ### Kafka on docker
@@ -200,9 +198,6 @@
 - [Docker Compose example for Kafka, Zookeeper, and Schema Registry](https://jskim1991.medium.com/docker-docker-compose-example-for-kafka-zookeeper-and-schema-registry-c516422532e7)
 
 
-### Kafka Streams
-
-- [Developer Guide to Achieve Transactional Processing in Kafka Streams](https://medium.com/@zdb.dashti/developer-guide-to-achieve-transactional-processing-in-kafka-streams-3178e642a570)
 
 
 ### Kafka cluster on kubernetes
@@ -211,9 +206,20 @@
 - [Kafka Cluster Deployment on Kubernetes](https://medium.com/@jaydeepawar4912/kafka-cluster-deployment-on-kubernetes-8d12f102e16a)
 - [Simplifying Streaming Architectures: Apache Kafka, KRaft, Kafka Connect and MySQL on Kubernetes](https://medium.com/@soumeng.kol/simplifying-streaming-architectures-apache-kafka-kraft-kafka-connect-and-mysql-on-kubernetes-5a39c9652aee)
   - [soumeng03/kafka-kraft-mysql-connect](https://github.com/soumeng03/kafka-kraft-mysql-connect)
+- [Kafka on Kubernetes](https://ambidextrous-dev.medium.com/kafka-on-kubernetes-ac245694f853)
 
 
 ### Kafka on AWS
 
 - [Self-Managed Kafka Cluster on AWS EC2 with Zookeeper and Multi-Broker Setup](https://medium.com/@nirnayj/self-managed-kafka-cluster-on-aws-ec2-with-zookeeper-and-multi-broker-setup-ab7346d7e91f)
 
+
+
+
+## Github links
+
+### Kafka UI
+
+- [About Kafbat UI (UI for Apache Kafka)](https://ui.docs.kafbat.io/)
+- [kafbat/kafka-ui/blob/main/documentation/compose/DOCKER_COMPOSE.md](https://github.com/kafbat/kafka-ui/blob/main/documentation/compose/DOCKER_COMPOSE.md)
+- [kafbat/kafka-ui/blob/main/documentation/compose/kafbat-ui.yaml](https://github.com/kafbat/kafka-ui/blob/main/documentation/compose/kafbat-ui.yaml)

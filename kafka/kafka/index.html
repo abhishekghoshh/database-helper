@@ -1,0 +1,1810 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://abhishekghoshh.github.io/database-helper/kafka/kafka/">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>A Complete Comparison: Confluent vs. Apache Kafka® - Database Helper</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="A Complete Comparison: Confluent vs. Apache Kafka® - Database Helper" >
+      
+        <meta  property="og:description"  content="None" >
+      
+        <meta  property="og:image"  content="https://abhishekghoshh.github.io/database-helper/assets/images/social/kafka/kafka.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://abhishekghoshh.github.io/database-helper/kafka/kafka/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="A Complete Comparison: Confluent vs. Apache Kafka® - Database Helper" >
+      
+        <meta  name="twitter:description"  content="None" >
+      
+        <meta  name="twitter:image"  content="https://abhishekghoshh.github.io/database-helper/assets/images/social/kafka/kafka.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#a-complete-comparison-confluent-vs-apache-kafka" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Database Helper" class="md-header__button md-logo" aria-label="Database Helper" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Database Helper
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              A Complete Comparison: Confluent vs. Apache Kafka®
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../postgres/introduction/" class="md-tabs__link">
+          
+  
+  postgres
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../sql/introduction/" class="md-tabs__link">
+          
+  
+  sql
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../redis/introduction/" class="md-tabs__link">
+          
+  
+  redis
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../mongodb/introduction/" class="md-tabs__link">
+          
+  
+  mongodb
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../introduction/" class="md-tabs__link">
+          
+  
+  kafka
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../neo4j/introduction/" class="md-tabs__link">
+          
+  
+  neo4j
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../surrielDB/introduction.md" class="md-tabs__link">
+          
+  
+  surrielDB
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Database Helper" class="md-nav__button md-logo" aria-label="Database Helper" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Database Helper
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    postgres
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            postgres
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    sql
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            sql
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sql/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sql/leetcode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    leetcode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sql/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    mongodb
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            mongodb
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/crud/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    crud
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/data-types/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    data types
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/create/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    create
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/operators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/read/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    read
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/update/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    update
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/delete/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    delete
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    index
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/geospatial-data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    geospatial data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/aggregation-framework/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    aggregation framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/advance-commands/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    advance commands
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    neo4j
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            neo4j
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../neo4j/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../neo4j/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    surrielDB
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            surrielDB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../surrielDB/introduction.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../surrielDB/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<div><h1 id="a-complete-comparison-confluent-vs-apache-kafka">A Complete Comparison: Confluent vs. Apache Kafka®</h1>
+<p>This guide breaks down the differences between the open-source <strong>Apache Kafka</strong> project and the commercial <strong>Confluent</strong> offering (Platform &amp; Cloud).</p>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Apache Kafka®</strong></th>
+<th style="text-align: left;"><strong>Confluent</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>The Engine</strong></td>
+<td style="text-align: left;"><strong>The Complete Car</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">Free, open-source software (OSS). You download the code and build the infrastructure yourself. It requires significant engineering expertise to manage, secure, and scale.</td>
+<td style="text-align: left;">A commercial data streaming platform built <em>on top</em> of Apache Kafka. It includes the Kafka engine plus a massive suite of enterprise tools (GUI, security, connectors, disaster recovery).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Best for:</strong> Tech-heavy teams who want full control, zero licensing costs, and are willing to handle all operations manually.</td>
+<td style="text-align: left;"><strong>Best for:</strong> Enterprises needing speed-to-market, strict SLAs, advanced security (RBAC), and reduced operational overhead.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="2-detailed-feature-comparison">2. Detailed Feature Comparison</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Feature Category</th>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: left;"><strong>Apache Kafka (Open Source)</strong></th>
+<th style="text-align: left;"><strong>Confluent (Platform &amp; Cloud)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Core</strong></td>
+<td style="text-align: left;"><strong>License</strong></td>
+<td style="text-align: left;">Apache 2.0 (Free)</td>
+<td style="text-align: left;">Commercial / Community License</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><strong>Management UI</strong></td>
+<td style="text-align: left;">None (CLI only)</td>
+<td style="text-align: left;"><strong>Control Center</strong> (Web GUI)</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><strong>Architecture</strong></td>
+<td style="text-align: left;">Brokers + Zookeeper (or KRaft)</td>
+<td style="text-align: left;">Brokers + KRaft + Kora Engine (Cloud)</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><strong>Updates</strong></td>
+<td style="text-align: left;">3 releases/year (manual upgrade)</td>
+<td style="text-align: left;">Rolling updates / Managed (Cloud)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Development</strong></td>
+<td style="text-align: left;"><strong>Schema Management</strong></td>
+<td style="text-align: left;">❌ None (Third-party required)</td>
+<td style="text-align: left;">✅ <strong>Schema Registry</strong> (Avro, Protobuf, JSON)</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><strong>Stream Processing</strong></td>
+<td style="text-align: left;">Kafka Streams (Java Library)</td>
+<td style="text-align: left;"><strong>ksqlDB</strong> (SQL-based) &amp; Flink (Managed)</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><strong>Connectors</strong></td>
+<td style="text-align: left;">Framework only (Build your own)</td>
+<td style="text-align: left;"><strong>120+ Pre-built Connectors</strong> (S3, Oracle, etc.)</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><strong>Clients</strong></td>
+<td style="text-align: left;">Java / Scala</td>
+<td style="text-align: left;">C, C++, Python, Go, .NET, Java</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Operations</strong></td>
+<td style="text-align: left;"><strong>Storage</strong></td>
+<td style="text-align: left;">Local Disk (limited by broker size)</td>
+<td style="text-align: left;"><strong>Tiered Storage</strong> (Offload to S3/GCS)</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><strong>Rebalancing</strong></td>
+<td style="text-align: left;">Manual (Risk of performance hit)</td>
+<td style="text-align: left;"><strong>Self-Balancing Clusters</strong> (Automated)</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><strong>Multi-DC / DR</strong></td>
+<td style="text-align: left;">MirrorMaker 2 (Manual setup)</td>
+<td style="text-align: left;"><strong>Cluster Linking</strong> &amp; Multi-Region Clusters</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><strong>Kubernetes</strong></td>
+<td style="text-align: left;">Manual manifests / Strimzi</td>
+<td style="text-align: left;"><strong>Confluent for Kubernetes (CFK)</strong> Operator</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Security</strong></td>
+<td style="text-align: left;"><strong>Authentication</strong></td>
+<td style="text-align: left;">SSL / SASL (Plain, SCRAM, Kerberos)</td>
+<td style="text-align: left;">OAuth, OIDC, LDAP, AD Integration</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><strong>Authorization</strong></td>
+<td style="text-align: left;">ACLs (Simple Allow/Deny)</td>
+<td style="text-align: left;"><strong>RBAC</strong> (Role-Based Access Control)</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><strong>Auditing</strong></td>
+<td style="text-align: left;">❌ None</td>
+<td style="text-align: left;">✅ Structured Audit Logs</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><strong>Encryption</strong></td>
+<td style="text-align: left;">Over the wire (TLS)</td>
+<td style="text-align: left;">At rest + Bring Your Own Key (BYOK)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-deep-dive-key-confluent-only-features">3. Deep Dive: Key "Confluent-Only" Features</h2>
+<p>While Apache Kafka provides the messaging backbone, Confluent adds layers that are critical for production enterprise environments.</p>
+<h3 id="schema-registry">🧠 Schema Registry</h3>
+<ul>
+<li><strong>Apache Kafka:</strong> Does not understand the data inside your messages. If a producer changes the data format, downstream consumers will crash.</li>
+<li><strong>Confluent:</strong> Provides a centralized <strong>Schema Registry</strong> that enforces data contracts (Avro, Protobuf, JSON). It prevents "bad" data from being produced and breaks the tightness between producers and consumers.</li>
+</ul>
+<h3 id="tiered-storage">💾 Tiered Storage</h3>
+<ul>
+<li><strong>Apache Kafka:</strong> You are limited by the physical disk space on your brokers. Storing 1 year of data is expensive and slows down recovery.</li>
+<li><strong>Confluent:</strong> Offloads older data to cheap object storage (AWS S3, Google GCS, Azure Blob) seamlessly. Brokers stay lightweight and fast, while you can retain infinite historical data cheaply.</li>
+</ul>
+<h3 id="ksqldb-flink">⚡ ksqlDB &amp; Flink</h3>
+<ul>
+<li><strong>Apache Kafka:</strong> You must write Java/Scala code using the Kafka Streams library to process data.</li>
+<li><strong>Confluent:</strong> Offers <strong>ksqlDB</strong>, which allows you to build stream processing apps using simple SQL commands (e.g., <code>CREATE STREAM fraudulent_payments AS SELECT * FROM payments WHERE amount &gt; 10000</code>). Confluent Cloud also offers managed Apache Flink.</li>
+</ul>
+<h3 id="cluster-linking">🔗 Cluster Linking</h3>
+<ul>
+<li><strong>Apache Kafka:</strong> To replicate data between regions (e.g., New York to London), you must run a separate cluster of "MirrorMaker 2" workers. This is complex to manage and monitor.</li>
+<li><strong>Confluent:</strong> <strong>Cluster Linking</strong> is built into the brokers. You can "link" two clusters and mirror topics with a simple configuration, preserving offsets and reducing operational complexity.</li>
+</ul>
+<hr>
+<h2 id="4-deployment-models">4. Deployment Models</h2>
+<h3 id="apache-kafka">Apache Kafka</h3>
+<ul>
+<li><strong>Self-Managed:</strong> You provision VMs (EC2, etc.) or bare metal.</li>
+<li><strong>Docker/K8s:</strong> You write your own Helm charts or use the Strimzi operator (Open Source).</li>
+<li><strong>Responsibility:</strong> You are on the hook for disk balancing, OS patching, Zookeeper management, and 2am outages.</li>
+</ul>
+<h3 id="confluent-platform-self-hosted-software">Confluent Platform (Self-Hosted Software)</h3>
+<ul>
+<li><strong>Enterprise Software:</strong> You download the Confluent distribution and run it on your own servers (On-prem or Cloud).</li>
+<li><strong>Automation:</strong> Includes <strong>Confluent for Kubernetes (CFK)</strong> and Ansible playbooks to automate upgrades and scaling.</li>
+</ul>
+<h3 id="confluent-cloud-saas">Confluent Cloud (SaaS)</h3>
+<ul>
+<li><strong>Serverless:</strong> You don't see brokers. You just create topics and produce data.</li>
+<li><strong>Kora Engine:</strong> A rewritten Kafka engine (10x faster) that is elastic. It scales up/down automatically based on traffic.</li>
+<li><strong>SLA:</strong> 99.99% uptime guarantee.</li>
+</ul>
+<hr>
+<h2 id="5-which-one-should-you-choose">5. Which one should you choose?</h2>
+<h3 id="choose-apache-kafka-if">Choose <strong>Apache Kafka</strong> if:</h3>
+<ul>
+<li>✅ You have a strong team of DevOps/Java engineers who know Kafka internals.</li>
+<li>✅ You have a strict $0 software budget (CapEx) but have budget for engineering hours (OpEx).</li>
+<li>✅ You are building a non-critical internal tool or a small-scale POC.</li>
+<li>✅ You need complete control over every configuration parameter.</li>
+</ul>
+<h3 id="choose-confluent-if">Choose <strong>Confluent</strong> if:</h3>
+<ul>
+<li>✅ You are handling critical data (Payments, Customer 360, Fraud Detection).</li>
+<li>✅ You need "batteries included" (Connectors to S3, Snowflake, Mongo without coding).</li>
+<li>✅ You need strict security (RBAC, Audit Logs) for compliance (GDPR, HIPAA, SOC2).</li>
+<li>✅ You want to focus on <em>using</em> data, not managing Zookeeper and broker failures.</li>
+</ul>
+<h2 id="confluent-kafka-cp-kafka780-ports-monitoring-guide">Confluent Kafka (cp-kafka:7.8.0) Ports &amp; Monitoring Guide</h2>
+<p>This document summarizes the exported ports for the <code>confluentinc/cp-kafka:7.8.0</code> Docker image, with a deep dive into the specific monitoring ports (9997 vs 9101).</p>
+<hr>
+<h2 id="1-standard-exported-ports">1. Standard Exported Ports</h2>
+<p>The following are the standard ports used when deploying Confluent Platform 7.8.0 via Docker.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Port</th>
+<th style="text-align: left;">Protocol</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>9092</strong></td>
+<td style="text-align: left;">PLAINTEXT</td>
+<td style="text-align: left;"><strong>Client Port.</strong> Standard internal client connections.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>29092</strong></td>
+<td style="text-align: left;">EXTERNAL</td>
+<td style="text-align: left;"><strong>External Port.</strong> (Convention) Used for host machine access.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>9093</strong></td>
+<td style="text-align: left;">CONTROLLER</td>
+<td style="text-align: left;"><strong>KRaft Controller.</strong> Used for cluster orchestration (no Zookeeper).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>9101</strong></td>
+<td style="text-align: left;">HTTP</td>
+<td style="text-align: left;"><strong>Prometheus Metrics.</strong> (JMX Exporter) Scrape endpoint.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>9997</strong></td>
+<td style="text-align: left;">JMX/RMI</td>
+<td style="text-align: left;"><strong>Raw JMX.</strong> Direct Java management connection.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>8090</strong></td>
+<td style="text-align: left;">HTTP</td>
+<td style="text-align: left;"><strong>MDS/REST.</strong> Metadata Service / Confluent Server API.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="verification-command">Verification Command</h3>
+<p>To see exactly what your container is exposing, run:
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>confluentinc/cp-kafka:7.8.0<span class="w"> </span>cat<span class="w"> </span>/etc/kafka/server.properties<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>port
+</code></pre></div>
+<h1 id="comprehensive-explanation-of-kafka-docker-configuration">Comprehensive Explanation of Kafka Docker Configuration</h1>
+<p>This document explains every line and environment variable in your <code>docker-compose</code> snippet for <code>kafka1</code>.</p>
+<h2 id="1-container-basics">1. Container Basics</h2>
+<p>These settings define how Docker runs the container itself.</p>
+<ul>
+<li><strong><code>image: confluentinc/cp-kafka:7.8.0</code></strong><ul>
+<li>Uses Confluent's distribution of Apache Kafka, version 7.8.0.</li>
+</ul>
+</li>
+<li><strong><code>hostname: kafka1</code></strong><ul>
+<li>Sets the internal network hostname of the container to <code>kafka1</code>. Other containers in the same network can reach it using this name.</li>
+</ul>
+</li>
+<li><strong><code>container_name: kafka1</code></strong><ul>
+<li>A static name for the container, making it easier to manage via CLI (e.g., <code>docker logs kafka1</code>).</li>
+</ul>
+</li>
+<li><strong><code>ports</code></strong><ul>
+<li><code>"9092:9092"</code>: The standard port for client traffic (Producers/Consumers).</li>
+<li><code>"9093:9093"</code>: The port used for the KRaft Controller (internal cluster voting).</li>
+<li><code>"9997:9997"</code>: The port for JMX monitoring (metrics).</li>
+</ul>
+</li>
+<li><strong><code>networks: - kafka-net</code></strong><ul>
+<li>Attaches this container to a custom bridge network called <code>kafka-net</code>, allowing it to resolve <code>kafka2</code> and <code>kafka3</code> by name.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="2-core-identity-roles-kraft-mode">2. Core Identity &amp; Roles (KRaft Mode)</h2>
+<p>In KRaft mode, Kafka does not use ZooKeeper. Instead, brokers manage their own metadata using a Raft quorum.</p>
+<ul>
+<li><strong><code>KAFKA_NODE_ID: 1</code></strong><ul>
+<li>A unique integer identifier for this specific node in the cluster. Every node must have a different ID.</li>
+</ul>
+</li>
+<li><strong><code>KAFKA_BROKER_ID: 1</code></strong><ul>
+<li>Legacy synonym for <code>NODE_ID</code>. In newer KRaft versions, <code>NODE_ID</code> is preferred, but keeping both ensures compatibility.</li>
+</ul>
+</li>
+<li><strong><code>KAFKA_PROCESS_ROLES: 'broker,controller'</code></strong><ul>
+<li><strong>Broker:</strong> This node handles data (produces/consumes).</li>
+<li><strong>Controller:</strong> This node participates in the metadata consensus (voting on leader election).</li>
+<li><em>Note:</em> In large production clusters, these roles are often separated. Here, the node does both (hyper-converged).</li>
+</ul>
+</li>
+<li><strong><code>KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:9093,2@kafka2:9093,3@kafka3:9093'</code></strong><ul>
+<li>Defines the entire "voting board" for the cluster.</li>
+<li>Format: <code>nodeID@host:port</code>.</li>
+<li>It tells <code>kafka1</code> that there are 3 voters total (itself, kafka2, and kafka3) communicating on port 9093.</li>
+</ul>
+</li>
+<li><strong><code>CLUSTER_ID: 'EmptNWtoR4GGWx-BH6nGLQ'</code></strong><ul>
+<li>A unique UUID string that acts as a password for the cluster.</li>
+<li>All nodes must have the <strong>exact same</strong> Cluster ID to successfully join and form a cluster.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="3-networking-listeners">3. Networking &amp; Listeners</h2>
+<p>This is often the most complex part of Kafka configuration. It defines "where I listen" and "how people find me."</p>
+<ul>
+<li><strong><code>KAFKA_LISTENERS: 'PLAINTEXT://kafka1:9092,CONTROLLER://kafka1:9093'</code></strong><ul>
+<li><strong>Binds ports.</strong> It tells the process: "Open a socket on port 9092 for standard traffic and 9093 for controller traffic."</li>
+</ul>
+</li>
+<li><strong><code>KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka1:9092'</code></strong><ul>
+<li><strong>The "Business Card".</strong> This is the address the broker sends back to clients (producers/consumers).</li>
+<li>When a client connects, the broker says: "If you want to write data to me, contact <code>kafka1</code> on port <code>9092</code>."</li>
+<li><em>Important:</em> This requires clients to be able to resolve the hostname <code>kafka1</code> (i.e., they must be inside the same Docker network).</li>
+</ul>
+</li>
+<li><strong><code>KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'</code></strong><ul>
+<li>Maps the listener names to security protocols.</li>
+<li><code>CONTROLLER</code>: Uses <code>PLAINTEXT</code> (unencrypted) for internal voting.</li>
+<li><code>PLAINTEXT</code>: Uses <code>PLAINTEXT</code> (unencrypted) for client data.</li>
+</ul>
+</li>
+<li><strong><code>KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'</code></strong><ul>
+<li>Explicitly tells Kafka which listener name from the list above is reserved <em>strictly</em> for the KRaft controller metadata traffic.</li>
+</ul>
+</li>
+<li><strong><code>KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'</code></strong><ul>
+<li>Tells the broker: "When you need to replicate data to other brokers (kafka2, kafka3), use the listener named <code>PLAINTEXT</code>."</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="4-replication-reliability">4. Replication &amp; Reliability</h2>
+<p>These settings control data safety and availability.</p>
+<ul>
+<li><strong><code>KAFKA_DEFAULT_REPLICATION_FACTOR: 3</code></strong><ul>
+<li>When a user creates a new topic without specifying details, create 3 copies of the data (one on each node). This ensures High Availability.</li>
+</ul>
+</li>
+<li><strong><code>KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3</code></strong><ul>
+<li>The <code>__consumer_offsets</code> topic stores where every consumer group is currently reading. Setting this to 3 ensures that if a node dies, consumer progress is not lost.</li>
+</ul>
+</li>
+<li><strong><code>KAFKA_MIN_INSYNC_REPLICAS: 2</code></strong><ul>
+<li><strong>Safety Gate.</strong> If a producer sends a message with <code>acks=all</code>, at least <strong>2</strong> replicas (e.g., the leader + 1 follower) must acknowledge receipt before the write is considered successful.</li>
+<li>Prevents data loss if only 1 node is alive.</li>
+</ul>
+</li>
+<li><strong><code>KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0</code></strong><ul>
+<li>Optimization for development. It tells the Group Coordinator strictly not to wait before rebalancing consumer groups. In production, a small delay (e.g., 3000ms) prevents "rebalance storms" when brokers restart.</li>
+</ul>
+</li>
+<li><strong><code>KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1</code></strong></li>
+<li><strong><code>KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1</code></strong><ul>
+<li><strong>Configuration Note:</strong> These settings define the reliability of Kafka Transactions (Exactly-Once Semantics).</li>
+<li><em>Warning:</em> Setting this to <code>1</code> is risky for production but acceptable for local testing to save resources. In production, these should usually match your default replication (e.g., 3).</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="5-monitoring-jmx">5. Monitoring (JMX)</h2>
+<p>These settings enable tools like VisualVM, Datadog, or Prometheus to monitor the broker's health.</p>
+<ul>
+<li><strong><code>KAFKA_JMX_PORT: 9997</code></strong><ul>
+<li>Opens port 9997 for JMX connections.</li>
+</ul>
+</li>
+<li><strong><code>KAFKA_JMX_OPTS: ...</code></strong><ul>
+<li>Standard Java options to configure the JMX remote agent:<ul>
+<li><code>-Dcom.sun.management.jmxremote</code>: Enable remote JMX.</li>
+<li><code>authenticate=false</code> / <code>ssl=false</code>: <strong>Security Warning.</strong> Disables login and encryption for metrics. Safe for local Docker, unsafe for public internet.</li>
+<li><code>java.rmi.server.hostname=kafka1</code>: Crucial. Tells the JMX registry to advertise the hostname <code>kafka1</code> so remote tools can find the return path.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="6-storage-volumes">6. Storage &amp; Volumes</h2>
+<ul>
+<li><strong><code>KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'</code></strong><ul>
+<li>The internal path inside the container where Kafka writes its data segments.</li>
+<li><em>Note:</em> The naming "kraft-combined-logs" implies it stores both Metadata logs (Controller) and Data logs (Broker) in the same directory structure.</li>
+</ul>
+</li>
+<li><strong><code>volumes: - kafka-cluster:/var/lib/kafka/data</code></strong><ul>
+<li><strong>Correction/Conflict:</strong> In the environment variable above, you set the log dir to <code>/tmp/kraft-combined-logs</code>, but here you are mounting a volume to <code>/var/lib/kafka/data</code>.</li>
+<li><strong>Fix:</strong> If you want your data to persist after the container restarts, you must ensure <code>KAFKA_LOG_DIRS</code> points to the mounted volume path.</li>
+<li><em>Recommended Change:</em> Set <code>KAFKA_LOG_DIRS: '/var/lib/kafka/data'</code> so data is actually stored in the Docker volume <code>kafka-cluster</code>.</li>
+</ul>
+</li>
+</ul></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 <a href="https://github.com/abhishekghoshh"  target="_blank" rel="noopener">Abhishek Ghosh</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/abhishekghoshh" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://x.com/abhishek_ghoshh" target="_blank" rel="noopener" title="x.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/abhishek-ghosh-220679132/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5m282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>

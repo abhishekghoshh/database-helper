@@ -1,0 +1,2453 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://abhishekghoshh.github.io/database-helper/kafka/deploy-on-docker/">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>Kafka Cluster Docker Compose Documentation - Database Helper</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Kafka Cluster Docker Compose Documentation - Database Helper" >
+      
+        <meta  property="og:description"  content="None" >
+      
+        <meta  property="og:image"  content="https://abhishekghoshh.github.io/database-helper/assets/images/social/kafka/deploy-on-docker.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://abhishekghoshh.github.io/database-helper/kafka/deploy-on-docker/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Kafka Cluster Docker Compose Documentation - Database Helper" >
+      
+        <meta  name="twitter:description"  content="None" >
+      
+        <meta  name="twitter:image"  content="https://abhishekghoshh.github.io/database-helper/assets/images/social/kafka/deploy-on-docker.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kafka-cluster-docker-compose-documentation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Database Helper" class="md-header__button md-logo" aria-label="Database Helper" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Database Helper
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Kafka Cluster Docker Compose Documentation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../postgres/introduction/" class="md-tabs__link">
+          
+  
+  postgres
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../sql/introduction/" class="md-tabs__link">
+          
+  
+  sql
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../redis/introduction/" class="md-tabs__link">
+          
+  
+  redis
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../mongodb/introduction/" class="md-tabs__link">
+          
+  
+  mongodb
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../introduction/" class="md-tabs__link">
+          
+  
+  kafka
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../neo4j/introduction/" class="md-tabs__link">
+          
+  
+  neo4j
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../surrielDB/introduction.md" class="md-tabs__link">
+          
+  
+  surrielDB
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Database Helper" class="md-nav__button md-logo" aria-label="Database Helper" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Database Helper
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    postgres
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            postgres
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    sql
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            sql
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sql/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sql/leetcode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    leetcode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sql/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    mongodb
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            mongodb
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/crud/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    crud
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/data-types/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    data types
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/create/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    create
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/operators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/read/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    read
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/update/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    update
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/delete/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    delete
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    index
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/geospatial-data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    geospatial data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/aggregation-framework/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    aggregation framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/advance-commands/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    advance commands
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    neo4j
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            neo4j
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../neo4j/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../neo4j/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    surrielDB
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            surrielDB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../surrielDB/introduction.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../surrielDB/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<div><h1 id="kafka-cluster-docker-compose-documentation">Kafka Cluster Docker Compose Documentation</h1>
+<p>This document provides a comprehensive explanation of the Kafka cluster deployment using Docker Compose. The setup includes a 3-node Kafka cluster running in KRaft mode (without Zookeeper), along with supporting services for monitoring, management, and data integration.</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#architecture-overview">Architecture Overview</a></li>
+<li><a href="#networks">Networks</a></li>
+<li><a href="#volumes">Volumes</a></li>
+<li><a href="#services">Services</a></li>
+<li><a href="#init-kafka">init-kafka</a></li>
+<li><a href="#kafka1-kafka2-kafka3">kafka1, kafka2, kafka3</a></li>
+<li><a href="#busybox">busybox</a></li>
+<li><a href="#kafka-init-topics">kafka-init-topics</a></li>
+<li><a href="#kafka-ui">kafka-ui</a></li>
+<li><a href="#schema-registry">schema-registry</a></li>
+<li><a href="#kafka-connect">kafka-connect</a></li>
+<li><a href="#prometheus">prometheus</a></li>
+<li><a href="#filebrowser">filebrowser</a></li>
+<li><a href="#testing-the-cluster">Testing the Cluster</a></li>
+</ul>
+<hr>
+<h2 id="architecture-overview">Architecture Overview</h2>
+<p>This setup creates a production-ready Kafka cluster with the following components:
+- <strong>3-node Kafka cluster</strong> in KRaft mode (Kafka without Zookeeper)
+- <strong>Schema Registry</strong> for managing Avro/JSON schemas
+- <strong>Kafka Connect</strong> for data integration
+- <strong>Kafka UI</strong> for cluster management and monitoring
+- <strong>Prometheus</strong> for metrics collection
+- <strong>FileBrowser</strong> for browsing cluster data and logs</p>
+<hr>
+<h2 id="networks">Networks</h2>
+<h3 id="kafka-net">kafka-net</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">networks</span><span class="p">:</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">kafka-net</span><span class="p">:</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">driver</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bridge</span>
+</code></pre></div>
+<p><strong>Purpose</strong>: Creates a custom bridge network for all Kafka-related services to communicate with each other.</p>
+<p><strong>Why it's used</strong>: 
+- Provides network isolation for the Kafka cluster
+- Enables service discovery using container names as hostnames
+- Allows containers to communicate using internal DNS resolution</p>
+<hr>
+<h2 id="volumes">Volumes</h2>
+<h3 id="kafka-cluster">kafka-cluster</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">kafka-cluster</span><span class="p">:</span>
+</code></pre></div>
+<p><strong>Purpose</strong>: A named Docker volume that persists Kafka data, logs, and shared files across container restarts.</p>
+<p><strong>Why it's used</strong>:
+- Ensures data persistence even if containers are removed
+- Shared across all Kafka brokers and utility containers
+- Stores topic data, broker logs, and application logs</p>
+<p><strong>Directory Structure</strong>:
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>/mnt/shared/
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>├── kafka1/
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>│   ├── data/  (topic partitions and logs)
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>│   └── logs/  (application logs)
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>├── kafka2/
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>│   ├── data/
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>│   └── logs/
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>└── kafka3/
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    ├── data/
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    └── logs/
+</code></pre></div>
+<hr>
+<h2 id="services">Services</h2>
+<h3 id="init-kafka">init-kafka</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">init-kafka</span><span class="p">:</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">alpine:latest</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">init-kafka</span>
+</code></pre></div>
+<p><strong>What it is</strong>: A one-time initialization service that prepares the filesystem structure before Kafka brokers start.</p>
+<p><strong>Image</strong>: <code>alpine:latest</code> - Lightweight Linux distribution (only ~5MB)</p>
+<p><strong>Command</strong>:
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="s2">  echo 'Creating directory structure...';</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="s2">  mkdir -p /mnt/shared/kafka1/data /mnt/shared/kafka1/logs;</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="s2">  mkdir -p /mnt/shared/kafka2/data /mnt/shared/kafka2/logs;</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="s2">  mkdir -p /mnt/shared/kafka3/data /mnt/shared/kafka3/logs;</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="s2">  echo 'Setting permissions...';</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="s2">  chmod -R 777 /mnt/shared;</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="s2">  echo 'Initialization complete.';</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="s2">"</span>
+</code></pre></div>
+<p><strong>Purpose</strong>:
+- Creates required directory structure for each Kafka broker
+- Sets proper permissions (777) to avoid permission issues
+- Runs once before Kafka brokers start (via <code>depends_on</code>)</p>
+<p><strong>Volumes</strong>:
+- <code>kafka-cluster:/mnt/shared</code> - Mounts the shared volume to create directories</p>
+<p><strong>Network</strong>: <code>kafka-net</code></p>
+<p><strong>Why it's needed</strong>: Kafka brokers need pre-existing directories with proper permissions to store data and logs. This service ensures these directories exist before brokers attempt to write to them.</p>
+<hr>
+<h3 id="kafka1-kafka2-kafka3">kafka1, kafka2, kafka3</h3>
+<p><strong>What they are</strong>: Three Kafka broker nodes forming a high-availability cluster using KRaft mode (Kafka's built-in consensus protocol, replacing Zookeeper).</p>
+<p><strong>Image</strong>: <code>confluentinc/cp-kafka:7.8.0</code> - Confluent's Kafka distribution version 7.8.0</p>
+<h4 id="kafka1-configuration">kafka1 Configuration</h4>
+<p><strong>Ports</strong>:
+- <code>9092:9092</code> - Client connections (producers/consumers connect here)
+- <code>9093:9093</code> - Controller communication (KRaft consensus protocol)
+- <code>9997:9997</code> - JMX metrics port for monitoring</p>
+<p><strong>Environment Variables</strong>:</p>
+<h5 id="node-identity">Node Identity</h5>
+<ul>
+<li><strong>KAFKA_NODE_ID</strong>: <code>1</code></li>
+<li>Unique identifier for this node in the KRaft cluster</li>
+<li>
+<p>Must be unique across all brokers</p>
+</li>
+<li>
+<p><strong>KAFKA_BROKER_ID</strong>: <code>1</code></p>
+</li>
+<li>Legacy broker ID (kept for compatibility)</li>
+<li>
+<p>Should match NODE_ID</p>
+</li>
+<li>
+<p><strong>CLUSTER_ID</strong>: <code>EmptNWtoR4GGWx-BH6nGLQ</code></p>
+</li>
+<li>Unique cluster identifier</li>
+<li><strong>Critical</strong>: Must be identical across all brokers in the cluster</li>
+<li>Generated once and reused for cluster formation</li>
+</ul>
+<h5 id="process-roles">Process Roles</h5>
+<ul>
+<li><strong>KAFKA_PROCESS_ROLES</strong>: <code>broker,controller</code></li>
+<li>Defines what roles this node plays</li>
+<li><code>broker</code>: Handles client requests and stores data</li>
+<li><code>controller</code>: Participates in cluster metadata management (KRaft mode)</li>
+<li>Combined mode means each node is both a broker and controller</li>
+</ul>
+<h5 id="kraft-quorum-configuration">KRaft Quorum Configuration</h5>
+<ul>
+<li><strong>KAFKA_CONTROLLER_QUORUM_VOTERS</strong>: <code>1@kafka1:9093,2@kafka2:9093,3@kafka3:9093</code></li>
+<li>Lists all controller nodes in the cluster</li>
+<li>Format: <code>{node-id}@{hostname}:{controller-port}</code></li>
+<li>Used for leader election and metadata replication</li>
+<li>All 3 nodes participate in the quorum for fault tolerance</li>
+</ul>
+<h5 id="listeners-configuration">Listeners Configuration</h5>
+<ul>
+<li><strong>KAFKA_LISTENERS</strong>: <code>PLAINTEXT://kafka1:9092,CONTROLLER://kafka1:9093</code></li>
+<li>Defines the addresses Kafka binds to</li>
+<li><code>PLAINTEXT://kafka1:9092</code>: Listens for client connections</li>
+<li>
+<p><code>CONTROLLER://kafka1:9093</code>: Listens for controller-to-controller communication</p>
+</li>
+<li>
+<p><strong>KAFKA_ADVERTISED_LISTENERS</strong>: <code>PLAINTEXT://kafka1:9092</code></p>
+</li>
+<li>The address Kafka advertises to clients</li>
+<li>Clients use this to connect to the broker</li>
+<li>
+<p>Only advertises the client listener (not the controller listener)</p>
+</li>
+<li>
+<p><strong>KAFKA_LISTENER_SECURITY_PROTOCOL_MAP</strong>: <code>CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT</code></p>
+</li>
+<li>Maps listener names to security protocols</li>
+<li><code>CONTROLLER:PLAINTEXT</code>: Controller communication uses plaintext (no encryption)</li>
+<li>
+<p><code>PLAINTEXT:PLAINTEXT</code>: Client communication uses plaintext</p>
+</li>
+<li>
+<p><strong>KAFKA_CONTROLLER_LISTENER_NAMES</strong>: <code>CONTROLLER</code></p>
+</li>
+<li>Specifies which listener is used for controller communication</li>
+<li>
+<p>Must match one of the listener names in KAFKA_LISTENERS</p>
+</li>
+<li>
+<p><strong>KAFKA_INTER_BROKER_LISTENER_NAME</strong>: <code>PLAINTEXT</code></p>
+</li>
+<li>Specifies which listener brokers use to communicate with each other</li>
+<li>Used for replication and cluster coordination</li>
+</ul>
+<h5 id="replication-configuration">Replication Configuration</h5>
+<ul>
+<li><strong>KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR</strong>: <code>3</code></li>
+<li>Replication factor for the <code>__consumer_offsets</code> topic</li>
+<li>Set to 3 for high availability (one copy on each broker)</li>
+<li>
+<p>This topic stores consumer group offsets</p>
+</li>
+<li>
+<p><strong>KAFKA_DEFAULT_REPLICATION_FACTOR</strong>: <code>3</code></p>
+</li>
+<li>Default replication factor for new topics (if not specified)</li>
+<li>
+<p>Ensures all data is replicated across all 3 brokers</p>
+</li>
+<li>
+<p><strong>KAFKA_MIN_INSYNC_REPLICAS</strong>: <code>2</code></p>
+</li>
+<li>Minimum number of replicas that must acknowledge a write</li>
+<li>Set to 2 for a balance between availability and durability</li>
+<li>With 3 replicas, can tolerate 1 broker failure while maintaining writes</li>
+</ul>
+<h5 id="consumer-group-configuration">Consumer Group Configuration</h5>
+<ul>
+<li><strong>KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS</strong>: <code>0</code></li>
+<li>Delay before first consumer group rebalance</li>
+<li>Set to 0 for development (no delay)</li>
+<li>In production, typically set higher (e.g., 3000ms) to allow all consumers to join</li>
+</ul>
+<h5 id="transaction-configuration">Transaction Configuration</h5>
+<ul>
+<li><strong>KAFKA_TRANSACTION_STATE_LOG_MIN_ISR</strong>: <code>1</code></li>
+<li>Minimum in-sync replicas for transaction log</li>
+<li>
+<p>Set to 1 for development (allows transactions even with broker failures)</p>
+</li>
+<li>
+<p><strong>KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR</strong>: <code>1</code></p>
+</li>
+<li>Replication factor for transaction state log</li>
+<li>Set to 1 for development (typically 3 in production)</li>
+</ul>
+<h5 id="jmx-monitoring-configuration">JMX Monitoring Configuration</h5>
+<ul>
+<li><strong>KAFKA_JMX_PORT</strong>: <code>9997</code></li>
+<li>Port for JMX (Java Management Extensions) metrics</li>
+<li>
+<p>Used by monitoring tools like Prometheus to scrape metrics</p>
+</li>
+<li>
+<p><strong>KAFKA_JMX_OPTS</strong>: Complex JVM options string
+  </p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>-Dcom.sun.management.jmxremote 
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>-Dcom.sun.management.jmxremote.authenticate=false 
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>-Dcom.sun.management.jmxremote.ssl=false 
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>-Djava.rmi.server.hostname=kafka1 
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>-Dcom.sun.management.jmxremote.rmi.port=9997
+</code></pre></div>
+</li>
+<li>Enables JMX remote monitoring</li>
+<li>Disables authentication and SSL (for development only)</li>
+<li>Sets RMI hostname to <code>kafka1</code> for proper connectivity</li>
+<li>Binds RMI to port 9997</li>
+</ul>
+<h5 id="storage-configuration">Storage Configuration</h5>
+<ul>
+<li><strong>KAFKA_LOG_DIRS</strong>: <code>/mnt/shared/kafka1/data</code></li>
+<li>Directory where Kafka stores topic data (log segments)</li>
+<li>Each partition is stored as a subdirectory</li>
+<li>
+<p>Critical for data persistence</p>
+</li>
+<li>
+<p><strong>LOG_DIR</strong>: <code>/mnt/shared/kafka1/logs</code></p>
+</li>
+<li>Directory for application logs (server.log, gc.log, etc.)</li>
+<li>Separate from data storage for better organization</li>
+</ul>
+<p><strong>Volumes</strong>:
+- <code>kafka-cluster:/mnt/shared</code> - Mounts shared volume for data and logs</p>
+<p><strong>Networks</strong>: <code>kafka-net</code></p>
+<p><strong>Dependencies</strong>: <code>init-kafka</code> - Waits for directory initialization</p>
+<h4 id="kafka2-configuration">kafka2 Configuration</h4>
+<p>Identical to kafka1 with the following differences:</p>
+<p><strong>Ports</strong>:
+- <code>9094:9092</code> - Client connections (mapped to host port 9094)
+- <code>9095:9093</code> - Controller communication (mapped to host port 9095)</p>
+<p><strong>Node-specific Environment Variables</strong>:
+- <code>KAFKA_NODE_ID: 2</code>
+- <code>KAFKA_BROKER_ID: 2</code>
+- <code>KAFKA_LISTENERS: PLAINTEXT://kafka2:9092,CONTROLLER://kafka2:9093</code>
+- <code>KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka2:9092</code>
+- <code>KAFKA_JMX_OPTS</code>: Uses <code>kafka2</code> as hostname
+- <code>KAFKA_LOG_DIRS: /mnt/shared/kafka2/data</code>
+- <code>LOG_DIR: /mnt/shared/kafka2/logs</code></p>
+<h4 id="kafka3-configuration">kafka3 Configuration</h4>
+<p>Identical to kafka1 with the following differences:</p>
+<p><strong>Ports</strong>:
+- <code>9096:9092</code> - Client connections (mapped to host port 9096)
+- <code>9097:9093</code> - Controller communication (mapped to host port 9097)</p>
+<p><strong>Node-specific Environment Variables</strong>:
+- <code>KAFKA_NODE_ID: 3</code>
+- <code>KAFKA_BROKER_ID: 3</code>
+- <code>KAFKA_LISTENERS: PLAINTEXT://kafka3:9092,CONTROLLER://kafka3:9093</code>
+- <code>KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka3:9092</code>
+- <code>KAFKA_JMX_OPTS</code>: Uses <code>kafka3</code> as hostname
+- <code>KAFKA_LOG_DIRS: /mnt/shared/kafka3/data</code>
+- <code>LOG_DIR: /mnt/shared/kafka3/logs</code></p>
+<p><strong>Why 3 brokers?</strong>:
+- Provides high availability and fault tolerance
+- Allows replication factor of 3
+- Can survive 1 broker failure while maintaining data availability
+- Enables proper quorum-based leader election in KRaft mode</p>
+<hr>
+<h3 id="busybox">busybox</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">busybox</span><span class="p">:</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">confluentinc/cp-kafka:7.8.0</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">busybox</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">busybox</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/scripts/init-script.sh</span>
+</code></pre></div>
+<p><strong>What it is</strong>: A utility container that runs custom initialization scripts after the Kafka cluster is ready.</p>
+<p><strong>Image</strong>: <code>confluentinc/cp-kafka:7.8.0</code> - Uses the same Kafka image to have access to Kafka CLI tools</p>
+<p><strong>Command</strong>: <code>/scripts/init-script.sh</code> - Executes a custom shell script</p>
+<p><strong>Environment Variables</strong>:
+- <strong>TZ</strong>: <code>America/New_York</code>
+  - Sets the timezone for the container
+  - Useful for consistent timestamp logging</p>
+<ul>
+<li><strong>KAFKA_BROKER_1</strong>: <code>kafka1:9092</code></li>
+<li><strong>KAFKA_BROKER_2</strong>: <code>kafka2:9092</code></li>
+<li><strong>KAFKA_BROKER_3</strong>: <code>kafka3:9092</code></li>
+<li>Environment variables for easy access to broker addresses</li>
+<li>Can be used in scripts without hardcoding broker URLs</li>
+</ul>
+<p><strong>Volumes</strong>:
+- <code>kafka-cluster:/mnt/shared</code> - Access to shared volume
+- <code>./scripts:/scripts</code> - Mounts local scripts directory into container</p>
+<p><strong>Working Directory</strong>: <code>/scripts</code> - Scripts are executed from this directory</p>
+<p><strong>Dependencies</strong>: Depends on all three Kafka brokers being up</p>
+<p><strong>Network</strong>: <code>kafka-net</code></p>
+<p><strong>Why it's used</strong>: 
+- Runs custom initialization tasks after cluster is ready
+- Can create topics, configure ACLs, or perform health checks
+- Provides a container with Kafka tools for debugging</p>
+<hr>
+<h3 id="kafka-init-topics">kafka-init-topics</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">kafka-init-topics</span><span class="p">:</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">confluentinc/cp-kafka:7.8.0</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kafka-init-topics</span>
+</code></pre></div>
+<p><strong>What it is</strong>: An initialization container that creates topics and loads sample data when the cluster starts.</p>
+<p><strong>Image</strong>: <code>confluentinc/cp-kafka:7.8.0</code> - Contains Kafka command-line tools</p>
+<p><strong>Volumes</strong>:
+- <code>./data/message.json:/data/message.json</code> - Mounts sample data file</p>
+<p><strong>Command Breakdown</strong>:
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'echo Waiting for Kafka to be ready... &amp;&amp; \</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="s1">       cub kafka-ready -b kafka1:9092 1 30 &amp;&amp; \</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="s1">       kafka-topics --create --topic users --partitions 3 --replication-factor 3 --if-not-exists --bootstrap-server kafka1:9092 &amp;&amp; \</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="s1">       kafka-topics --create --topic messages --partitions 3 --replication-factor 3 --if-not-exists --bootstrap-server kafka1:9092 &amp;&amp; \</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="s1">       kafka-console-producer --bootstrap-server kafka1:9092 --topic users &lt; /data/message.json'</span>
+</code></pre></div>
+<p><strong>Command Steps</strong>:
+1. <strong>Wait for Kafka</strong>: <code>cub kafka-ready -b kafka1:9092 1 30</code>
+   - <code>cub</code> (Confluent Utility Belt) checks if Kafka is ready
+   - <code>-b kafka1:9092</code>: Bootstrap server to check
+   - <code>1</code>: Minimum number of brokers required
+   - <code>30</code>: Timeout in seconds</p>
+<ol>
+<li><strong>Create 'users' topic</strong>: 
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kafka-topics<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>users<span class="w"> </span>--partitions<span class="w"> </span><span class="m">3</span><span class="w"> </span>--replication-factor<span class="w"> </span><span class="m">3</span><span class="w"> </span>--if-not-exists<span class="w"> </span>--bootstrap-server<span class="w"> </span>kafka1:9092
+</code></pre></div></li>
+<li>Creates a topic named <code>users</code></li>
+<li><code>--partitions 3</code>: Splits topic into 3 partitions for parallel processing</li>
+<li><code>--replication-factor 3</code>: Replicates each partition to all 3 brokers</li>
+<li>
+<p><code>--if-not-exists</code>: Prevents errors if topic already exists</p>
+</li>
+<li>
+<p><strong>Create 'messages' topic</strong>: Same as above for <code>messages</code> topic</p>
+</li>
+<li>
+<p><strong>Load sample data</strong>:
+   </p><div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>kafka-console-producer<span class="w"> </span>--bootstrap-server<span class="w"> </span>kafka1:9092<span class="w"> </span>--topic<span class="w"> </span>users<span class="w"> </span>&lt;<span class="w"> </span>/data/message.json
+</code></pre></div>
+</li>
+<li>Produces messages from <code>message.json</code> to the <code>users</code> topic</li>
+<li>Uses stdin redirection to read from file</li>
+</ol>
+<p><strong>Dependencies</strong>: All three Kafka brokers must be running</p>
+<p><strong>Network</strong>: <code>kafka-net</code></p>
+<p><strong>Why it's used</strong>:
+- Automates topic creation on cluster startup
+- Pre-loads sample data for testing
+- Ensures topics have proper partitioning and replication</p>
+<hr>
+<h3 id="kafka-ui">kafka-ui</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">kafka-ui</span><span class="p">:</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/kafbat/kafka-ui:latest</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kafka-ui</span>
+</code></pre></div>
+<p><strong>What it is</strong>: A modern web-based UI for managing and monitoring Kafka clusters (formerly known as kafka-ui by Provectus).</p>
+<p><strong>Image</strong>: <code>ghcr.io/kafbat/kafka-ui:latest</code> - Latest version of Kafbat UI</p>
+<p><strong>Ports</strong>:
+- <code>8080:8080</code> - Web interface accessible at http://localhost:8080</p>
+<p><strong>Environment Variables</strong>:</p>
+<h5 id="cluster-configuration">Cluster Configuration</h5>
+<ul>
+<li><strong>KAFKA_CLUSTERS_0_NAME</strong>: <code>local</code></li>
+<li>Display name for the cluster in the UI</li>
+<li>
+<p>The <code>0</code> indicates this is the first (and only) cluster</p>
+</li>
+<li>
+<p><strong>KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS</strong>: <code>kafka1:9092,kafka2:9092,kafka3:9092</code></p>
+</li>
+<li>Comma-separated list of broker addresses</li>
+<li>UI connects to these brokers to retrieve cluster information</li>
+</ul>
+<h5 id="metrics-configuration">Metrics Configuration</h5>
+<ul>
+<li><strong>KAFKA_CLUSTERS_0_METRICS_PORT</strong>: <code>9997</code></li>
+<li>JMX port to scrape metrics from brokers</li>
+<li>
+<p>Enables performance monitoring in the UI</p>
+</li>
+<li>
+<p><strong>KAFKA_CLUSTERS_0_METRICS_STORE_PROMETHEUS_URL</strong>: <code>http://prometheus:9090</code></p>
+</li>
+<li>URL of Prometheus server for historical metrics</li>
+<li>
+<p>Allows viewing metrics trends over time</p>
+</li>
+<li>
+<p><strong>KAFKA_CLUSTERS_0_METRICS_STORE_PROMETHEUS_REMOTEWRITE</strong>: <code>true</code></p>
+</li>
+<li>Enables remote write to Prometheus</li>
+<li>
+<p>Pushes metrics to Prometheus for storage</p>
+</li>
+<li>
+<p><strong>KAFKA_CLUSTERS_0_METRICS_STORE_KAFKA_TOPIC</strong>: <code>kafka_metrics</code></p>
+</li>
+<li>Kafka topic for storing metrics data</li>
+<li>Allows metrics to be persisted in Kafka itself</li>
+</ul>
+<h5 id="kafka-connect-integration">Kafka Connect Integration</h5>
+<ul>
+<li><strong>KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS</strong>: <code>http://kafka-connect:8083</code></li>
+<li>URL of Kafka Connect cluster</li>
+<li>
+<p>Enables managing connectors from the UI</p>
+</li>
+<li>
+<p><strong>KAFKA_CLUSTERS_0_KAFKACONNECT_0_NAME</strong>: <code>first</code></p>
+</li>
+<li>Display name for this Connect cluster</li>
+</ul>
+<h5 id="schema-registry-integration">Schema Registry Integration</h5>
+<ul>
+<li><strong>KAFKA_CLUSTERS_0_SCHEMAREGISTRY</strong>: <code>http://schema-registry:8085</code></li>
+<li>URL of Schema Registry service</li>
+<li>Allows viewing and managing schemas from the UI</li>
+</ul>
+<h5 id="ui-features">UI Features</h5>
+<ul>
+<li><strong>DYNAMIC_CONFIG_ENABLED</strong>: <code>true</code></li>
+<li>Allows modifying cluster configuration through the UI</li>
+<li>Enables dynamic updates without restarting</li>
+</ul>
+<p><strong>Dependencies</strong>: 
+- Kafka brokers (kafka1, kafka2, kafka3)
+- schema-registry
+- kafka-connect</p>
+<p><strong>Network</strong>: <code>kafka-net</code></p>
+<p><strong>Why it's used</strong>:
+- Provides a user-friendly interface for cluster management
+- Monitors topics, partitions, consumer groups, and brokers
+- Manages schemas and connectors
+- Visualizes metrics and cluster health
+- Allows producing/consuming messages for testing</p>
+<hr>
+<h3 id="schema-registry">schema-registry</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">schema-registry</span><span class="p">:</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">confluentinc/cp-schema-registry:7.8.0</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema-registry</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema-registry</span>
+</code></pre></div>
+<p><strong>What it is</strong>: A centralized service for managing and enforcing schemas for Kafka messages (Avro, JSON Schema, Protobuf).</p>
+<p><strong>Image</strong>: <code>confluentinc/cp-schema-registry:7.8.0</code> - Confluent's Schema Registry</p>
+<p><strong>Ports</strong>:
+- <code>8081:8081</code> - Primary REST API endpoint
+- <code>8085:8085</code> - Secondary listener (used by Kafka UI)</p>
+<p><strong>Environment Variables</strong>:</p>
+<h5 id="basic-configuration">Basic Configuration</h5>
+<ul>
+<li><strong>SCHEMA_REGISTRY_HOST_NAME</strong>: <code>schema-registry</code></li>
+<li>Hostname for this Schema Registry instance</li>
+<li>
+<p>Used for service identification</p>
+</li>
+<li>
+<p><strong>SCHEMA_REGISTRY_LISTENERS</strong>: <code>http://schema-registry:8081,http://schema-registry:8085</code></p>
+</li>
+<li>Comma-separated list of HTTP endpoints to listen on</li>
+<li>Multiple listeners allow different services to connect on different ports</li>
+</ul>
+<h5 id="kafka-connection">Kafka Connection</h5>
+<ul>
+<li><strong>SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS</strong>: <code>PLAINTEXT://kafka1:9092,PLAINTEXT://kafka2:9092,PLAINTEXT://kafka3:9092</code></li>
+<li>Kafka brokers where schemas are stored</li>
+<li>Schema Registry uses Kafka as its storage backend</li>
+<li>
+<p>Schemas are stored in the <code>_schemas</code> topic</p>
+</li>
+<li>
+<p><strong>SCHEMA_REGISTRY_KAFKASTORE_TOPIC</strong>: <code>_schemas</code></p>
+</li>
+<li>Kafka topic where schemas are persisted</li>
+<li>Single-partition topic for consistency</li>
+</ul>
+<h5 id="security-configuration">Security Configuration</h5>
+<ul>
+<li><strong>SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL</strong>: <code>PLAINTEXT</code></li>
+<li>Security protocol for connecting to Kafka</li>
+<li>
+<p><code>PLAINTEXT</code> means no encryption (for development)</p>
+</li>
+<li>
+<p><strong>SCHEMA_REGISTRY_SCHEMA_REGISTRY_INTER_INSTANCE_PROTOCOL</strong>: <code>http</code></p>
+</li>
+<li>Protocol for communication between Schema Registry instances</li>
+<li>Would use <code>https</code> in production for security</li>
+</ul>
+<h5 id="logging">Logging</h5>
+<ul>
+<li><strong>SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL</strong>: <code>INFO</code></li>
+<li>Sets the logging level for Schema Registry</li>
+<li><code>INFO</code> provides standard operational logs</li>
+<li>
+<p>Other options: <code>DEBUG</code>, <code>WARN</code>, <code>ERROR</code></p>
+</li>
+<li>
+<p><strong>SCHEMA_REGISTRY_DEBUG</strong>: <code>true</code></p>
+</li>
+<li>Enables debug mode for more verbose logging</li>
+<li>Useful for troubleshooting</li>
+</ul>
+<p><strong>Dependencies</strong>: All three Kafka brokers</p>
+<p><strong>Network</strong>: <code>kafka-net</code></p>
+<p><strong>Why it's used</strong>:
+- Ensures data consistency by enforcing schemas
+- Provides schema evolution and compatibility checking
+- Enables versioning of data schemas
+- Reduces message size by storing schemas separately
+- Prevents incompatible data from being produced
+- Central registry for all data contracts</p>
+<p><strong>How it works</strong>:
+1. Producers register schemas before sending data
+2. Schema Registry validates compatibility with existing versions
+3. Consumers retrieve schemas to deserialize messages
+4. All schemas are versioned and stored in Kafka's <code>_schemas</code> topic</p>
+<hr>
+<h3 id="kafka-connect">kafka-connect</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">kafka-connect</span><span class="p">:</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">confluentinc/cp-kafka-connect:7.8.0</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kafka-connect</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kafka-connect</span>
+</code></pre></div>
+<p><strong>What it is</strong>: A distributed framework for streaming data between Kafka and external systems (databases, file systems, cloud services, etc.).</p>
+<p><strong>Image</strong>: <code>confluentinc/cp-kafka-connect:7.8.0</code> - Confluent's Kafka Connect</p>
+<p><strong>Ports</strong>:
+- <code>8083:8083</code> - REST API for managing connectors</p>
+<p><strong>Environment Variables</strong>:</p>
+<h5 id="bootstrap-configuration">Bootstrap Configuration</h5>
+<ul>
+<li><strong>CONNECT_BOOTSTRAP_SERVERS</strong>: <code>kafka1:9092,kafka2:9092,kafka3:9092</code></li>
+<li>Kafka brokers to connect to</li>
+<li>Connect uses Kafka to coordinate distributed work and store configurations</li>
+</ul>
+<h5 id="worker-configuration">Worker Configuration</h5>
+<ul>
+<li><strong>CONNECT_GROUP_ID</strong>: <code>compose-connect-group</code></li>
+<li>Unique identifier for this Connect cluster</li>
+<li>Multiple Connect workers with the same group ID form a cluster</li>
+<li>Enables distributed processing and fault tolerance</li>
+</ul>
+<h5 id="internal-topics-configuration">Internal Topics Configuration</h5>
+<p>Kafka Connect uses three internal topics to coordinate work and store state:</p>
+<ol>
+<li><strong>Config Storage</strong>:</li>
+<li><strong>CONNECT_CONFIG_STORAGE_TOPIC</strong>: <code>_connect_configs</code><ul>
+<li>Stores connector and task configurations</li>
+</ul>
+</li>
+<li>
+<p><strong>CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR</strong>: <code>3</code></p>
+<ul>
+<li>Replicates configs across all 3 brokers for high availability</li>
+</ul>
+</li>
+<li>
+<p><strong>Offset Storage</strong>:</p>
+</li>
+<li><strong>CONNECT_OFFSET_STORAGE_TOPIC</strong>: <code>_connect_offset</code><ul>
+<li>Stores source connector offsets (position in source data)</li>
+</ul>
+</li>
+<li>
+<p><strong>CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR</strong>: <code>3</code></p>
+<ul>
+<li>Ensures offset data is not lost if a broker fails</li>
+</ul>
+</li>
+<li>
+<p><strong>Status Storage</strong>:</p>
+</li>
+<li><strong>CONNECT_STATUS_STORAGE_TOPIC</strong>: <code>_connect_status</code><ul>
+<li>Stores connector and task status information</li>
+</ul>
+</li>
+<li><strong>CONNECT_STATUS_STORAGE_REPLICATION_FACTOR</strong>: <code>3</code><ul>
+<li>Maintains status information across broker failures</li>
+</ul>
+</li>
+</ol>
+<h5 id="converter-configuration">Converter Configuration</h5>
+<p>Converters control how data is serialized when writing to Kafka and deserialized when reading from Kafka:</p>
+<ul>
+<li><strong>CONNECT_KEY_CONVERTER</strong>: <code>org.apache.kafka.connect.storage.StringConverter</code></li>
+<li>Converts message keys to/from strings</li>
+<li>
+<p>Simple format for most use cases</p>
+</li>
+<li>
+<p><strong>CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL</strong>: <code>http://schema-registry:8085</code></p>
+</li>
+<li>Schema Registry URL for key conversion (if needed)</li>
+<li>
+<p>Not used with StringConverter but available for schema-aware converters</p>
+</li>
+<li>
+<p><strong>CONNECT_VALUE_CONVERTER</strong>: <code>org.apache.kafka.connect.storage.StringConverter</code></p>
+</li>
+<li>Converts message values to/from strings</li>
+<li>
+<p>Alternative converters: AvroConverter, JsonConverter, etc.</p>
+</li>
+<li>
+<p><strong>CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL</strong>: <code>http://schema-registry:8085</code></p>
+</li>
+<li>Schema Registry URL for value conversion</li>
+</ul>
+<h5 id="internal-converters">Internal Converters</h5>
+<ul>
+<li><strong>CONNECT_INTERNAL_KEY_CONVERTER</strong>: <code>org.apache.kafka.connect.json.JsonConverter</code></li>
+<li>Format for keys in internal topics</li>
+<li>
+<p>Uses JSON for human readability</p>
+</li>
+<li>
+<p><strong>CONNECT_INTERNAL_VALUE_CONVERTER</strong>: <code>org.apache.kafka.connect.json.JsonConverter</code></p>
+</li>
+<li>Format for values in internal topics</li>
+</ul>
+<h5 id="rest-api-configuration">REST API Configuration</h5>
+<ul>
+<li><strong>CONNECT_REST_ADVERTISED_HOST_NAME</strong>: <code>kafka-connect</code></li>
+<li>Hostname advertised to other Connect workers</li>
+<li>Used for distributed coordination</li>
+</ul>
+<h5 id="plugin-configuration">Plugin Configuration</h5>
+<ul>
+<li><strong>CONNECT_PLUGIN_PATH</strong>: <code>"/usr/share/java,/usr/share/confluent-hub-components"</code></li>
+<li>Directories where Connect looks for connector plugins</li>
+<li><code>/usr/share/java</code>: Built-in connectors</li>
+<li><code>/usr/share/confluent-hub-components</code>: Connectors installed via Confluent Hub</li>
+</ul>
+<p><strong>Dependencies</strong>: 
+- All three Kafka brokers
+- schema-registry (for schema-aware converters)</p>
+<p><strong>Network</strong>: <code>kafka-net</code></p>
+<p><strong>Why it's used</strong>:
+- Integrates Kafka with external systems without writing custom code
+- Provides pre-built connectors for common integrations:
+  - <strong>Source Connectors</strong>: Pull data into Kafka (e.g., JDBC, MongoDB, S3)
+  - <strong>Sink Connectors</strong>: Push data from Kafka (e.g., Elasticsearch, HDFS)
+- Distributed and scalable architecture
+- Manages offset tracking and fault tolerance automatically
+- Supports transformations and schema evolution</p>
+<p><strong>Common Use Cases</strong>:
+- Stream database changes to Kafka (CDC - Change Data Capture)
+- Export Kafka topics to data warehouses
+- Sync data between microservices
+- Real-time ETL pipelines</p>
+<hr>
+<h3 id="prometheus">prometheus</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nt">prometheus</span><span class="p">:</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prom/prometheus:latest</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">  </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prometheus</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prometheus</span>
+</code></pre></div>
+<p><strong>What it is</strong>: A time-series database and monitoring system for collecting and querying metrics from Kafka brokers and other services.</p>
+<p><strong>Image</strong>: <code>prom/prometheus:latest</code> - Official Prometheus image</p>
+<p><strong>Ports</strong>:
+- <code>9090:9090</code> - Prometheus web UI and query interface</p>
+<p><strong>Volumes</strong>:
+- <code>./scripts:/etc/prometheus</code> - Mounts local scripts directory containing Prometheus configuration</p>
+<p><strong>Command</strong>: <code>--web.enable-remote-write-receiver --config.file=/etc/prometheus/prometheus.yaml</code></p>
+<h5 id="command-options">Command Options:</h5>
+<ul>
+<li><strong>--web.enable-remote-write-receiver</strong></li>
+<li>Enables the remote write receiver endpoint</li>
+<li>Allows Kafka UI and other services to push metrics to Prometheus</li>
+<li>
+<p>Without this, Prometheus only scrapes (pulls) metrics</p>
+</li>
+<li>
+<p><strong>--config.file=/etc/prometheus/prometheus.yaml</strong></p>
+</li>
+<li>Specifies the configuration file location</li>
+<li>Points to the mounted prometheus.yaml in the scripts directory</li>
+<li>Configuration defines what targets to scrape</li>
+</ul>
+<p><strong>Network</strong>: <code>kafka-net</code></p>
+<p><strong>Why it's used</strong>:
+- Collects JMX metrics from Kafka brokers (via port 9997)
+- Stores time-series data for historical analysis
+- Provides a query language (PromQL) for analyzing metrics
+- Integrates with Kafka UI for metrics visualization
+- Monitors broker health, throughput, latency, consumer lag, etc.</p>
+<p><strong>Typical Metrics Collected</strong>:
+- Broker CPU and memory usage
+- Message throughput (messages/sec)
+- Request latency
+- Partition counts
+- Consumer group lag
+- Replication status</p>
+<p><strong>Configuration File</strong> (prometheus.yaml):
+Should contain scrape configs for Kafka brokers, e.g.:
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nt">scrape_configs</span><span class="p">:</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="s">'kafka'</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">'kafka1:9997'</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">'kafka2:9997'</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">'kafka3:9997'</span><span class="p p-Indicator">]</span>
+</code></pre></div>
+<hr>
+<h3 id="filebrowser">filebrowser</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nt">filebrowser</span><span class="p">:</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">filebrowser/filebrowser:latest</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">  </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">filebrowser</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">filebrowser</span>
+</code></pre></div>
+<p><strong>What it is</strong>: A web-based file manager that provides a UI for browsing and managing files in Docker volumes.</p>
+<p><strong>Image</strong>: <code>filebrowser/filebrowser:latest</code> - Official FileBrowser image</p>
+<p><strong>Ports</strong>:
+- <code>9999:80</code> - Web interface accessible at http://localhost:9999</p>
+<p><strong>Volumes</strong>:
+1. <strong>Data Volume</strong>: <code>kafka-cluster:/srv</code>
+   - Mounts the shared Kafka volume to <code>/srv</code> (FileBrowser's default data path)
+   - Provides access to all Kafka data and logs
+   - Allows browsing: <code>/srv/kafka1/data</code>, <code>/srv/kafka1/logs</code>, etc.</p>
+<ol>
+<li><strong>Database File</strong>: <code>./filebrowser/filebrowser.db:/database/filebrowser.db</code></li>
+<li>Persists FileBrowser's user database locally</li>
+<li>Stores user accounts, permissions, and settings</li>
+<li>
+<p>Survives container restarts</p>
+</li>
+<li>
+<p><strong>Configuration File</strong>: <code>./filebrowser/settings.json:/.filebrowser.json</code></p>
+</li>
+<li>Mounts custom configuration</li>
+<li>Defines settings like authentication, branding, etc.</li>
+</ol>
+<p><strong>Environment Variables</strong>:
+- <strong>FB_BASEURL</strong>: <code>/</code>
+  - Base URL for the application
+  - Set to <code>/</code> means it's accessible at the root path</p>
+<ul>
+<li><strong>FB_LOG</strong>: <code>stdout</code></li>
+<li>Sends logs to standard output</li>
+<li>Makes logs visible via <code>docker logs filebrowser</code></li>
+</ul>
+<p><strong>Network</strong>: <code>kafka-net</code></p>
+<p><strong>Why it's used</strong>:
+- Browse Kafka data files and log segments without SSH/exec into containers
+- Inspect partition data and log files
+- Download logs for debugging
+- View file sizes and disk usage
+- Useful for development and troubleshooting
+- Provides a visual interface to the shared volume</p>
+<p><strong>Default Access</strong>:
+- URL: http://localhost:9999
+- Default credentials (if not configured): admin/admin
+- Change credentials in settings.json for security</p>
+<hr>
+<h2 id="quick-start-guide">Quick Start Guide</h2>
+<h3 id="step-1-start-the-cluster">Step 1: Start the Cluster</h3>
+<p>Launch the entire stack:
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>docker-compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.yml<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+<h3 id="step-2-check-service-health">Step 2: Check Service Health</h3>
+<p>Check all containers are running:
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>docker-compose<span class="w"> </span>ps
+</code></pre></div>
+<p>You should see all services in "Up" state.</p>
+<h3 id="step-3-view-logs">Step 3: View Logs</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># All services</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>docker-compose<span class="w"> </span>logs<span class="w"> </span>-f
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="c1"># Specific service</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>docker-compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>kafka1
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>docker-compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>kafka-ui
+</code></pre></div>
+<h3 id="step-4-access-web-uis">Step 4: Access Web UIs</h3>
+<ul>
+<li><strong>Kafka UI</strong>: http://localhost:8080 - Cluster management and monitoring</li>
+<li><strong>Prometheus</strong>: http://localhost:9090 - Metrics and monitoring</li>
+<li><strong>FileBrowser</strong>: http://localhost:9999 - Browse volume data and logs</li>
+<li><strong>Schema Registry</strong>: http://localhost:8081 - Schema management API</li>
+<li><strong>Kafka Connect</strong>: http://localhost:8083 - Connector management API</li>
+</ul>
+<hr>
+<h2 id="testing-the-cluster">Testing the Cluster</h2>
+<h3 id="open-the-kafka-sandbox-environment">Open the kafka sandbox environment</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>busybox<span class="w">  </span>bash
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="c1"># Sample producer directly on console to test</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>busybox<span class="w">  </span>bash<span class="w"> </span>/scripts/producer.sh
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="c1"># Sample consumer directly on console to test</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>busybox<span class="w">  </span>bash<span class="w"> </span>/scripts/consumer.sh
+</code></pre></div>
+<h3 id="create-a-topic">Create a Topic</h3>
+<p>Create a test topic with 3 partitions and replication factor of 3:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>kafka-topics<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">    </span>--create<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">    </span>--topic<span class="w"> </span>test-topic<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">    </span>--bootstrap-server<span class="w"> </span>kafka1:9092,kafka2:9092,kafka3:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">    </span>--replication-factor<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">    </span>--partitions<span class="w"> </span><span class="m">3</span>
+</code></pre></div>
+<h3 id="list-all-topics">List All Topics</h3>
+<p>View all topics in the cluster:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>kafka-topics<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">    </span>--list<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">    </span>--bootstrap-server<span class="w"> </span>kafka1:9092
+</code></pre></div>
+<h3 id="describe-a-topic">Describe a Topic</h3>
+<p>Get detailed information about a topic (partitions, replicas, leaders):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>kafka-topics<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">    </span>--describe<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">    </span>--topic<span class="w"> </span>test-topic<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">    </span>--bootstrap-server<span class="w"> </span>kafka1:9092
+</code></pre></div>
+<hr>
+<h2 id="working-with-producers-and-consumers">Working with Producers and Consumers</h2>
+<h3 id="basic-producer">Basic Producer</h3>
+<p>Produce messages to your topic using the Kafka CLI:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>kafka-console-producer<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">    </span>--broker-list<span class="w"> </span>kafka1:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">    </span>--topic<span class="w"> </span>test-topic
+</code></pre></div>
+<p>Type your messages and press <strong>Enter</strong> to send them. Press <strong>Ctrl+C</strong> to exit.</p>
+<h3 id="basic-consumer">Basic Consumer</h3>
+<p>Consume messages from the beginning of the topic:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>kafka-console-consumer<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">    </span>--bootstrap-server<span class="w"> </span>kafka1:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">    </span>--topic<span class="w"> </span>test-topic<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="w">    </span>--from-beginning
+</code></pre></div>
+<p>This will display all messages from offset 0. Press <strong>Ctrl+C</strong> to exit.</p>
+<hr>
+<h2 id="advanced-producerconsumer-scenarios">Advanced Producer/Consumer Scenarios</h2>
+<h3 id="produce-messages-with-keys">Produce Messages with Keys</h3>
+<p>Produce messages with keys for partition routing:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>kafka-console-producer<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">    </span>--broker-list<span class="w"> </span>kafka1:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span>--topic<span class="w"> </span>test-topic<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">    </span>--property<span class="w"> </span><span class="s2">"parse.key=true"</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">    </span>--property<span class="w"> </span><span class="s2">"key.separator=:"</span>
+</code></pre></div>
+<p>Type messages in the format <code>key1:value1</code>, <code>key2:value2</code>, etc.</p>
+<p><strong>Example messages:</strong>
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>user1:{"name":"Alice","age":30}
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>user2:{"name":"Bob","age":25}
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>user1:{"name":"Alice","age":31}
+</code></pre></div>
+<p>Messages with the same key will go to the same partition.</p>
+<h3 id="consumer-groups-with-load-balancing">Consumer Groups with Load Balancing</h3>
+<p>Create two consumers in the same consumer group to enable partition assignment and load balancing.</p>
+<p><strong>Consumer 1:</strong>
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>kafka-console-consumer<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="w">    </span>--bootstrap-server<span class="w"> </span>kafka1:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="w">    </span>--topic<span class="w"> </span>test-topic<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="w">    </span>--group<span class="w"> </span>my-consumer-group
+</code></pre></div>
+<p><strong>Consumer 2 (in a separate terminal):</strong>
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>kafka-console-consumer<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="w">    </span>--bootstrap-server<span class="w"> </span>kafka2:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="w">    </span>--topic<span class="w"> </span>test-topic<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="w">    </span>--group<span class="w"> </span>my-consumer-group
+</code></pre></div>
+<p><strong>How it works:</strong>
+- Both consumers share the same group ID (<code>my-consumer-group</code>)
+- Kafka automatically assigns partitions to each consumer
+- With 3 partitions and 2 consumers, one consumer gets 2 partitions, the other gets 1
+- Messages are load-balanced across consumers
+- Each message is delivered to only one consumer in the group</p>
+<hr>
+<h2 id="cluster-management-commands">Cluster Management Commands</h2>
+<h3 id="stop-the-stack">Stop the Stack</h3>
+<p>Stop all services (data persists in volumes):
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>docker-compose<span class="w"> </span>down
+</code></pre></div>
+<h3 id="stop-and-remove-all-data">Stop and Remove All Data</h3>
+<p>Stop services and delete all volumes (removes all data):
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>docker-compose<span class="w"> </span>down<span class="w"> </span>-v
+</code></pre></div>
+<p><strong>Warning</strong>: This will permanently delete all Kafka data, logs, and configurations.</p>
+<h3 id="restart-a-specific-service">Restart a Specific Service</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>docker-compose<span class="w"> </span>restart<span class="w"> </span>kafka1
+</code></pre></div>
+<h3 id="view-resource-usage">View Resource Usage</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>docker<span class="w"> </span>stats
+</code></pre></div>
+<hr>
+<h2 id="architecture-diagram">Architecture Diagram</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>┌─────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>│                         Docker Network: kafka-net                │
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>│                                                                   │
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>│  ┌──────────┐  ┌──────────┐  ┌──────────┐                       │
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>│  │  kafka1  │  │  kafka2  │  │  kafka3  │  (KRaft Cluster)      │
+<a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a>│  │  :9092   │  │  :9094   │  │  :9096   │                       │
+<a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a>│  │  :9093   │  │  :9095   │  │  :9097   │                       │
+<a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a>│  │  :9997   │  │          │  │          │                       │
+<a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a>│  └────┬─────┘  └────┬─────┘  └────┬─────┘                       │
+<a id="__codelineno-34-10" name="__codelineno-34-10" href="#__codelineno-34-10"></a>│       │             │             │                              │
+<a id="__codelineno-34-11" name="__codelineno-34-11" href="#__codelineno-34-11"></a>│       └─────────────┴─────────────┘                              │
+<a id="__codelineno-34-12" name="__codelineno-34-12" href="#__codelineno-34-12"></a>│                     │                                             │
+<a id="__codelineno-34-13" name="__codelineno-34-13" href="#__codelineno-34-13"></a>│       ┌─────────────┼─────────────────────────┐                 │
+<a id="__codelineno-34-14" name="__codelineno-34-14" href="#__codelineno-34-14"></a>│       │             │                         │                  │
+<a id="__codelineno-34-15" name="__codelineno-34-15" href="#__codelineno-34-15"></a>│  ┌────▼────┐  ┌────▼─────┐  ┌──────▼──────┐ ┌▼──────────┐      │
+<a id="__codelineno-34-16" name="__codelineno-34-16" href="#__codelineno-34-16"></a>│  │ Schema  │  │  Kafka   │  │  Kafka UI   │ │Prometheus │      │
+<a id="__codelineno-34-17" name="__codelineno-34-17" href="#__codelineno-34-17"></a>│  │Registry │  │ Connect  │  │   :8080     │ │  :9090    │      │
+<a id="__codelineno-34-18" name="__codelineno-34-18" href="#__codelineno-34-18"></a>│  │  :8081  │  │  :8083   │  │             │ │           │      │
+<a id="__codelineno-34-19" name="__codelineno-34-19" href="#__codelineno-34-19"></a>│  └─────────┘  └──────────┘  └─────────────┘ └───────────┘      │
+<a id="__codelineno-34-20" name="__codelineno-34-20" href="#__codelineno-34-20"></a>│                                                                   │
+<a id="__codelineno-34-21" name="__codelineno-34-21" href="#__codelineno-34-21"></a>│  ┌──────────────┐  ┌─────────────────┐                          │
+<a id="__codelineno-34-22" name="__codelineno-34-22" href="#__codelineno-34-22"></a>│  │ FileBrowser  │  │    busybox      │                          │
+<a id="__codelineno-34-23" name="__codelineno-34-23" href="#__codelineno-34-23"></a>│  │    :9999     │  │  (init helper)  │                          │
+<a id="__codelineno-34-24" name="__codelineno-34-24" href="#__codelineno-34-24"></a>│  └──────────────┘  └─────────────────┘                          │
+<a id="__codelineno-34-25" name="__codelineno-34-25" href="#__codelineno-34-25"></a>│                                                                   │
+<a id="__codelineno-34-26" name="__codelineno-34-26" href="#__codelineno-34-26"></a>│  Volume: kafka-cluster                                           │
+<a id="__codelineno-34-27" name="__codelineno-34-27" href="#__codelineno-34-27"></a>│  ├── kafka1/                                                     │
+<a id="__codelineno-34-28" name="__codelineno-34-28" href="#__codelineno-34-28"></a>│  │   ├── data/  (topic partitions)                              │
+<a id="__codelineno-34-29" name="__codelineno-34-29" href="#__codelineno-34-29"></a>│  │   └── logs/  (application logs)                              │
+<a id="__codelineno-34-30" name="__codelineno-34-30" href="#__codelineno-34-30"></a>│  ├── kafka2/                                                     │
+<a id="__codelineno-34-31" name="__codelineno-34-31" href="#__codelineno-34-31"></a>│  └── kafka3/                                                     │
+<a id="__codelineno-34-32" name="__codelineno-34-32" href="#__codelineno-34-32"></a>└───────────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<hr>
+<h2 id="key-features">Key Features</h2>
+<h3 id="high-availability">High Availability</h3>
+<ul>
+<li>3-node cluster with replication factor of 3</li>
+<li>Survives single broker failure</li>
+<li>Automatic leader election via KRaft</li>
+</ul>
+<h3 id="monitoring-management">Monitoring &amp; Management</h3>
+<ul>
+<li>Kafka UI for visual management</li>
+<li>Prometheus for metrics collection</li>
+<li>JMX endpoints on all brokers</li>
+<li>FileBrowser for data inspection</li>
+</ul>
+<h3 id="data-integration">Data Integration</h3>
+<ul>
+<li>Schema Registry for schema management</li>
+<li>Kafka Connect for external system integration</li>
+<li>Pre-configured connectors</li>
+</ul>
+<h3 id="development-friendly">Development-Friendly</h3>
+<ul>
+<li>Automatic topic creation</li>
+<li>Sample data loading</li>
+<li>Easy access to all services</li>
+<li>Persistent data storage</li>
+</ul>
+<hr>
+<h2 id="production-considerations">Production Considerations</h2>
+<p>For production deployments, consider these changes:</p>
+<ol>
+<li><strong>Security</strong>:</li>
+<li>Enable SSL/TLS for all listeners</li>
+<li>Configure SASL authentication</li>
+<li>Secure JMX endpoints</li>
+<li>
+<p>Use secrets management for credentials</p>
+</li>
+<li>
+<p><strong>Replication</strong>:</p>
+</li>
+<li>Keep <code>KAFKA_MIN_INSYNC_REPLICAS: 2</code></li>
+<li>Set transaction log replication to 3</li>
+<li>
+<p>Increase <code>KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS</code></p>
+</li>
+<li>
+<p><strong>Resources</strong>:</p>
+</li>
+<li>Set JVM heap sizes</li>
+<li>Configure resource limits in Docker</li>
+<li>
+<p>Allocate sufficient disk space</p>
+</li>
+<li>
+<p><strong>Networking</strong>:</p>
+</li>
+<li>Use proper DNS names</li>
+<li>Configure external listeners for client access</li>
+<li>
+<p>Set up load balancers</p>
+</li>
+<li>
+<p><strong>Monitoring</strong>:</p>
+</li>
+<li>Enable authentication on Prometheus</li>
+<li>Set up alerting rules</li>
+<li>Configure log aggregation</li>
+</ol>
+<hr>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="cluster-wont-start">Cluster won't start</h3>
+<ul>
+<li>Check that CLUSTER_ID is identical across all brokers</li>
+<li>Verify KAFKA_CONTROLLER_QUORUM_VOTERS lists all 3 nodes</li>
+<li>Check logs: <code>docker-compose logs kafka1</code></li>
+</ul>
+<h3 id="cant-connect-from-host">Can't connect from host</h3>
+<ul>
+<li>Verify port mappings are correct</li>
+<li>Check KAFKA_ADVERTISED_LISTENERS</li>
+<li>Test with: <code>telnet localhost 9092</code></li>
+</ul>
+<h3 id="topics-not-created">Topics not created</h3>
+<ul>
+<li>Check kafka-init-topics logs</li>
+<li>Verify brokers are ready before topic creation</li>
+<li>Manually create: <code>kafka-topics --create ...</code></li>
+</ul>
+<h3 id="permissions-errors">Permissions errors</h3>
+<ul>
+<li>Ensure init-kafka completed successfully</li>
+<li>Check volume permissions: <code>docker exec kafka1 ls -la /mnt/shared</code></li>
+</ul>
+<hr>
+<h2 id="conclusion">Conclusion</h2>
+<p>This Docker Compose setup provides a complete, production-like Kafka environment for development and testing. It includes all necessary components for a modern Kafka deployment with monitoring, management, and integration capabilities.</p></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 <a href="https://github.com/abhishekghoshh"  target="_blank" rel="noopener">Abhishek Ghosh</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/abhishekghoshh" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://x.com/abhishek_ghoshh" target="_blank" rel="noopener" title="x.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/abhishek-ghosh-220679132/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5m282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>

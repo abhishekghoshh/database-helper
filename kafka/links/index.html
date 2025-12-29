@@ -1,0 +1,1906 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://abhishekghoshh.github.io/database-helper/kafka/links/">
+      
+      
+        <link rel="prev" href="../introduction/">
+      
+      
+        <link rel="next" href="../../neo4j/introduction/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>links - Database Helper</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="links - Database Helper" >
+      
+        <meta  property="og:description"  content="None" >
+      
+        <meta  property="og:image"  content="https://abhishekghoshh.github.io/database-helper/assets/images/social/kafka/links.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://abhishekghoshh.github.io/database-helper/kafka/links/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="links - Database Helper" >
+      
+        <meta  name="twitter:description"  content="None" >
+      
+        <meta  name="twitter:image"  content="https://abhishekghoshh.github.io/database-helper/assets/images/social/kafka/links.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kafka-basics" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Database Helper" class="md-header__button md-logo" aria-label="Database Helper" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Database Helper
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              links
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../postgres/introduction/" class="md-tabs__link">
+          
+  
+  postgres
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../sql/introduction/" class="md-tabs__link">
+          
+  
+  sql
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../redis/introduction/" class="md-tabs__link">
+          
+  
+  redis
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../mongodb/introduction/" class="md-tabs__link">
+          
+  
+  mongodb
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../introduction/" class="md-tabs__link">
+          
+  
+  kafka
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../neo4j/introduction/" class="md-tabs__link">
+          
+  
+  neo4j
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../surrielDB/introduction.md" class="md-tabs__link">
+          
+  
+  surrielDB
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Database Helper" class="md-nav__button md-logo" aria-label="Database Helper" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Database Helper
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    postgres
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            postgres
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    sql
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            sql
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sql/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sql/leetcode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    leetcode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sql/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    mongodb
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            mongodb
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/crud/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    crud
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/data-types/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    data types
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/create/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    create
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/operators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/read/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    read
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/update/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    update
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/delete/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    delete
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    index
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/geospatial-data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    geospatial data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/aggregation-framework/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    aggregation framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/advance-commands/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    advance commands
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#youtube" class="md-nav__link">
+    <span class="md-ellipsis">
+      Youtube
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Youtube">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#playlists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Playlists
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparision
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#udemy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Udemy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#blogs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Blogs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#freecodecamp" class="md-nav__link">
+    <span class="md-ellipsis">
+      FreeCodeCamp
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#medium" class="md-nav__link">
+    <span class="md-ellipsis">
+      Medium
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Medium">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interview-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interview question
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apache-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Apache Kafka
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-consumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka consumer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-with-golang" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka with Golang
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-with-spring-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka with Spring boot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-kraft" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka Kraft
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-schema-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      kafka schema registry
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka UI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka Connect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka Streams
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-on-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka on docker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-cluster-on-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka cluster on kubernetes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-on-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka on AWS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#github-links" class="md-nav__link">
+    <span class="md-ellipsis">
+      Github links
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Github links">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kafka-ui_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka UI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    neo4j
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            neo4j
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../neo4j/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../neo4j/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    surrielDB
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            surrielDB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../surrielDB/introduction.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../surrielDB/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<div><h1 id="kafka-basics">Kafka basics</h1>
+<h2 id="youtube">Youtube</h2>
+<h3 id="introduction">Introduction</h3>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=9CrlA0Wasvk">Apache Kafka: What it is and where it's going.</a></li>
+<li><a href="https://www.youtube.com/watch?v=yKPVZgA6Oe0">What makes Kafka special? | System Design</a></li>
+<li><a href="https://www.youtube.com/watch?v=RCDnStviPVc">3 Important Use Cases Why The Industry Is Using Kafka</a></li>
+<li><a href="https://www.youtube.com/watch?v=feKBnsvO2Pk">MASTER Apache Kafka in just 8 minutes to Build Real-Time Apps</a></li>
+</ul>
+<h3 id="playlists">Playlists</h3>
+<ul>
+<li><a href="https://www.youtube.com/@ByteByteGo/playlists">ByteByteGo</a></li>
+<li><a href="https://www.youtube.com/watch?v=-RDyEFvnTXI">Apache Kafka Fundamentals You Should Know</a></li>
+<li><a href="https://www.youtube.com/watch?v=HZklgPkboro">System Design: Apache Kafka In 3 Minutes</a></li>
+<li><a href="https://www.youtube.com/watch?v=UNUz1-msbOM">System Design: Why is Kafka fast?</a></li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=Ajz6dBp_EB4">Top Kafka Use Cases You Should Know</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/@piyushgargdev/videos">Piyush Garg</a></p>
+</li>
+<li><a href="https://www.youtube.com/watch?v=pl3sJ-RoD3Q">Why do we need Kafka?</a></li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=ZJJHm_bd9Zo">Apache Kafka Crash Course | What is Kafka? | Piyush Garg</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/playlist?list=PLVz2XdJiJQxwpWGoNokohsSW2CysI6lDc">Kafka for beginners | Java Techie</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/@DataCouch/videos">DataCouch</a></p>
+</li>
+<li><a href="https://www.youtube.com/watch?v=-19l6PisNGc">Kafka Architecture in Depth | Apache Kafka Architecture | Understanding Kafka Architecture | DataCouch</a></li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=i6aVAqaVcmU">Exploring Kafka Internals | Kafka | DataCouch</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/playlist?list=PLiMWaCMwGJXlL8-E-xu8RBwyC5YfS3V5e">Apache Kafka Tutorials by Anton Putra</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/@Confluent/playlists">Confluent</a></p>
+</li>
+<li><a href="https://www.youtube.com/playlist?list=PLa7VYi0yPIH0QypJnW0OXOnbLvzJRP34C">Data Architecture Basics with Adam Bellemare</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLa7VYi0yPIH1TXGUoSUqXgPMD2SQXEXxj">Event Sourcing and Event Storage with Apache Kafka® | Event Sourcing 101</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLa7VYi0yPIH2PelhRHoFR5iQgflg-y6JA">Course | Apache Kafka Fundamentals</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLf38f5LhQtheK16nwnCYFqH23WUUvZfSb">Apache Kafka 101: Confluent's Flagship Course on Apache Kafka® Fundamentals ft. Tim Berglund</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLa7VYi0yPIH0IpUKXb3q7NSjpJGO9GGGZ">Designing Event-Driven Microservices</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLa7VYi0yPIH14oEOfwbcE9_gM5lOZ4ICN">Apache Kafka® Architecture | Kafka's Internal Components and How They Work</a></li>
+<li>
+<p><a href="https://www.youtube.com/playlist?list=PLa7VYi0yPIH1KE10jwqmFEM61krd9WXQV">Schema Registry 101 | Introduction to Schema Registry in Apache Kafka and How it Works</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/playlist?list=PLa7VYi0yPIH0n0qDF9mMiSbO1uORhAnSY">Event-Driven Microservices in Banking: Best practices for building reliable distributed systems and optimizing customer satisfaction</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/playlist?list=PLa7VYi0yPIH1Su3nVNuRePh2Gdw6_UujU">Spring Framework and Apache Kafka® Tutorials | Spring for Apache Kafka 101</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/playlist?list=PLa7VYi0yPIH145SVtPoh3Efv8xZ1ehUYy">Designing Events and Event Streams | Apache Kafka® Event Streaming</a></p>
+</li>
+<li><a href="https://www.youtube.com/playlist?list=PLa7VYi0yPIH35IrbJ7Y0U2YLrR9u4QO-s">Kafka Streams Tutorials | Kafka Streams 101 (2023)</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLa7VYi0yPIH0uIC2F0M1_FsVUsx8j3ekm">Kafka Connect Tutorials | Kafka Connect 101 (2023)</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLa7VYi0yPIH0L8ahQYbyBFkGc6a949-Lj">Data Mesh and Data Domains Tutorials | Data Mesh 101</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLa7VYi0yPIH1MculjFWJxs-aENPxRHHOS">Building Data Pipelines with Apache Kafka® and Confluent | Data Pipelines Tutorials</a></li>
+<li>
+<p><a href="https://www.youtube.com/playlist?list=PLa7VYi0yPIH3ulxsOf5g43_QiB-HOg5_Y">ksqlDB and Stream Processing Tutorials | ksqlDB 101</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/playlist?list=PLa7VYi0yPIH1UdmQcnUr8lvjbUV8JriK0">Apache Flink 101</a></p>
+</li>
+<li><a href="https://www.youtube.com/playlist?list=PLa7VYi0yPIH2GTo3vRtX8w9tgNTTyYSux">Getting Started with Apache Flink®</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLa7VYi0yPIH0QEIcyvZE5p4zMR0ln4aAe">Building Apache Flink Applications in Java</a></li>
+</ul>
+<h3 id="comparision">Comparision</h3>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=7gMm0iQNZGA">Apache Kafka vs message queue explained</a></li>
+<li><a href="https://www.youtube.com/watch?v=7PjPhgCoT9c">What's Stream Processing + When Do We Use It? | Systems Design Interview 0 to 1 with Ex-Google SWE</a></li>
+<li><a href="https://www.youtube.com/watch?v=PVoc5tRr6to">What is Apache Flink®?</a></li>
+<li><a href="https://www.youtube.com/watch?v=gAIOZiJVECg">Apache Kafka Vs. Apache Flink</a></li>
+<li><a href="https://www.youtube.com/watch?v=fYO5-6Owt0w">Apache Flink - A Must-Have For Your Streams | Systems Design Interview 0 to 1 With Ex-Google SWE</a></li>
+<li><a href="https://www.youtube.com/watch?v=DZwnP_qwAlA">Flink - <em>Exactly</em> Once Processing? | Distributed Systems Deep Dives With Ex-Google SWE</a></li>
+<li><a href="https://www.youtube.com/watch?v=tHXWAkJeWmA">Is Kafka OUTDATED? Could RedPanda Be the Future of Event Streaming?</a></li>
+<li><a href="https://jack-vanlightly.com/blog/2023/5/15/kafka-vs-redpanda-performance-do-the-claims-add-up">Kafka vs Redpanda Performance - Do the claims add up?</a></li>
+</ul>
+<h2 id="udemy">Udemy</h2>
+<ul>
+<li><a href="https://www.udemy.com/course/apache-kafka-for-beginners/">Apache Kafka for absolute beginners</a></li>
+<li><a href="https://www.udemy.com/course/java-microservices-cqrs-event-sourcing-with-kafka/">Java Microservices: CQRS &amp; Event Sourcing with Kafka</a></li>
+<li><a href="https://www.udemy.com/course/apache-kafka/">Apache Kafka Series - Learn Apache Kafka for Beginners v3</a></li>
+</ul>
+<h2 id="blogs">Blogs</h2>
+<ul>
+<li><a href="https://www.geeksforgeeks.org/apache-kafka/apache-kafka-vs-confluent-kafka/">Apache Kafka vs Confluent Kafka</a></li>
+</ul>
+<h2 id="freecodecamp">FreeCodeCamp</h2>
+<ul>
+<li><a href="https://www.freecodecamp.org/news/build-a-real-time-notification-system-with-go-and-kafka/#heading-how-to-set-up-the-project-workspace">How to Build a Real-Time Notification System with Go and Kafka</a></li>
+</ul>
+<h2 id="medium">Medium</h2>
+<h3 id="interview-question">Interview question</h3>
+<ul>
+<li><a href="https://codefarm0.medium.com/comprehensive-list-of-kafka-interview-questions-200-c7a484d43a3f">Comprehensive List of Kafka Interview Questions(200+)</a></li>
+<li><a href="https://ramakrishna-01.medium.com/mastering-apache-kafka-top-15-key-interview-questions-answers-and-practical-examples-980f3864f7c5">Mastering Apache Kafka: Top 15 Key Interview Questions, Answers, and Practical Examples</a></li>
+<li><a href="https://ramakrishna-01.medium.com/top-kafka-interview-questions-for-experienced-professionals-in-2025-to-2026-part-1-a92f53b30fe5">Top Kafka Interview Questions for Experienced Professionals in 2025 to 2026| Part 1</a></li>
+<li><a href="https://ramakrishna-01.medium.com/from-scratch-kafka-producer-and-consumer-example-with-spring-boot-part-2-c16b86cb869f">From Scratch: Kafka Producer and Consumer Example with Spring Boot| Part 2</a></li>
+<li><a href="https://ramakrishna-01.medium.com/in-depth-explanation-apache-kafka-key-terminologies-and-architecture-internal-working-features-4963f1616557">In Depth Explanation : Apache Kafka Key Terminologies and Architecture Internal Working | Features | Part 3</a></li>
+<li><a href="https://ramakrishna-01.medium.com/interview-prep-kafka-vs-activemq-vs-rabbitmq-features-use-cases-q-a-part-4-460d24a59509">Interview Prep: Kafka vs ActiveMQ vs RabbitMQ — Features, Use Cases &amp; Q&amp;A| Part 4</a></li>
+<li><a href="https://towardsdev.com/kafka-scenario-based-interview-questions-10-real-world-challenges-you-must-be-ready-for-69165a775fb9">Kafka Scenario-Based Interview Questions: 10 Real-World Challenges You Must Be Ready For</a></li>
+</ul>
+<h3 id="apache-kafka">Apache Kafka</h3>
+<ul>
+<li><a href="https://medium.com/@tanmoysantra67/apache-kafka-the-complete-guide-to-distributed-event-streaming-d6ce9df28647">Apache Kafka: The Complete Guide to Distributed Event Streaming</a></li>
+<li><a href="https://codingplainenglish.medium.com/kafka-is-hard-because-you-keep-ignoring-these-patterns-588b2ebac3c0">Kafka Is Hard Because You Keep Ignoring These Patterns</a></li>
+<li><a href="https://medium.com/@neerupujari5/the-kafka-rebalancing-issue-that-taught-me-everything-about-distributed-systems-a7d5cf80a2c4">The Kafka Rebalancing Issue That Taught Me Everything About Distributed Systems</a></li>
+<li><a href="https://medium.com/codetodeploy/apache-kafka-the-beating-heart-of-real-time-systems-with-uber-netflix-examples-214438936466">Apache Kafka: The Beating Heart of Real-Time Systems (with Uber &amp; Netflix Examples)</a></li>
+<li><a href="https://medium.com/@bhaumikmaan/list/kafka-549d42bfaa31">Kafka</a></li>
+<li><a href="https://aws.plainenglish.io/managing-kafka-consumer-lag-and-offsets-925e9bb1f6a1">Managing Kafka Consumer Lag and Offsets</a></li>
+<li>
+<p><a href="https://medium.com/@raviatadobe/extending-kafkas-exactly-once-semantics-to-external-systems-c395267935bd">Extending Kafka's Exactly-Once Semantics to External Systems</a></p>
+</li>
+<li>
+<p><a href="https://codefarm0.medium.com/building-the-foundation-initial-project-setup-for-our-kafka-event-pipeline-day-1-bff67b2b17d1">Building the Foundation — Initial Project Setup for Our Kafka Event Pipeline — Day 1</a></p>
+</li>
+</ul>
+<h3 id="kafka-consumer">Kafka consumer</h3>
+<ul>
+<li><a href="https://medium.com/@anil.goyal0057/kafka-consumers-full-deep-dive-basic-advanced-606908f60d2f">Kafka Consumers — Full Deep Dive (basic → advanced)</a></li>
+</ul>
+<h3 id="kafka-with-golang">Kafka with Golang</h3>
+<ul>
+<li><a href="https://medium.com/@harshithgowdakt/kafka-with-confluent-kafka-go-a-go-developers-playbook-30f4993f5248">Kafka with confluent-kafka-go: A Go Developer's Playbook</a></li>
+<li><a href="https://medium.com/@wahyubagus1910/kafka-producers-and-consumers-with-golang-863d920c723c">Kafka Producers and Consumers With Golang</a></li>
+<li><a href="https://medium.com/@bhaumikmaan/go-kafka-from-theory-to-practice-96e0757e02ca">Go &amp; Kafka: From Theory to Practice</a></li>
+<li><a href="https://medium.com/@jamil.ahmad7720/kafka-integration-in-go-using-sarama-producer-and-consumer-setup-3237a7fbc0fd">Kafka Integration in Go Using Sarama: Producer and Consumer Setup</a></li>
+<li><a href="https://medium.com/safe-engineering/delaying-and-aggregating-kafka-messages-with-goroutines-and-caching-1b6f73019172">Delaying and Aggregating Kafka Messages with Goroutines and Caching</a></li>
+</ul>
+<h3 id="kafka-with-spring-boot">Kafka with Spring boot</h3>
+<ul>
+<li><a href="https://medium.com/@vamcrulz09/kafka-consumer-strategies-spring-boot-kafka-listener-vs-kafka-streams-topology-67880d281868">Kafka Consumer Strategies: Spring Boot Kafka Listener vs. Kafka Streams Topology</a></li>
+<li><a href="https://medium.com/@princekumar161999/scaling-spring-boot-microservices-with-kafka-a-banking-case-study-2f0a6d6d1089">Scaling Spring Boot Microservices with Kafka: A Banking Case Study</a></li>
+<li><a href="https://codefarm0.medium.com/how-i-implemented-kafka-delayed-retries-and-silenced-our-new-relic-alerts-once-and-for-all-fe9cd88fb6c9">How I Implemented Kafka Delayed Retries — and Silenced Our New Relic Alerts Once and for All</a></li>
+<li><a href="https://blog.stackademic.com/kafka-error-handling-with-spring-boot-a-complete-guide-to-robust-message-processing-a8d45c507716">Kafka Error Handling with Spring Boot: A Complete Guide to Robust Message Processing</a></li>
+<li>
+<p><a href="https://medium.com/@moshdev2213/kafka-retry-dlt-in-spring-boot-a-practical-guide-4b2b5e931710">Kafka Retry &amp; DLT in Spring Boot: A Practical Guide</a></p>
+</li>
+<li>
+<p><a href="https://medium.com/@nuno.mt.sousa/kafka-schema-registry-junit-and-test-containers-part-i-082d0abfc804">Kafka, Schema Registry, JUnit and Test Containers — Part I</a></p>
+</li>
+<li><a href="https://medium.com/@nuno.mt.sousa/part-ii-creating-a-kafka-cluster-test-extension-569ed750d137">Kafka, Schema Registry, JUnit and Test Containers — Part II: Creating a Kafka Cluster Test Extension</a></li>
+<li><a href="https://medium.com/@nuno.mt.sousa/part-iii-reducing-test-time-by-removing-all-topics-between-tests-ec9c829f3e9b">Kafka, Schema Registry, JUnit and Test Containers — Part III: Reducing test time by removing all topics between tests</a></li>
+</ul>
+<h3 id="kafka-kraft">Kafka Kraft</h3>
+<ul>
+<li><a href="https://medium.com/@katyagorshkova/understanding-kafka-kraft-how-controllers-and-brokers-talk-in-the-zookeeper-less-world-a5e05a063f34">Understanding Kafka KRaft: How Controllers and Brokers Talk in the Zookeeper-less World</a></li>
+<li><a href="https://medium.com/@katyagorshkova/docker-compose-for-running-kafka-in-kraft-mode-20c535c48b1a">Docker Compose for Running Kafka in Kraft Mode</a><ul>
+<li><a href="https://github.com/katyagorshkova/kafka-kraft">katyagorshkova/kafka-kraft</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="kafka-schema-registry">kafka schema registry</h3>
+<ul>
+<li><a href="https://medium.com/slalom-blog/introduction-to-schema-registry-in-kafka-915ccf06b902">Introduction to Schema Registry in Kafka</a></li>
+<li><a href="https://medium.com/@cobch7/schema-registry-for-kafka-002efc74eb7a">Schema Registry for Kafka</a></li>
+<li><a href="https://medium.com/cloudnativepub/handling-schema-evolution-in-kafka-connect-patterns-pitfalls-and-practices-391795d7d8b0">Handling Schema Evolution in Kafka Connect: Patterns, Pitfalls, and Practices</a></li>
+<li><a href="https://medium.com/@27.rahul.k/schema-registry-demystified-why-it-matters-and-how-to-use-avro-with-spring-boot-kafka-4a432f52e42d">Schema Registry Demystified: Why It Matters and How to Use Avro with Spring Boot + Kafka</a></li>
+<li><a href="https://medium.com/@alxkm/kafka-schema-registry-in-distributed-systems-8a99bad321b1">Kafka Schema Registry in Distributed Systems</a></li>
+<li><a href="https://medium.com/google-cloud/the-schema-registry-api-is-not-how-you-use-schema-with-kafka-3adb92f09764">The Schema Registry API is not how you use schema with Kafka!</a></li>
+<li><a href="https://medium.com/@dpati/schema-registry-and-confluent-kafka-90b3fe7eca4e">Schema Registry and Confluent Kafka</a></li>
+<li><a href="https://medium.com/@sharatnaik1996/a-guide-to-kafka-schema-registry-building-with-gradle-and-avro-13504209d602">A Guide to Kafka Schema Registry: Building with Gradle and Avro</a></li>
+</ul>
+<h3 id="kafka-ui">Kafka UI</h3>
+<ul>
+<li><a href="https://medium.com/@vortj/ui-for-apache-kafka-clean-modern-and-easy-to-use-20041ecb5578">Tool ⚙️: UI for Apache Kafka — Clean, Modern, and Easy to Use</a></li>
+<li>you should switch to Kafbat UI, basically a fork of Kafka UI after it was deprecated:</li>
+<li><a href="https://github.com/provectus/kafka-ui">provectus/kafka-ui</a></li>
+<li><a href="https://github.com/kafbat/kafka-ui">kafbat/kafka-ui</a></li>
+</ul>
+<h3 id="kafka-connect">Kafka Connect</h3>
+<ul>
+<li><a href="https://medium.com/@erickzanetti/kafka-connect-understanding-workers-and-converters-538abced86c8">Kafka Connect: Understanding Workers and Converters</a></li>
+</ul>
+<h3 id="kafka-streams">Kafka Streams</h3>
+<ul>
+<li><a href="https://medium.com/@zdb.dashti/developer-guide-to-achieve-transactional-processing-in-kafka-streams-3178e642a570">Developer Guide to Achieve Transactional Processing in Kafka Streams</a></li>
+</ul>
+<h3 id="kafka-on-docker">Kafka on docker</h3>
+<ul>
+<li><a href="https://medium.com/@darshak.kachchhi/setting-up-a-kafka-cluster-using-docker-compose-a-step-by-step-guide-a1ee5972b122">Setting Up a Kafka Cluster Using Docker Compose(Kraft Mode): A Step-by-Step Guide</a></li>
+<li><a href="https://medium.com/@akmuthumala/introduction-to-apache-kafka-a-hands-on-guide-with-docker-bc65ae1009e5">Introduction to Apache Kafka: A Hands-On Guide with Docker</a></li>
+<li><a href="https://medium.com/@sanjeets1900/running-kafka-in-a-docker-container-with-kafkaui-and-minio-f26ce7264158">Running Kafka in a Docker Container,with KafkaUI and Minio</a></li>
+<li><a href="https://github.com/experientlabs-data-engg/streaming-data-dp-201">experientlabs-data-engg/streaming-data-dp-201</a></li>
+<li><a href="https://jskim1991.medium.com/docker-docker-compose-example-for-kafka-zookeeper-and-schema-registry-c516422532e7">Docker Compose example for Kafka, Zookeeper, and Schema Registry</a></li>
+</ul>
+<h3 id="kafka-cluster-on-kubernetes">Kafka cluster on kubernetes</h3>
+<ul>
+<li><a href="https://medium.com/@soumeng.kol/deploying-apache-kafka-on-kubernetes-with-kraft-mode-a-complete-guide-2edef6d9fe91">Deploying Apache Kafka on Kubernetes with KRaft Mode: A Complete Guide</a></li>
+<li><a href="https://medium.com/@jaydeepawar4912/kafka-cluster-deployment-on-kubernetes-8d12f102e16a">Kafka Cluster Deployment on Kubernetes</a></li>
+<li><a href="https://medium.com/@soumeng.kol/simplifying-streaming-architectures-apache-kafka-kraft-kafka-connect-and-mysql-on-kubernetes-5a39c9652aee">Simplifying Streaming Architectures: Apache Kafka, KRaft, Kafka Connect and MySQL on Kubernetes</a></li>
+<li><a href="https://github.com/soumeng03/kafka-kraft-mysql-connect">soumeng03/kafka-kraft-mysql-connect</a></li>
+<li><a href="https://ambidextrous-dev.medium.com/kafka-on-kubernetes-ac245694f853">Kafka on Kubernetes</a></li>
+</ul>
+<h3 id="kafka-on-aws">Kafka on AWS</h3>
+<ul>
+<li><a href="https://medium.com/@nirnayj/self-managed-kafka-cluster-on-aws-ec2-with-zookeeper-and-multi-broker-setup-ab7346d7e91f">Self-Managed Kafka Cluster on AWS EC2 with Zookeeper and Multi-Broker Setup</a></li>
+</ul>
+<h2 id="github-links">Github links</h2>
+<h3 id="kafka-ui_1">Kafka UI</h3>
+<ul>
+<li><a href="https://ui.docs.kafbat.io/">About Kafbat UI (UI for Apache Kafka)</a></li>
+<li><a href="https://github.com/kafbat/kafka-ui/blob/main/documentation/compose/DOCKER_COMPOSE.md">kafbat/kafka-ui/blob/main/documentation/compose/DOCKER_COMPOSE.md</a></li>
+<li><a href="https://github.com/kafbat/kafka-ui/blob/main/documentation/compose/kafbat-ui.yaml">kafbat/kafka-ui/blob/main/documentation/compose/kafbat-ui.yaml</a></li>
+</ul></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 <a href="https://github.com/abhishekghoshh"  target="_blank" rel="noopener">Abhishek Ghosh</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/abhishekghoshh" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://x.com/abhishek_ghoshh" target="_blank" rel="noopener" title="x.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/abhishek-ghosh-220679132/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5m282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -3,10 +3,10 @@ version: '3'
 services:
   database-helper:
     container_name: database-helper
-    image: abhishek1009/database-helper:latest
+    image: abhishek1009/database-helper:slim
     build:
       context: .  # Set the build context to the docs directory
-      dockerfile: Dockerfile.docs  # Specify the Dockerfile to use
+      dockerfile: Dockerfile.docs.slim  # Specify the Dockerfile to use
     ports:
       - "8000:8000"
     # volume mount so that it will get the local changes automatically

@@ -17,15 +17,17 @@
 
 ### Introduction
 
-- [7 Database Paradigms](https://www.youtube.com/watch?v=W2Z7fbCLSTw)
-- [How To Choose The Right Database?](https://www.youtube.com/watch?v=kkeFE6iRfMM)
-- [Database Design Tips | Choosing the Best Database in a System Design Interview](https://www.youtube.com/watch?v=cODCpXtPHbQ)
 - [15 futuristic databases you've never heard of](https://www.youtube.com/watch?v=jb2AvF8XzII)
 - [What is Database Sharding?](https://www.youtube.com/watch?v=hdxdhCpgYo8)
 - [When should you shard your database?](https://www.youtube.com/watch?v=iHNovZUZM3A)
 - [Which Database Model to Choose?](https://www.youtube.com/watch?v=9mdadNspP_M)
 - [Secret To Optimizing SQL Queries - Understand The SQL Execution Order](https://www.youtube.com/watch?v=BHwzDmr6d7s)
 - [The fascinating history of Databases](https://www.youtube.com/watch?v=6szdySvorzA)
+
+
+### Databases
+
+- [Database Engineering](https://www.youtube.com/playlist?list=PLsdq-3Z1EPT2C-Da7Jscr7NptGcIZgQ2l)
 
 
 ### Comparisions
@@ -128,6 +130,7 @@
 - [Understanding Database Partitioning in Distributed Systems : Rebalancing Partitions](https://medium.com/the-developers-diary/understanding-database-partitioning-in-distributed-systems-rebalancing-partitions-fa7fee542fd3)
 - [Introduction To Database Indexing](https://medium.com/@rtawadrous/introduction-to-database-indexes-9b488e243cc1)
 - [Design Metrics Aggregation System | LSM Tree | Storage Engine](https://medium.com/@eugene-s/design-metrics-aggregation-system-lsm-tree-storage-engine-d52a6d10ac21)
+- [The only local MongoDB replica set with Docker Compose guide you'll ever need!](https://medium.com/workleap/the-only-local-mongodb-replica-set-with-docker-compose-guide-youll-ever-need-2f0b74dd8384)
 
 
 ### SQL

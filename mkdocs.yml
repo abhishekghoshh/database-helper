@@ -2,7 +2,12 @@ site_name: Database Helper
 site_url: https://abhishekghoshh.github.io/database-helper
 
 nav:
-  - Home: index.md
+  - Home: 
+    - Introduction: index.md
+    - Choosing the right database: database/choosing-the-right-database.md
+    - Database Index: database/indexing.md
+    - LSM Tree: database/lsm-tree.md
+    - Bloom Filters: database/bloom-filters.md
   - postgres:
     - introduction: postgres/introduction.md  
     - links: postgres/links.md

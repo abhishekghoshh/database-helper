@@ -1,6 +1,41 @@
 # Kafka basics
 
 
+## Documentation
+
+- [Go Client for Apache Kafka](https://docs.confluent.io/kafka-clients/go/2.13/overview.html)
+- [Getting Started with Apache Kafka and Go](https://developer.confluent.io/get-started/go/)
+- [Integrate Schemas from Kafka Connect in Confluent Platform](https://docs.confluent.io/platform/current/schema-registry/connect.html)
+
+
+## Github
+
+- [segmentio/kafka-go](https://github.com/segmentio/kafka-go)
+- [confluentinc/confluent-kafka-go](https://github.com/confluentinc/confluent-kafka-go)
+- [soumeng03/kafka-kraft-mysql-connect](https://github.com/soumeng03/kafka-kraft-mysql-connect)
+
+
+## Blogs 
+
+- [Apache Kafka vs Confluent Kafka](https://www.geeksforgeeks.org/apache-kafka/apache-kafka-vs-confluent-kafka/)
+- [Apache Kafka - KRaft Mode: Setup](https://dev.to/deeshath/apache-kafka-kraft-mode-setup-5nj)
+
+
+## FreeCodeCamp
+
+- [How to Build a Real-Time Notification System with Go and Kafka](https://www.freecodecamp.org/news/build-a-real-time-notification-system-with-go-and-kafka/#heading-how-to-set-up-the-project-workspace)
+
+
+
+## Udemy
+
+- [Apache Kafka for absolute beginners](https://www.udemy.com/course/apache-kafka-for-beginners/)
+- [Java Microservices: CQRS & Event Sourcing with Kafka](https://www.udemy.com/course/java-microservices-cqrs-event-sourcing-with-kafka/)
+- [Apache Kafka Series - Learn Apache Kafka for Beginners v3](https://www.udemy.com/course/apache-kafka/)
+
+
+
+
 ## Youtube
 
 ### Introduction
@@ -56,6 +91,16 @@
   - [Building Apache Flink Applications in Java](https://www.youtube.com/playlist?list=PLa7VYi0yPIH0QEIcyvZE5p4zMR0ln4aAe)
 
 
+### Kafka with Spring boot
+
+- [Master Apache Kafka in One Shot: LLD + HLD Setup + Partitioning + Pub/Sub](https://www.youtube.com/watch?v=jdjp9elUEqA)
+- [Apache KAFKA Tutorial | KAFKA Crash Course | Spring Boot](https://www.youtube.com/watch?v=tU_37niRh4U)
+- [Master Kafka in Single Video | Apache Kafka Crash Course | Kafka in Hindi](https://www.youtube.com/watch?v=ei6fK9StzMM)
+- [Spring Boot + Kafka Course | Learn Apache Kafka in One Shot!](https://www.youtube.com/watch?v=gpx7smdUkgU)
+- [Apache Kafka Course For Beginners with Spring Boot Project, Spring Cloud Streams | Asynchronous Comm](https://www.youtube.com/watch?v=NWLwGtkBrkQ)
+
+
+
 ### Comparision
 
 - [Apache Kafka vs message queue explained](https://www.youtube.com/watch?v=7gMm0iQNZGA)
@@ -66,29 +111,6 @@
 - [Flink - *Exactly* Once Processing? | Distributed Systems Deep Dives With Ex-Google SWE](https://www.youtube.com/watch?v=DZwnP_qwAlA)
 - [Is Kafka OUTDATED? Could RedPanda Be the Future of Event Streaming?](https://www.youtube.com/watch?v=tHXWAkJeWmA)
   - [Kafka vs Redpanda Performance - Do the claims add up?](https://jack-vanlightly.com/blog/2023/5/15/kafka-vs-redpanda-performance-do-the-claims-add-up)
-
-
-
-
-## Udemy
-
-- [Apache Kafka for absolute beginners](https://www.udemy.com/course/apache-kafka-for-beginners/)
-- [Java Microservices: CQRS & Event Sourcing with Kafka](https://www.udemy.com/course/java-microservices-cqrs-event-sourcing-with-kafka/)
-- [Apache Kafka Series - Learn Apache Kafka for Beginners v3](https://www.udemy.com/course/apache-kafka/)
-
-
-
-
-
-
-## Blogs 
-
-- [Apache Kafka vs Confluent Kafka](https://www.geeksforgeeks.org/apache-kafka/apache-kafka-vs-confluent-kafka/)
-
-
-## FreeCodeCamp
-
-- [How to Build a Real-Time Notification System with Go and Kafka](https://www.freecodecamp.org/news/build-a-real-time-notification-system-with-go-and-kafka/#heading-how-to-set-up-the-project-workspace)
 
 
 

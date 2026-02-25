@@ -43,7 +43,8 @@
 
 ### Database
 
-
+- [Database](https://www.youtube.com/playlist?list=PLCRMIe5FDPsdnSszazqVIQFh99t1ExH19)
+- [Database Design](https://www.youtube.com/playlist?list=PLZDOU071E4v6epq3GS0IqZicZc3xwwBN_)
 - [Complete DBMS Course](https://www.youtube.com/playlist?list=PLrL_PSQ6q062cD0vPMGYW_AIpNg6T0_Fq)
 - [SQL Course](https://www.youtube.com/playlist?list=PLrL_PSQ6q062H5CetdplYW7xQKeq8XaR0)
 - [Databases in Depth](https://www.youtube.com/playlist?list=PLliXPok7ZonnALnedG5doBOSCXlU14yJF)

@@ -8,6 +8,7 @@
 
 #### Introduction
 
+- [What Is Redis Really About? Why Is It So Popular?](https://www.youtube.com/watch?v=z_NbVtbgBJw)
 - [System Design: Why is single-threaded Redis so fast?](https://www.youtube.com/watch?v=5TRFpFBccQM)
 - [Top 5 Redis Use Cases](https://www.youtube.com/watch?v=a4yX7RUgTxI)
 - [Can Redis be used as a Primary database?](https://www.youtube.com/watch?v=VLTPqImLapM)

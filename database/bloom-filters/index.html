@@ -1,0 +1,3264 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://abhishekghoshh.github.io/database-helper/database/bloom-filters/">
+      
+      
+        <link rel="prev" href="../lsm-tree/">
+      
+      
+        <link rel="next" href="../../postgres/introduction/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>Bloom Filters - Database Helper</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Bloom Filters - Database Helper" >
+      
+        <meta  property="og:description"  content="None" >
+      
+        <meta  property="og:image"  content="https://abhishekghoshh.github.io/database-helper/assets/images/social/database/bloom-filters.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://abhishekghoshh.github.io/database-helper/database/bloom-filters/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Bloom Filters - Database Helper" >
+      
+        <meta  name="twitter:description"  content="None" >
+      
+        <meta  name="twitter:image"  content="https://abhishekghoshh.github.io/database-helper/assets/images/social/database/bloom-filters.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#bloom-filters" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Database Helper" class="md-header__button md-logo" aria-label="Database Helper" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Database Helper
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Bloom Filters
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../postgres/introduction/" class="md-tabs__link">
+          
+  
+  postgres
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../sql/introduction/" class="md-tabs__link">
+          
+  
+  sql
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../redis/introduction/" class="md-tabs__link">
+          
+  
+  redis
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../mongodb/introduction/" class="md-tabs__link">
+          
+  
+  mongodb
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../kafka/introduction/" class="md-tabs__link">
+          
+  
+  kafka
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../neo4j/introduction/" class="md-tabs__link">
+          
+  
+  neo4j
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../surrielDB/introduction.md" class="md-tabs__link">
+          
+  
+  surrielDB
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Database Helper" class="md-nav__button md-logo" aria-label="Database Helper" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Database Helper
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Home
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../choosing-the-right-database/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Choosing the right database
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../indexing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database Index
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lsm-tree/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LSM Tree
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Bloom Filters
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Bloom Filters
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#youtube" class="md-nav__link">
+    <span class="md-ellipsis">
+      Youtube
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#theory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Theory
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Theory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-membership-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Membership Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Properties
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-bloom-filters-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Bloom Filters Work
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How Bloom Filters Work">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-an-element" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding an Element
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#querying-for-an-element" class="md-nav__link">
+    <span class="md-ellipsis">
+      Querying for an Element
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-false-positives-occur" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why False Positives Occur
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-and-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture and Components
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture and Components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#complete-system-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete System Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hash-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hash Functions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mathematical-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Analysis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mathematical Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#false-positive-probability" class="md-nav__link">
+    <span class="md-ellipsis">
+      False Positive Probability
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimal-number-of-hash-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optimal Number of Hash Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sizing-a-bloom-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sizing a Bloom Filter
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-implementation-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Implementation (Python)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-go" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation (Go)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation (Java)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bloom-filter-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bloom Filter Variants
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bloom Filter Variants">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-counting-bloom-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Counting Bloom Filter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-scalable-bloom-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Scalable Bloom Filter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cuckoo-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Cuckoo Filter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-partitioned-bloom-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Partitioned Bloom Filter
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-world-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Use Cases
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Real-World Use Cases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-web-browsers-safe-browsing" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Web Browsers - Safe Browsing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-databases-avoiding-disk-reads" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Databases - Avoiding Disk Reads
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cdn-cache-lookup-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. CDN - Cache Lookup Optimization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-distributed-systems-network-partition-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Distributed Systems - Network Partition Detection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-spell-checkers" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Spell Checkers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-usernameemail-availability-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Username/Email Availability Check
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-duplicate-detection-in-stream-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Duplicate Detection in Stream Processing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantages
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advantages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-exceptional-space-efficiency" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Exceptional Space Efficiency
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-constant-time-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Constant-Time Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-no-false-negatives" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. No False Negatives
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-simple-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Simple Implementation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-parallelizable" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Parallelizable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-cache-friendly" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Cache-Friendly
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disadvantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disadvantages
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Disadvantages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-false-positives" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. False Positives
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-no-deletion-support-standard-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. No Deletion Support (Standard Filter)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cannot-retrieve-elements" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Cannot Retrieve Elements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-filter-saturation" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Filter Saturation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-cannot-count-occurrences" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Cannot Count Occurrences
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-hash-function-dependency" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Hash Function Dependency
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Comparison
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Comparison">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bloom-filter-vs-other-data-structures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bloom Filter vs Other Data Structures
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-bloom-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use Bloom Filters
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    postgres
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            postgres
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    sql
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            sql
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sql/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sql/leetcode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    leetcode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sql/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    mongodb
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            mongodb
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/crud/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    crud
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/data-types/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    data types
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/create/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    create
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/operators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/read/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    read
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/update/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    update
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/delete/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    delete
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    index
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/geospatial-data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    geospatial data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/aggregation-framework/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    aggregation framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/advance-commands/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    advance commands
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    neo4j
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            neo4j
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../neo4j/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../neo4j/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    surrielDB
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            surrielDB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../surrielDB/introduction.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../surrielDB/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<div><h1 id="bloom-filters">Bloom Filters</h1>
+<h2 id="introduction">Introduction</h2>
+<p>A Bloom filter is a space-efficient probabilistic data structure invented by Burton Howard Bloom in 1970. It is used to test whether an element is a member of a set. The key insight is that Bloom filters can definitively tell you when an element is <strong>NOT</strong> in a set, but can only tell you that an element <strong>MIGHT BE</strong> in a set (with some probability of false positives).</p>
+<p>This trade-off of allowing false positives in exchange for dramatically reduced space requirements makes Bloom filters invaluable in systems where memory is precious and occasional false positives are acceptable.</p>
+<hr>
+<h2 id="youtube">Youtube</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=vz0QUa4CS3o">What are Bloom Filters? | System Design</a></li>
+</ul>
+<hr>
+<h2 id="theory">Theory</h2>
+<h3 id="the-membership-problem">The Membership Problem</h3>
+<p>The fundamental problem Bloom filters solve is <strong>set membership testing</strong>: given a set S and an element x, determine whether x ∈ S.</p>
+<p>Traditional approaches have trade-offs:</p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Space Complexity</th>
+<th>Lookup Time</th>
+<th>False Positives</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Array/List</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Sorted Array</td>
+<td>O(n)</td>
+<td>O(log n)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Hash Table</td>
+<td>O(n)</td>
+<td>O(1) average</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Bloom Filter</td>
+<td>O(1) fixed</td>
+<td>O(k) where k = hash functions</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<p>The magical property of Bloom filters is that their space requirement is <strong>constant</strong> regardless of how many elements you add (though the false positive rate increases). You can store millions of elements in just a few kilobytes.</p>
+<h3 id="core-properties">Core Properties</h3>
+<p><strong>Probabilistic Nature:</strong>
+- "No" means the element is <strong>definitely not</strong> in the set (100% accurate)
+- "Yes" means the element <strong>might be</strong> in the set (possible false positive)</p>
+<p><strong>No False Negatives:</strong>
+If an element was added to the Bloom filter, querying for it will always return "might be present." The filter never forgets elements it has seen.</p>
+<p><strong>No Deletions (Standard Bloom Filter):</strong>
+Once an element is added, it cannot be removed. Removing would risk creating false negatives for other elements.</p>
+<p><strong>Space Efficiency:</strong>
+A Bloom filter with 1% false positive rate requires only about 10 bits per element, regardless of element size. Storing 1 billion URLs (average 50 bytes each) would need 50GB in a hash set, but only ~1.2GB in a Bloom filter.</p>
+<hr>
+<h2 id="how-bloom-filters-work">How Bloom Filters Work</h2>
+<h3 id="structure">Structure</h3>
+<p>A Bloom filter consists of:
+1. <strong>A bit array</strong> of m bits, all initialized to 0
+2. <strong>k independent hash functions</strong>, each mapping elements to positions 0 to m-1</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Initial Bloom Filter (m = 16 bits, all zeros):
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Bit Index:  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>          ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>          │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>          └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+</code></pre></div>
+<h3 id="adding-an-element">Adding an Element</h3>
+<p>To add element x:
+1. Compute k hash values: h₁(x), h₂(x), ..., hₖ(x)
+2. Set the bits at positions h₁(x), h₂(x), ..., hₖ(x) to 1</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Adding "apple" with k=3 hash functions:
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>h1("apple") = 2
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>h2("apple") = 7  
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>h3("apple") = 11
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>Bit Index:  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>          ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>Before:   │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>          └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>                  ↓                   ↓               ↓
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>          ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>After:    │ 0 │ 0 │ 1 │ 0 │ 0 │ 0 │ 0 │ 1 │ 0 │ 0 │ 0 │ 1 │ 0 │ 0 │ 0 │ 0 │
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>          └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+</code></pre></div>
+<p>Adding another element:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Adding "banana" with k=3 hash functions:
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>h1("banana") = 3
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>h2("banana") = 7   ← Same position as "apple"!
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>h3("banana") = 14
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>Bit Index:  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>          ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>Before:   │ 0 │ 0 │ 1 │ 0 │ 0 │ 0 │ 0 │ 1 │ 0 │ 0 │ 0 │ 1 │ 0 │ 0 │ 0 │ 0 │
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>          └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>                      ↓               ↓                           ↓
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>          ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>After:    │ 0 │ 0 │ 1 │ 1 │ 0 │ 0 │ 0 │ 1 │ 0 │ 0 │ 0 │ 1 │ 0 │ 0 │ 1 │ 0 │
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>          └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+</code></pre></div>
+<p>Notice that position 7 was already set by "apple" — this is fine. Multiple elements can share bit positions.</p>
+<h3 id="querying-for-an-element">Querying for an Element</h3>
+<p>To check if element x might be in the set:
+1. Compute k hash values: h₁(x), h₂(x), ..., hₖ(x)
+2. Check if ALL bits at those positions are 1
+3. If all bits are 1 → "Might be present"
+4. If any bit is 0 → "Definitely not present"</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Query: Is "apple" in the filter?
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>h1("apple") = 2  → bit[2] = 1 ✓
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>h2("apple") = 7  → bit[7] = 1 ✓
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>h3("apple") = 11 → bit[11] = 1 ✓
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>All bits are 1 → "Might be present" (TRUE POSITIVE - it was added)
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>Query: Is "cherry" in the filter?
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>h1("cherry") = 2  → bit[2] = 1 ✓
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>h2("cherry") = 5  → bit[5] = 0 ✗
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>At least one bit is 0 → "Definitely not present" (TRUE NEGATIVE)
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>Query: Is "date" in the filter?
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>h1("date") = 2  → bit[2] = 1 ✓  (set by "apple")
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>h2("date") = 3  → bit[3] = 1 ✓  (set by "banana")
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>h3("date") = 7  → bit[7] = 1 ✓  (set by "apple" and "banana")
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>All bits are 1 → "Might be present" (FALSE POSITIVE - never added!)
+</code></pre></div>
+<h3 id="why-false-positives-occur">Why False Positives Occur</h3>
+<p>False positives happen when all k bit positions for a query element happen to be set by other elements:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>False Positive Visualization:
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>"apple" sets bits:   2, 7, 11
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>"banana" sets bits:  3, 7, 14
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>Query "date" checks: 2, 3, 7
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>Bit 2: set by "apple"
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>Bit 3: set by "banana"  
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>Bit 7: set by both "apple" and "banana"
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>All bits happen to be 1, so we incorrectly report "might be present"
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>even though "date" was never added.
+</code></pre></div>
+<p>As more elements are added, more bits become 1, increasing the probability that a random query finds all its bits set purely by coincidence.</p>
+<hr>
+<h2 id="architecture-and-components">Architecture and Components</h2>
+<h3 id="complete-system-architecture">Complete System Architecture</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>┌─────────────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>│                         Bloom Filter System                              │
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>├─────────────────────────────────────────────────────────────────────────┤
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>│                                                                          │
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>│  ┌─────────────────────────────────────────────────────────────┐        │
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>│  │                     Input Processing                         │        │
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>│  │  ┌─────────────┐                                             │        │
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>│  │  │   Element   │ ─── "example@email.com"                     │        │
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>│  │  │   (any type)│ ─── serialized to bytes                     │        │
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>│  │  └─────────────┘                                             │        │
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>│  └───────────────────────────────┬─────────────────────────────┘        │
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>│                                  │                                       │
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>│                                  ▼                                       │
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>│  ┌─────────────────────────────────────────────────────────────┐        │
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>│  │                    Hash Function Layer                       │        │
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>│  │                                                               │        │
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐      ┌──────────┐ │        │
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>│  │  │   h₁()   │  │   h₂()   │  │   h₃()   │ ...  │   hₖ()   │ │        │
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>│  │  │ MurmurHash│  │ xxHash  │  │FNV-1a    │      │ Custom   │ │        │
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>│  │  └────┬─────┘  └────┬─────┘  └────┬─────┘      └────┬─────┘ │        │
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>│  │       │             │             │                  │       │        │
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>│  │       ▼             ▼             ▼                  ▼       │        │
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>│  │      pos₁         pos₂          pos₃              posₖ      │        │
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>│  │      (42)         (156)         (891)              (2047)   │        │
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>│  └───────┬─────────────┬─────────────┬──────────────────┬──────┘        │
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>│          │             │             │                  │                │
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>│          ▼             ▼             ▼                  ▼                │
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>│  ┌─────────────────────────────────────────────────────────────┐        │
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>│  │                      Bit Array (m bits)                      │        │
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>│  │                                                               │        │
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>│  │  ┌─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┐ │        │
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>│  │  │0│1│0│0│1│0│1│0│0│1│1│0│0│1│0│1│0│0│1│0│1│0│0│1│0│1│0│1│0│ │        │
+<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a>│  │  └─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┴─┘ │        │
+<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a>│  │   0 1 2 3 4 5 6 7 8 9 ...                              m-1   │        │
+<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a>│  │                                                               │        │
+<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a>│  │  ADD:   Set bits at pos₁, pos₂, pos₃, ..., posₖ to 1        │        │
+<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a>│  │  QUERY: Check if ALL bits at pos₁, pos₂, ..., posₖ are 1    │        │
+<a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a>│  └─────────────────────────────────────────────────────────────┘        │
+<a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a>│                                                                          │
+<a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a>└─────────────────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<h3 id="hash-functions">Hash Functions</h3>
+<p>The choice of hash functions is critical for Bloom filter performance:</p>
+<p><strong>Requirements:</strong>
+- <strong>Uniform distribution</strong>: Hash values should be evenly spread across [0, m-1]
+- <strong>Independence</strong>: Different hash functions should produce uncorrelated outputs
+- <strong>Speed</strong>: Hashing is performed on every add and query operation
+- <strong>Deterministic</strong>: Same input must always produce same output</p>
+<p><strong>Common Hash Functions:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Hash Function</th>
+<th>Speed</th>
+<th>Quality</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MurmurHash3</td>
+<td>Very Fast</td>
+<td>Excellent</td>
+<td>Most popular for Bloom filters</td>
+</tr>
+<tr>
+<td>xxHash</td>
+<td>Fastest</td>
+<td>Excellent</td>
+<td>Great for high-throughput</td>
+</tr>
+<tr>
+<td>FNV-1a</td>
+<td>Fast</td>
+<td>Good</td>
+<td>Simple implementation</td>
+</tr>
+<tr>
+<td>CityHash</td>
+<td>Very Fast</td>
+<td>Excellent</td>
+<td>Google's hash function</td>
+</tr>
+<tr>
+<td>SHA-256</td>
+<td>Slow</td>
+<td>Excellent</td>
+<td>Overkill for Bloom filters</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Double Hashing Optimization:</strong></p>
+<p>Instead of computing k independent hash functions (expensive), use double hashing to derive k positions from just 2 hash functions:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Double Hashing Formula:
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>hᵢ(x) = (h₁(x) + i × h₂(x)) mod m
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>Where:
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  h₁, h₂ = two independent hash functions
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  i = 0, 1, 2, ..., k-1
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>  m = bit array size
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>Example with k=5:
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>  h₁("apple") = 1000
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>  h₂("apple") = 373
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>  m = 10000
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>  h₀ = (1000 + 0 × 373) mod 10000 = 1000
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>  h₁ = (1000 + 1 × 373) mod 10000 = 1373
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>  h₂ = (1000 + 2 × 373) mod 10000 = 1746
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>  h₃ = (1000 + 3 × 373) mod 10000 = 2119
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>  h₄ = (1000 + 4 × 373) mod 10000 = 2492
+</code></pre></div>
+<p>This provides nearly the same distribution as k independent functions with much less computation.</p>
+<hr>
+<h2 id="mathematical-analysis">Mathematical Analysis</h2>
+<h3 id="false-positive-probability">False Positive Probability</h3>
+<p>After inserting n elements into a Bloom filter with m bits and k hash functions, the probability of a false positive is approximately:</p>
+<div class="arithmatex">\[P_{fp} \approx \left(1 - e^{-kn/m}\right)^k\]</div>
+<p><strong>Intuition:</strong>
+- Each hash function sets one bit
+- After inserting n elements with k hash functions, we've set bits kn times
+- The probability that a specific bit is still 0 is approximately <span class="arithmatex">\(e^{-kn/m}\)</span>
+- A false positive occurs when all k bits we check are 1</p>
+<h3 id="optimal-number-of-hash-functions">Optimal Number of Hash Functions</h3>
+<p>Given m bits and n elements, the optimal number of hash functions that minimizes false positive rate is:</p>
+<div class="arithmatex">\[k_{optimal} = \frac{m}{n} \ln 2 \approx 0.693 \times \frac{m}{n}\]</div>
+<p>With optimal k, the false positive rate becomes:</p>
+<div class="arithmatex">\[P_{fp} \approx \left(\frac{1}{2}\right)^k \approx 0.6185^{m/n}\]</div>
+<h3 id="sizing-a-bloom-filter">Sizing a Bloom Filter</h3>
+<p>To achieve a desired false positive rate p with n elements:</p>
+<p><strong>Required bits (m):</strong>
+<span class="arithmatex">\(<span class="arithmatex">\(m = -\frac{n \ln p}{(\ln 2)^2}\)</span>\)</span></p>
+<p><strong>Required hash functions (k):</strong>
+<span class="arithmatex">\(<span class="arithmatex">\(k = -\log_2 p\)</span>\)</span></p>
+<p><strong>Quick Reference Table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>False Positive Rate</th>
+<th>Bits per Element</th>
+<th>Hash Functions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10% (0.1)</td>
+<td>4.8 bits</td>
+<td>3</td>
+</tr>
+<tr>
+<td>5% (0.05)</td>
+<td>6.2 bits</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1% (0.01)</td>
+<td>9.6 bits</td>
+<td>7</td>
+</tr>
+<tr>
+<td>0.1% (0.001)</td>
+<td>14.4 bits</td>
+<td>10</td>
+</tr>
+<tr>
+<td>0.01% (0.0001)</td>
+<td>19.2 bits</td>
+<td>13</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example Calculation:</strong></p>
+<p>Design a Bloom filter for 10 million elements with 1% false positive rate:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>n = 10,000,000 elements
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>p = 0.01 (1% false positive rate)
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>m = -(10,000,000 × ln(0.01)) / (ln(2))²
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>m = -(10,000,000 × -4.605) / 0.480
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>m = 95,850,584 bits ≈ 11.4 MB
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>k = -log₂(0.01)
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>k = 6.64 ≈ 7 hash functions
+</code></pre></div>
+<p>So 11.4 MB of memory can check membership of 10 million elements with only 1% false positives!</p>
+<hr>
+<h2 id="implementation">Implementation</h2>
+<h3 id="basic-implementation-python">Basic Implementation (Python)</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">mmh3</span>  <span class="c1"># MurmurHash3</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">bitarray</span><span class="w"> </span><span class="kn">import</span> <span class="n">bitarray</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">BloomFilter</span><span class="p">:</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expected_elements</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">false_positive_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">        </span><span class="sd">"""</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="sd">        Initialize a Bloom filter.</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="sd">        Args:</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="sd">            expected_elements: Expected number of elements to insert</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="sd">            false_positive_rate: Desired false positive probability (0 to 1)</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="sd">        """</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>        <span class="c1"># Calculate optimal size and hash count</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_size</span><span class="p">(</span><span class="n">expected_elements</span><span class="p">,</span> <span class="n">false_positive_rate</span><span class="p">)</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">hash_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_hash_count</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">expected_elements</span><span class="p">)</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>        <span class="c1"># Initialize bit array</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">bit_array</span> <span class="o">=</span> <span class="n">bitarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">bit_array</span><span class="o">.</span><span class="n">setall</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Track inserted elements</span>
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a><span class="w">        </span><span class="sd">"""Calculate optimal bit array size."""</span>
+<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>        <span class="n">m</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">p</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a>
+<a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_hash_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a><span class="w">        </span><span class="sd">"""Calculate optimal number of hash functions."""</span>
+<a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a>        <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a>        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<a id="__codelineno-8-33" name="__codelineno-8-33" href="#__codelineno-8-33"></a>
+<a id="__codelineno-8-34" name="__codelineno-8-34" href="#__codelineno-8-34"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_get_hash_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a><span class="w">        </span><span class="sd">"""Generate k hash positions using double hashing."""</span>
+<a id="__codelineno-8-36" name="__codelineno-8-36" href="#__codelineno-8-36"></a>        <span class="n">positions</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-8-37" name="__codelineno-8-37" href="#__codelineno-8-37"></a>        <span class="n">h1</span> <span class="o">=</span> <span class="n">mmh3</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+<a id="__codelineno-8-38" name="__codelineno-8-38" href="#__codelineno-8-38"></a>        <span class="n">h2</span> <span class="o">=</span> <span class="n">mmh3</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+<a id="__codelineno-8-39" name="__codelineno-8-39" href="#__codelineno-8-39"></a>
+<a id="__codelineno-8-40" name="__codelineno-8-40" href="#__codelineno-8-40"></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hash_count</span><span class="p">):</span>
+<a id="__codelineno-8-41" name="__codelineno-8-41" href="#__codelineno-8-41"></a>            <span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="n">h1</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">h2</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+<a id="__codelineno-8-42" name="__codelineno-8-42" href="#__codelineno-8-42"></a>            <span class="n">positions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+<a id="__codelineno-8-43" name="__codelineno-8-43" href="#__codelineno-8-43"></a>
+<a id="__codelineno-8-44" name="__codelineno-8-44" href="#__codelineno-8-44"></a>        <span class="k">return</span> <span class="n">positions</span>
+<a id="__codelineno-8-45" name="__codelineno-8-45" href="#__codelineno-8-45"></a>
+<a id="__codelineno-8-46" name="__codelineno-8-46" href="#__codelineno-8-46"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-8-47" name="__codelineno-8-47" href="#__codelineno-8-47"></a><span class="w">        </span><span class="sd">"""Add an element to the Bloom filter."""</span>
+<a id="__codelineno-8-48" name="__codelineno-8-48" href="#__codelineno-8-48"></a>        <span class="k">for</span> <span class="n">position</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_hash_positions</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+<a id="__codelineno-8-49" name="__codelineno-8-49" href="#__codelineno-8-49"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">bit_array</span><span class="p">[</span><span class="n">position</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<a id="__codelineno-8-50" name="__codelineno-8-50" href="#__codelineno-8-50"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+<a id="__codelineno-8-51" name="__codelineno-8-51" href="#__codelineno-8-51"></a>
+<a id="__codelineno-8-52" name="__codelineno-8-52" href="#__codelineno-8-52"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<a id="__codelineno-8-53" name="__codelineno-8-53" href="#__codelineno-8-53"></a><span class="w">        </span><span class="sd">"""</span>
+<a id="__codelineno-8-54" name="__codelineno-8-54" href="#__codelineno-8-54"></a><span class="sd">        Check if an element might be in the filter.</span>
+<a id="__codelineno-8-55" name="__codelineno-8-55" href="#__codelineno-8-55"></a>
+<a id="__codelineno-8-56" name="__codelineno-8-56" href="#__codelineno-8-56"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-8-57" name="__codelineno-8-57" href="#__codelineno-8-57"></a><span class="sd">            True: Element MIGHT be in the set (possible false positive)</span>
+<a id="__codelineno-8-58" name="__codelineno-8-58" href="#__codelineno-8-58"></a><span class="sd">            False: Element is DEFINITELY NOT in the set</span>
+<a id="__codelineno-8-59" name="__codelineno-8-59" href="#__codelineno-8-59"></a><span class="sd">        """</span>
+<a id="__codelineno-8-60" name="__codelineno-8-60" href="#__codelineno-8-60"></a>        <span class="k">for</span> <span class="n">position</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_hash_positions</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+<a id="__codelineno-8-61" name="__codelineno-8-61" href="#__codelineno-8-61"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bit_array</span><span class="p">[</span><span class="n">position</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-8-62" name="__codelineno-8-62" href="#__codelineno-8-62"></a>                <span class="k">return</span> <span class="kc">False</span>  <span class="c1"># Definitely not present</span>
+<a id="__codelineno-8-63" name="__codelineno-8-63" href="#__codelineno-8-63"></a>        <span class="k">return</span> <span class="kc">True</span>  <span class="c1"># Might be present</span>
+<a id="__codelineno-8-64" name="__codelineno-8-64" href="#__codelineno-8-64"></a>
+<a id="__codelineno-8-65" name="__codelineno-8-65" href="#__codelineno-8-65"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<a id="__codelineno-8-66" name="__codelineno-8-66" href="#__codelineno-8-66"></a><span class="w">        </span><span class="sd">"""Enable 'in' operator."""</span>
+<a id="__codelineno-8-67" name="__codelineno-8-67" href="#__codelineno-8-67"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<a id="__codelineno-8-68" name="__codelineno-8-68" href="#__codelineno-8-68"></a>
+<a id="__codelineno-8-69" name="__codelineno-8-69" href="#__codelineno-8-69"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">estimated_false_positive_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<a id="__codelineno-8-70" name="__codelineno-8-70" href="#__codelineno-8-70"></a><span class="w">        </span><span class="sd">"""Calculate current estimated false positive rate."""</span>
+<a id="__codelineno-8-71" name="__codelineno-8-71" href="#__codelineno-8-71"></a>        <span class="c1"># Proportion of bits set to 1</span>
+<a id="__codelineno-8-72" name="__codelineno-8-72" href="#__codelineno-8-72"></a>        <span class="n">ones</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bit_array</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-8-73" name="__codelineno-8-73" href="#__codelineno-8-73"></a>        <span class="k">if</span> <span class="n">ones</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-8-74" name="__codelineno-8-74" href="#__codelineno-8-74"></a>            <span class="k">return</span> <span class="mf">0.0</span>
+<a id="__codelineno-8-75" name="__codelineno-8-75" href="#__codelineno-8-75"></a>
+<a id="__codelineno-8-76" name="__codelineno-8-76" href="#__codelineno-8-76"></a>        <span class="c1"># Estimated false positive rate</span>
+<a id="__codelineno-8-77" name="__codelineno-8-77" href="#__codelineno-8-77"></a>        <span class="k">return</span> <span class="p">(</span><span class="n">ones</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">**</span> <span class="bp">self</span><span class="o">.</span><span class="n">hash_count</span>
+<a id="__codelineno-8-78" name="__codelineno-8-78" href="#__codelineno-8-78"></a>
+<a id="__codelineno-8-79" name="__codelineno-8-79" href="#__codelineno-8-79"></a>
+<a id="__codelineno-8-80" name="__codelineno-8-80" href="#__codelineno-8-80"></a><span class="c1"># Usage Example</span>
+<a id="__codelineno-8-81" name="__codelineno-8-81" href="#__codelineno-8-81"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+<a id="__codelineno-8-82" name="__codelineno-8-82" href="#__codelineno-8-82"></a>    <span class="c1"># Create filter for 1 million elements with 1% false positive rate</span>
+<a id="__codelineno-8-83" name="__codelineno-8-83" href="#__codelineno-8-83"></a>    <span class="n">bf</span> <span class="o">=</span> <span class="n">BloomFilter</span><span class="p">(</span><span class="n">expected_elements</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">,</span> <span class="n">false_positive_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<a id="__codelineno-8-84" name="__codelineno-8-84" href="#__codelineno-8-84"></a>
+<a id="__codelineno-8-85" name="__codelineno-8-85" href="#__codelineno-8-85"></a>    <span class="c1"># Add elements</span>
+<a id="__codelineno-8-86" name="__codelineno-8-86" href="#__codelineno-8-86"></a>    <span class="n">bf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"apple"</span><span class="p">)</span>
+<a id="__codelineno-8-87" name="__codelineno-8-87" href="#__codelineno-8-87"></a>    <span class="n">bf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"banana"</span><span class="p">)</span>
+<a id="__codelineno-8-88" name="__codelineno-8-88" href="#__codelineno-8-88"></a>    <span class="n">bf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"cherry"</span><span class="p">)</span>
+<a id="__codelineno-8-89" name="__codelineno-8-89" href="#__codelineno-8-89"></a>
+<a id="__codelineno-8-90" name="__codelineno-8-90" href="#__codelineno-8-90"></a>    <span class="c1"># Query</span>
+<a id="__codelineno-8-91" name="__codelineno-8-91" href="#__codelineno-8-91"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">"apple"</span> <span class="ow">in</span> <span class="n">bf</span><span class="p">)</span>   <span class="c1"># True (was added)</span>
+<a id="__codelineno-8-92" name="__codelineno-8-92" href="#__codelineno-8-92"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">"banana"</span> <span class="ow">in</span> <span class="n">bf</span><span class="p">)</span>  <span class="c1"># True (was added)</span>
+<a id="__codelineno-8-93" name="__codelineno-8-93" href="#__codelineno-8-93"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">"grape"</span> <span class="ow">in</span> <span class="n">bf</span><span class="p">)</span>   <span class="c1"># False (never added) or True (false positive)</span>
+</code></pre></div>
+<h3 id="implementation-go">Implementation (Go)</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">package</span><span class="w"> </span><span class="nx">bloom</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="s">"hash/fnv"</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span><span class="s">"math"</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="p">)</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="kd">type</span><span class="w"> </span><span class="nx">BloomFilter</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">    </span><span class="nx">bitArray</span><span class="w">  </span><span class="p">[]</span><span class="kt">bool</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">    </span><span class="nx">size</span><span class="w">      </span><span class="kt">uint64</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">    </span><span class="nx">hashCount</span><span class="w"> </span><span class="kt">uint64</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">    </span><span class="nx">count</span><span class="w">     </span><span class="kt">uint64</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="p">}</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="c1">// NewBloomFilter creates a new Bloom filter</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="kd">func</span><span class="w"> </span><span class="nx">NewBloomFilter</span><span class="p">(</span><span class="nx">expectedElements</span><span class="w"> </span><span class="kt">uint64</span><span class="p">,</span><span class="w"> </span><span class="nx">falsePositiveRate</span><span class="w"> </span><span class="kt">float64</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="nx">BloomFilter</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="w">    </span><span class="nx">size</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">calculateSize</span><span class="p">(</span><span class="nx">expectedElements</span><span class="p">,</span><span class="w"> </span><span class="nx">falsePositiveRate</span><span class="p">)</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="w">    </span><span class="nx">hashCount</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">calculateHashCount</span><span class="p">(</span><span class="nx">size</span><span class="p">,</span><span class="w"> </span><span class="nx">expectedElements</span><span class="p">)</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">BloomFilter</span><span class="p">{</span>
+<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="w">        </span><span class="nx">bitArray</span><span class="p">:</span><span class="w">  </span><span class="nb">make</span><span class="p">([]</span><span class="kt">bool</span><span class="p">,</span><span class="w"> </span><span class="nx">size</span><span class="p">),</span>
+<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="w">        </span><span class="nx">size</span><span class="p">:</span><span class="w">      </span><span class="nx">size</span><span class="p">,</span>
+<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="w">        </span><span class="nx">hashCount</span><span class="p">:</span><span class="w"> </span><span class="nx">hashCount</span><span class="p">,</span>
+<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a><span class="w">        </span><span class="nx">count</span><span class="p">:</span><span class="w">     </span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a><span class="p">}</span>
+<a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a>
+<a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a><span class="kd">func</span><span class="w"> </span><span class="nx">calculateSize</span><span class="p">(</span><span class="nx">n</span><span class="w"> </span><span class="kt">uint64</span><span class="p">,</span><span class="w"> </span><span class="nx">p</span><span class="w"> </span><span class="kt">float64</span><span class="p">)</span><span class="w"> </span><span class="kt">uint64</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a><span class="w">    </span><span class="nx">m</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="o">-</span><span class="nb">float64</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">math</span><span class="p">.</span><span class="nx">Log</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">math</span><span class="p">.</span><span class="nx">Pow</span><span class="p">(</span><span class="nx">math</span><span class="p">.</span><span class="nx">Log</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">uint64</span><span class="p">(</span><span class="nx">m</span><span class="p">)</span>
+<a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a><span class="p">}</span>
+<a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a>
+<a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a><span class="kd">func</span><span class="w"> </span><span class="nx">calculateHashCount</span><span class="p">(</span><span class="nx">m</span><span class="p">,</span><span class="w"> </span><span class="nx">n</span><span class="w"> </span><span class="kt">uint64</span><span class="p">)</span><span class="w"> </span><span class="kt">uint64</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a><span class="w">    </span><span class="nx">k</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">float64</span><span class="p">(</span><span class="nx">m</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">float64</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">math</span><span class="p">.</span><span class="nx">Log</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">uint64</span><span class="p">(</span><span class="nx">k</span><span class="p">)</span>
+<a id="__codelineno-9-36" name="__codelineno-9-36" href="#__codelineno-9-36"></a><span class="p">}</span>
+<a id="__codelineno-9-37" name="__codelineno-9-37" href="#__codelineno-9-37"></a>
+<a id="__codelineno-9-38" name="__codelineno-9-38" href="#__codelineno-9-38"></a><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">bf</span><span class="w"> </span><span class="o">*</span><span class="nx">BloomFilter</span><span class="p">)</span><span class="w"> </span><span class="nx">getHashPositions</span><span class="p">(</span><span class="nx">item</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">[]</span><span class="kt">uint64</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-39" name="__codelineno-9-39" href="#__codelineno-9-39"></a><span class="w">    </span><span class="nx">positions</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">make</span><span class="p">([]</span><span class="kt">uint64</span><span class="p">,</span><span class="w"> </span><span class="nx">bf</span><span class="p">.</span><span class="nx">hashCount</span><span class="p">)</span>
+<a id="__codelineno-9-40" name="__codelineno-9-40" href="#__codelineno-9-40"></a>
+<a id="__codelineno-9-41" name="__codelineno-9-41" href="#__codelineno-9-41"></a><span class="w">    </span><span class="c1">// Double hashing using FNV</span>
+<a id="__codelineno-9-42" name="__codelineno-9-42" href="#__codelineno-9-42"></a><span class="w">    </span><span class="nx">h1</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">fnv</span><span class="p">.</span><span class="nx">New64a</span><span class="p">()</span>
+<a id="__codelineno-9-43" name="__codelineno-9-43" href="#__codelineno-9-43"></a><span class="w">    </span><span class="nx">h1</span><span class="p">.</span><span class="nx">Write</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">item</span><span class="p">))</span>
+<a id="__codelineno-9-44" name="__codelineno-9-44" href="#__codelineno-9-44"></a><span class="w">    </span><span class="nx">hash1</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">h1</span><span class="p">.</span><span class="nx">Sum64</span><span class="p">()</span>
+<a id="__codelineno-9-45" name="__codelineno-9-45" href="#__codelineno-9-45"></a>
+<a id="__codelineno-9-46" name="__codelineno-9-46" href="#__codelineno-9-46"></a><span class="w">    </span><span class="nx">h2</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">fnv</span><span class="p">.</span><span class="nx">New64</span><span class="p">()</span>
+<a id="__codelineno-9-47" name="__codelineno-9-47" href="#__codelineno-9-47"></a><span class="w">    </span><span class="nx">h2</span><span class="p">.</span><span class="nx">Write</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">item</span><span class="p">))</span>
+<a id="__codelineno-9-48" name="__codelineno-9-48" href="#__codelineno-9-48"></a><span class="w">    </span><span class="nx">hash2</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">h2</span><span class="p">.</span><span class="nx">Sum64</span><span class="p">()</span>
+<a id="__codelineno-9-49" name="__codelineno-9-49" href="#__codelineno-9-49"></a>
+<a id="__codelineno-9-50" name="__codelineno-9-50" href="#__codelineno-9-50"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">uint64</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="p">&lt;</span><span class="w"> </span><span class="nx">bf</span><span class="p">.</span><span class="nx">hashCount</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-51" name="__codelineno-9-51" href="#__codelineno-9-51"></a><span class="w">        </span><span class="nx">positions</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="nx">hash1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">i</span><span class="o">*</span><span class="nx">hash2</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="nx">bf</span><span class="p">.</span><span class="nx">size</span>
+<a id="__codelineno-9-52" name="__codelineno-9-52" href="#__codelineno-9-52"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-9-53" name="__codelineno-9-53" href="#__codelineno-9-53"></a>
+<a id="__codelineno-9-54" name="__codelineno-9-54" href="#__codelineno-9-54"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">positions</span>
+<a id="__codelineno-9-55" name="__codelineno-9-55" href="#__codelineno-9-55"></a><span class="p">}</span>
+<a id="__codelineno-9-56" name="__codelineno-9-56" href="#__codelineno-9-56"></a>
+<a id="__codelineno-9-57" name="__codelineno-9-57" href="#__codelineno-9-57"></a><span class="c1">// Add inserts an element into the Bloom filter</span>
+<a id="__codelineno-9-58" name="__codelineno-9-58" href="#__codelineno-9-58"></a><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">bf</span><span class="w"> </span><span class="o">*</span><span class="nx">BloomFilter</span><span class="p">)</span><span class="w"> </span><span class="nx">Add</span><span class="p">(</span><span class="nx">item</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-59" name="__codelineno-9-59" href="#__codelineno-9-59"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">pos</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">bf</span><span class="p">.</span><span class="nx">getHashPositions</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-60" name="__codelineno-9-60" href="#__codelineno-9-60"></a><span class="w">        </span><span class="nx">bf</span><span class="p">.</span><span class="nx">bitArray</span><span class="p">[</span><span class="nx">pos</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-9-61" name="__codelineno-9-61" href="#__codelineno-9-61"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-9-62" name="__codelineno-9-62" href="#__codelineno-9-62"></a><span class="w">    </span><span class="nx">bf</span><span class="p">.</span><span class="nx">count</span><span class="o">++</span>
+<a id="__codelineno-9-63" name="__codelineno-9-63" href="#__codelineno-9-63"></a><span class="p">}</span>
+<a id="__codelineno-9-64" name="__codelineno-9-64" href="#__codelineno-9-64"></a>
+<a id="__codelineno-9-65" name="__codelineno-9-65" href="#__codelineno-9-65"></a><span class="c1">// Contains checks if an element might be in the filter</span>
+<a id="__codelineno-9-66" name="__codelineno-9-66" href="#__codelineno-9-66"></a><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">bf</span><span class="w"> </span><span class="o">*</span><span class="nx">BloomFilter</span><span class="p">)</span><span class="w"> </span><span class="nx">Contains</span><span class="p">(</span><span class="nx">item</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-67" name="__codelineno-9-67" href="#__codelineno-9-67"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">pos</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">bf</span><span class="p">.</span><span class="nx">getHashPositions</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-68" name="__codelineno-9-68" href="#__codelineno-9-68"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">!</span><span class="nx">bf</span><span class="p">.</span><span class="nx">bitArray</span><span class="p">[</span><span class="nx">pos</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-69" name="__codelineno-9-69" href="#__codelineno-9-69"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="c1">// Definitely not present</span>
+<a id="__codelineno-9-70" name="__codelineno-9-70" href="#__codelineno-9-70"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-9-71" name="__codelineno-9-71" href="#__codelineno-9-71"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-9-72" name="__codelineno-9-72" href="#__codelineno-9-72"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="c1">// Might be present</span>
+<a id="__codelineno-9-73" name="__codelineno-9-73" href="#__codelineno-9-73"></a><span class="p">}</span>
+<a id="__codelineno-9-74" name="__codelineno-9-74" href="#__codelineno-9-74"></a>
+<a id="__codelineno-9-75" name="__codelineno-9-75" href="#__codelineno-9-75"></a><span class="c1">// Count returns the number of elements added</span>
+<a id="__codelineno-9-76" name="__codelineno-9-76" href="#__codelineno-9-76"></a><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">bf</span><span class="w"> </span><span class="o">*</span><span class="nx">BloomFilter</span><span class="p">)</span><span class="w"> </span><span class="nx">Count</span><span class="p">()</span><span class="w"> </span><span class="kt">uint64</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-77" name="__codelineno-9-77" href="#__codelineno-9-77"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">bf</span><span class="p">.</span><span class="nx">count</span>
+<a id="__codelineno-9-78" name="__codelineno-9-78" href="#__codelineno-9-78"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="implementation-java">Implementation (Java)</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.BitSet</span><span class="p">;</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">BloomFilter</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">BitSet</span><span class="w"> </span><span class="n">bitSet</span><span class="p">;</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">;</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">hashCount</span><span class="p">;</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">BloomFilter</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">expectedElements</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">falsePositiveRate</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">calculateSize</span><span class="p">(</span><span class="n">expectedElements</span><span class="p">,</span><span class="w"> </span><span class="n">falsePositiveRate</span><span class="p">);</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">hashCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">calculateHashCount</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">expectedElements</span><span class="p">);</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">bitSet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BitSet</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">calculateSize</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">ceil</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">log</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">pow</span><span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="na">log</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">));</span>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">calculateHashCount</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">round</span><span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">log</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>
+<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="nf">getHashPositions</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a><span class="w">        </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">positions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="o">[</span><span class="n">hashCount</span><span class="o">]</span><span class="p">;</span>
+<a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a>
+<a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a><span class="w">        </span><span class="c1">// Double hashing</span>
+<a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">hash1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">item</span><span class="p">.</span><span class="na">hashCode</span><span class="p">();</span>
+<a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">hash2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hash1</span><span class="w"> </span><span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span><span class="w">  </span><span class="c1">// Use upper bits</span>
+<a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a>
+<a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">hashCount</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a><span class="w">            </span><span class="kt">int</span><span class="w"> </span><span class="n">combinedHash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hash1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">hash2</span><span class="p">;</span>
+<a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a><span class="w">            </span><span class="n">positions</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">abs</span><span class="p">(</span><span class="n">combinedHash</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">size</span><span class="p">);</span>
+<a id="__codelineno-10-34" name="__codelineno-10-34" href="#__codelineno-10-34"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-10-35" name="__codelineno-10-35" href="#__codelineno-10-35"></a>
+<a id="__codelineno-10-36" name="__codelineno-10-36" href="#__codelineno-10-36"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">positions</span><span class="p">;</span>
+<a id="__codelineno-10-37" name="__codelineno-10-37" href="#__codelineno-10-37"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-10-38" name="__codelineno-10-38" href="#__codelineno-10-38"></a>
+<a id="__codelineno-10-39" name="__codelineno-10-39" href="#__codelineno-10-39"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-40" name="__codelineno-10-40" href="#__codelineno-10-40"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">getHashPositions</span><span class="p">(</span><span class="n">item</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-41" name="__codelineno-10-41" href="#__codelineno-10-41"></a><span class="w">            </span><span class="n">bitSet</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="n">pos</span><span class="p">);</span>
+<a id="__codelineno-10-42" name="__codelineno-10-42" href="#__codelineno-10-42"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-10-43" name="__codelineno-10-43" href="#__codelineno-10-43"></a><span class="w">        </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-10-44" name="__codelineno-10-44" href="#__codelineno-10-44"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-10-45" name="__codelineno-10-45" href="#__codelineno-10-45"></a>
+<a id="__codelineno-10-46" name="__codelineno-10-46" href="#__codelineno-10-46"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">mightContain</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-47" name="__codelineno-10-47" href="#__codelineno-10-47"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">getHashPositions</span><span class="p">(</span><span class="n">item</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-48" name="__codelineno-10-48" href="#__codelineno-10-48"></a><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">bitSet</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">pos</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-49" name="__codelineno-10-49" href="#__codelineno-10-49"></a><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span><span class="w">  </span><span class="c1">// Definitely not present</span>
+<a id="__codelineno-10-50" name="__codelineno-10-50" href="#__codelineno-10-50"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-10-51" name="__codelineno-10-51" href="#__codelineno-10-51"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-10-52" name="__codelineno-10-52" href="#__codelineno-10-52"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w">  </span><span class="c1">// Might be present</span>
+<a id="__codelineno-10-53" name="__codelineno-10-53" href="#__codelineno-10-53"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-10-54" name="__codelineno-10-54" href="#__codelineno-10-54"></a>
+<a id="__codelineno-10-55" name="__codelineno-10-55" href="#__codelineno-10-55"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">getCount</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-56" name="__codelineno-10-56" href="#__codelineno-10-56"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<a id="__codelineno-10-57" name="__codelineno-10-57" href="#__codelineno-10-57"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-10-58" name="__codelineno-10-58" href="#__codelineno-10-58"></a><span class="p">}</span>
+</code></pre></div>
+<hr>
+<h2 id="bloom-filter-variants">Bloom Filter Variants</h2>
+<h3 id="1-counting-bloom-filter">1. Counting Bloom Filter</h3>
+<p>Standard Bloom filters don't support deletion. Counting Bloom filters replace each bit with a counter, allowing deletions.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Standard Bloom Filter (bits):
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>┌───┬───┬───┬───┬───┬───┬───┬───┐
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>│ 0 │ 1 │ 0 │ 1 │ 1 │ 0 │ 1 │ 0 │
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>└───┴───┴───┴───┴───┴───┴───┴───┘
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>Counting Bloom Filter (counters, typically 4 bits each):
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>┌───┬───┬───┬───┬───┬───┬───┬───┐
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>│ 0 │ 2 │ 0 │ 1 │ 3 │ 0 │ 1 │ 0 │
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>└───┴───┴───┴───┴───┴───┴───┴───┘
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>Add "apple" (positions 1, 3, 4):
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>┌───┬───┬───┬───┬───┬───┬───┬───┐
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>│ 0 │ 3 │ 0 │ 2 │ 4 │ 0 │ 1 │ 0 │  ← Incremented
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>└───┴───┴───┴───┴───┴───┴───┴───┘
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>Delete "apple" (decrement positions 1, 3, 4):
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>┌───┬───┬───┬───┬───┬───┬───┬───┐
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>│ 0 │ 2 │ 0 │ 1 │ 3 │ 0 │ 1 │ 0 │  ← Decremented back
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>└───┴───┴───┴───┴───┴───┴───┴───┘
+</code></pre></div>
+<p><strong>Trade-off:</strong> Uses 4x more space (4-bit counters vs 1-bit), but enables deletions.</p>
+<h3 id="2-scalable-bloom-filter">2. Scalable Bloom Filter</h3>
+<p>When you don't know the number of elements upfront, use a scalable Bloom filter that grows dynamically.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Scalable Bloom Filter Structure:
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>┌─────────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>│                     Scalable Bloom Filter                            │
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>├─────────────────────────────────────────────────────────────────────┤
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>│                                                                      │
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>│  Filter 0 (oldest, tightest FP rate):                               │
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>│  ┌────────────────────────────────────────────────────┐             │
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>│  │ Size: 1000 bits, FP rate: 0.5%, k: 8, Count: 100   │             │
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>│  └────────────────────────────────────────────────────┘             │
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>│                                                                      │
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>│  Filter 1 (added when Filter 0 filled):                             │
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>│  ┌────────────────────────────────────────────────────┐             │
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>│  │ Size: 2000 bits, FP rate: 0.25%, k: 9, Count: 200  │             │
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>│  └────────────────────────────────────────────────────┘             │
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>│                                                                      │
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>│  Filter 2 (current, accepts new elements):                          │
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>│  ┌────────────────────────────────────────────────────┐             │
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>│  │ Size: 4000 bits, FP rate: 0.125%, k: 10, Count: 50 │             │
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>│  └────────────────────────────────────────────────────┘             │
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>│                                                                      │
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a>│  Query Process:                                                      │
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>│  - Check all filters                                                │
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>│  - Return true if ANY filter returns true                           │
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>│  - Total FP rate ≈ sum of individual FP rates                       │
+<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a>│                                                                      │
+<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a>└─────────────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<h3 id="3-cuckoo-filter">3. Cuckoo Filter</h3>
+<p>An alternative to Bloom filters with better space efficiency and deletion support.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Cuckoo Filter (simplified):
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>Instead of k hash positions in a bit array:
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>- Store fingerprints (small hashes) in a hash table
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>- Use cuckoo hashing for collision resolution
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>┌───────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>│                      Cuckoo Filter                                 │
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>├─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┤
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>│  -  │ f₁  │  -  │ f₂  │ f₃  │  -  │ f₄  │  -  │  -  │ f₅  │  -  │
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>└─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┘
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>fᵢ = fingerprint (e.g., 8-12 bits)
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>Advantages over Bloom Filter:
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>- Supports deletion
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>- Better space efficiency at low FP rates
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>- Faster lookups (check 2 positions vs k)
+</code></pre></div>
+<h3 id="4-partitioned-bloom-filter">4. Partitioned Bloom Filter</h3>
+<p>Divide the bit array into k partitions, one for each hash function:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>Standard Bloom Filter:
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>All k hash functions map to same array
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>h₁, h₂, h₃ all → ┌─────────────────────────────────────────┐
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>                 │ 0 1 0 1 1 0 0 1 0 1 0 0 1 0 1 0 0 1 0 1 │
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>                 └─────────────────────────────────────────┘
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>Partitioned Bloom Filter:
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>Each hash function has its own partition
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>h₁ → ┌───────────────┐
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>     │ 0 1 0 1 1 0 0 │  Partition 1
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>     └───────────────┘
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a>
+<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>h₂ → ┌───────────────┐
+<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>     │ 1 0 1 0 0 1 0 │  Partition 2
+<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a>     └───────────────┘
+<a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a>
+<a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a>h₃ → ┌───────────────┐
+<a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a>     │ 0 1 0 0 1 0 1 │  Partition 3
+<a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a>     └───────────────┘
+<a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a>
+<a id="__codelineno-14-24" name="__codelineno-14-24" href="#__codelineno-14-24"></a>Advantage: Each hash only affects one partition
+<a id="__codelineno-14-25" name="__codelineno-14-25" href="#__codelineno-14-25"></a>           Provides more uniform distribution
+</code></pre></div>
+<hr>
+<h2 id="real-world-use-cases">Real-World Use Cases</h2>
+<h3 id="1-web-browsers-safe-browsing">1. Web Browsers - Safe Browsing</h3>
+<p>Google Chrome and other browsers use Bloom filters to check if URLs are potentially malicious:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Safe Browsing System:
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>User types URL
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>      │
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>      ▼
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>┌─────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>│                  Local Bloom Filter (~25 MB)                     │
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>│   Contains fingerprints of millions of known bad URLs           │
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>└─────────────────────────────────────────────────────────────────┘
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>      │
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>      ├── Not in filter (definitely safe) → Load page immediately
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>      │
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>      └── Might be in filter → Query Google's server for confirmation
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>                                      │
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>                                      ├── Server says safe → Load page
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>                                      │
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>                                      └── Server confirms bad → Block/warn
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>Benefits:
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>- 99%+ of URLs are checked locally (fast, private)
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a>- Only potential matches query the server
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a>- 25 MB Bloom filter vs 500+ MB full database
+</code></pre></div>
+<h3 id="2-databases-avoiding-disk-reads">2. Databases - Avoiding Disk Reads</h3>
+<p>LSM-tree databases (Cassandra, RocksDB, LevelDB) use Bloom filters to skip SSTables:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>Read Path in LSM-tree:
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>GET "user:12345"
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>      │
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>      ▼
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>┌─────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>│                      SSTable 1                                   │
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>│   Bloom Filter: "user:12345" → Not present                      │
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>│   → SKIP (no disk read)                                         │
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>└─────────────────────────────────────────────────────────────────┘
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>      │
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>      ▼
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>┌─────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a>│                      SSTable 2                                   │
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>│   Bloom Filter: "user:12345" → Might be present                 │
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>│   → Read from disk → Found!                                     │
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a>└─────────────────────────────────────────────────────────────────┘
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a>      │
+<a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a>      ▼
+<a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a>┌─────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>│                      SSTable 3                                   │
+<a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a>│   (No need to check - already found in SSTable 2)               │
+<a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a>└─────────────────────────────────────────────────────────────────┘
+<a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a>
+<a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a>Without Bloom filters: 3 disk reads
+<a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a>With Bloom filters: 1 disk read
+</code></pre></div>
+<h3 id="3-cdn-cache-lookup-optimization">3. CDN - Cache Lookup Optimization</h3>
+<p>Content Delivery Networks use Bloom filters to quickly identify cache misses:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>CDN Edge Server:
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>Request for asset "video-12345.mp4"
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>      │
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>      ▼
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>┌─────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>│                  Bloom Filter (in memory)                        │
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>│   Contains fingerprints of cached content                       │
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>└─────────────────────────────────────────────────────────────────┘
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>      │
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>      ├── Not in filter → Immediate miss, fetch from origin
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>      │                   (no disk access to check cache)
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>      │
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>      └── Might be in filter → Check disk cache
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>                                      │
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>                                      ├── Actually cached → Serve
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>                                      │
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>                                      └── False positive → Fetch from origin
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>Impact:
+<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>- Single memory lookup vs disk seek for cache misses
+<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a>- With 90% cache miss rate, saves millions of disk operations
+</code></pre></div>
+<h3 id="4-distributed-systems-network-partition-detection">4. Distributed Systems - Network Partition Detection</h3>
+<p>Cassandra uses Bloom filters in its anti-entropy protocol:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>Data Synchronization Between Nodes:
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>Node A                              Node B
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>  │                                    │
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>  ▼                                    ▼
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>Build Bloom filter               Build Bloom filter  
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>of local keys                    of local keys
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>  │                                    │
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>  └────────── Exchange filters ────────┘
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>                    │
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>                    ▼
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>┌─────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>│                    Compare Filters                               │
+<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>│                                                                  │
+<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>│  Key in A's filter but not B's → B might be missing this key    │
+<a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>│  Key in B's filter but not A's → A might be missing this key    │
+<a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a>│                                                                  │
+<a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a>│  Exchange only potentially missing keys (not entire datasets)   │
+<a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a>└─────────────────────────────────────────────────────────────────┘
+<a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a>
+<a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a>Benefits:
+<a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a>- Efficiently identify differences between huge datasets
+<a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a>- Minimize network transfer during synchronization
+<a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a>- O(filter_size) instead of O(data_size)
+</code></pre></div>
+<h3 id="5-spell-checkers">5. Spell Checkers</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>Dictionary Spell Check:
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>Word: "recieve"
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>      │
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>      ▼
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>┌─────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>│                 Dictionary Bloom Filter                          │
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>│   Contains all valid English words (~500,000)                   │
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>│   Size: ~600 KB (vs 5+ MB for full dictionary)                  │
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>└─────────────────────────────────────────────────────────────────┘
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>      │
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>      ├── Definitely not in filter → Misspelled, suggest corrections
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>      │
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>      └── Might be in filter → Probably correct
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>                               (false positives = rare valid-looking typos)
+</code></pre></div>
+<h3 id="6-usernameemail-availability-check">6. Username/Email Availability Check</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>Registration System:
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>User wants username: "cooluser123"
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>      │
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>      ▼
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>┌─────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>│                 Taken Usernames Bloom Filter                     │
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>│   Contains millions of registered usernames                     │
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>└─────────────────────────────────────────────────────────────────┘
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>      │
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a>      ├── Not in filter → Username available (proceed to registration)
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a>      │
+<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a>      └── Might be taken → Query database for confirmation
+<a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a>                                  │
+<a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a>                                  ├── Actually taken → Show error
+<a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a>                                  │
+<a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a>                                  └── False positive → Available!
+<a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a>
+<a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a>Why this works:
+<a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a>- Most usernames are unique (not in filter)
+<a id="__codelineno-20-21" name="__codelineno-20-21" href="#__codelineno-20-21"></a>- Bloom filter query: microseconds
+<a id="__codelineno-20-22" name="__codelineno-20-22" href="#__codelineno-20-22"></a>- Database query: milliseconds
+<a id="__codelineno-20-23" name="__codelineno-20-23" href="#__codelineno-20-23"></a>- Save 95%+ of database lookups
+</code></pre></div>
+<h3 id="7-duplicate-detection-in-stream-processing">7. Duplicate Detection in Stream Processing</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>Event Stream Processing:
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>Incoming events: E1, E2, E3, E1, E4, E2, E5, E1...
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>      │
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>      ▼
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>┌─────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>│               Seen Events Bloom Filter                           │
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>│   Add event IDs as they're processed                            │
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>└─────────────────────────────────────────────────────────────────┘
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>      │
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>For each event:
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>      ├── Not in filter → New event
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a>      │   │
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a>      │   └── Process event
+<a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a>      │       Add to filter
+<a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a>      │
+<a id="__codelineno-21-17" name="__codelineno-21-17" href="#__codelineno-21-17"></a>      └── Might be in filter → Possible duplicate
+<a id="__codelineno-21-18" name="__codelineno-21-18" href="#__codelineno-21-18"></a>          │
+<a id="__codelineno-21-19" name="__codelineno-21-19" href="#__codelineno-21-19"></a>          └── Either skip (accept false positive)
+<a id="__codelineno-21-20" name="__codelineno-21-20" href="#__codelineno-21-20"></a>              Or check database for confirmation
+<a id="__codelineno-21-21" name="__codelineno-21-21" href="#__codelineno-21-21"></a>
+<a id="__codelineno-21-22" name="__codelineno-21-22" href="#__codelineno-21-22"></a>Applications:
+<a id="__codelineno-21-23" name="__codelineno-21-23" href="#__codelineno-21-23"></a>- Ad impression deduplication
+<a id="__codelineno-21-24" name="__codelineno-21-24" href="#__codelineno-21-24"></a>- Transaction replay prevention
+<a id="__codelineno-21-25" name="__codelineno-21-25" href="#__codelineno-21-25"></a>- Log deduplication
+</code></pre></div>
+<hr>
+<h2 id="advantages">Advantages</h2>
+<h3 id="1-exceptional-space-efficiency">1. Exceptional Space Efficiency</h3>
+<p>Bloom filters require significantly less memory than traditional data structures:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>Storage Comparison for 1 billion items:
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>Data Structure           Memory Required
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>─────────────────────────────────────────
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>HashSet (64-bit items)   8 GB + overhead
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>Sorted Array             8 GB
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>Trie                     Variable, often 10+ GB
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>Bloom Filter (1% FP)     ~1.2 GB
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>Bloom Filter (0.1% FP)   ~1.8 GB
+</code></pre></div>
+<h3 id="2-constant-time-operations">2. Constant-Time Operations</h3>
+<p>Both add and query operations are O(k) where k is the number of hash functions — typically 3-10:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>Operation Time Complexity:
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>           Bloom Filter    Hash Set    Sorted Array
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>───────────────────────────────────────────────────
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>Add        O(k) ≈ O(1)     O(1) avg    O(n)
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>Query      O(k) ≈ O(1)     O(1) avg    O(log n)
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>Space      O(1) fixed      O(n)        O(n)
+</code></pre></div>
+<h3 id="3-no-false-negatives">3. No False Negatives</h3>
+<p>If an element was added, querying for it will <strong>always</strong> return "might be present." This guarantee is crucial for many applications:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>Critical Guarantee:
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>Added: "blocked_user_123"
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>Query "blocked_user_123":
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>  → ALWAYS returns "might be present"
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>  → NEVER returns "definitely not present"
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>
+<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>This means you won't accidentally allow a blocked user!
+</code></pre></div>
+<h3 id="4-simple-implementation">4. Simple Implementation</h3>
+<p>The core algorithm is straightforward:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>Add:    hash → set bits
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>Query:  hash → check bits
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>No complex balancing (like trees)
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>No collision resolution (like hash tables)
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>No resizing logic
+</code></pre></div>
+<h3 id="5-parallelizable">5. Parallelizable</h3>
+<p>Hash computations and bit operations can be parallelized:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>Parallel Query:
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>Thread 1: h₁("item") → check bit[pos₁]
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>Thread 2: h₂("item") → check bit[pos₂]
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>Thread 3: h₃("item") → check bit[pos₃]
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>Thread 4: h₄("item") → check bit[pos₄]
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>Combine results with AND
+</code></pre></div>
+<h3 id="6-cache-friendly">6. Cache-Friendly</h3>
+<p>The bit array is compact and sequential, making it cache-efficient:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>Cache Line Utilization:
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>64-byte cache line = 512 bits
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>With k=7 hash functions, likely 1-3 cache misses per query
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>vs. hash table: potentially O(k) cache misses for chaining
+</code></pre></div>
+<hr>
+<h2 id="disadvantages">Disadvantages</h2>
+<h3 id="1-false-positives">1. False Positives</h3>
+<p>The fundamental trade-off — some queries will incorrectly report "might be present":</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>False Positive Scenario:
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>Filter contains: ["apple", "banana", "cherry"]
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>Query "dragonfruit":
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>  h₁("dragonfruit") = 2  → bit set by "apple"
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a>  h₂("dragonfruit") = 7  → bit set by "banana"
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>  h₃("dragonfruit") = 14 → bit set by "cherry"
+<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a>
+<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a>  All bits are 1 → FALSE POSITIVE!
+<a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a>
+<a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a>"dragonfruit" was never added but reported as "might be present"
+</code></pre></div>
+<p><strong>Mitigation Strategies:</strong>
+- Size filter appropriately for acceptable FP rate
+- Use secondary confirmation (database lookup) for positive matches
+- Use Cuckoo filters for lower FP rates</p>
+<h3 id="2-no-deletion-support-standard-filter">2. No Deletion Support (Standard Filter)</h3>
+<p>Once an element is added, it cannot be removed:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>Why Deletion Fails:
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>Add "apple":  sets bits 2, 7, 11
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>Add "apricot": sets bits 2, 9, 11  (shares bits 2 and 11)
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>Delete "apple": clear bits 2, 7, 11 ???
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a>
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>Problem: Clearing bit 2 or 11 would cause FALSE NEGATIVE for "apricot"!
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a>
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a>"apricot" was added but would now report "definitely not present"
+</code></pre></div>
+<p><strong>Workarounds:</strong>
+- Use Counting Bloom Filter (4x memory)
+- Rebuild filter periodically
+- Use Cuckoo Filter</p>
+<h3 id="3-cannot-retrieve-elements">3. Cannot Retrieve Elements</h3>
+<p>Bloom filters only test membership — you cannot enumerate the elements:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>Bloom Filter Limitation:
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>┌───┬───┬───┬───┬───┬───┬───┬───┐
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>│ 0 │ 1 │ 0 │ 1 │ 1 │ 0 │ 1 │ 0 │
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>└───┴───┴───┴───┴───┴───┴───┴───┘
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a>❌ Cannot answer: "What elements are in this filter?"
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a>❌ Cannot answer: "How many unique elements are stored?"
+<a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a>✓ Can only answer: "Might this specific element be present?"
+</code></pre></div>
+<h3 id="4-filter-saturation">4. Filter Saturation</h3>
+<p>As more elements are added, more bits become 1, increasing false positive rate:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>Saturation Over Time:
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>After 100 elements:
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>┌───┬───┬───┬───┬───┬───┬───┬───┐
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>│ 0 │ 1 │ 0 │ 1 │ 0 │ 0 │ 1 │ 0 │  15% bits set, ~0.1% FP
+<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>└───┴───┴───┴───┴───┴───┴───┴───┘
+<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>
+<a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a>After 10,000 elements:
+<a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a>┌───┬───┬───┬───┬───┬───┬───┬───┐
+<a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a>│ 1 │ 1 │ 0 │ 1 │ 1 │ 0 │ 1 │ 1 │  50% bits set, ~3% FP
+<a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a>└───┴───┴───┴───┴───┴───┴───┴───┘
+<a id="__codelineno-31-12" name="__codelineno-31-12" href="#__codelineno-31-12"></a>
+<a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a>After 100,000 elements:
+<a id="__codelineno-31-14" name="__codelineno-31-14" href="#__codelineno-31-14"></a>┌───┬───┬───┬───┬───┬───┬───┬───┐
+<a id="__codelineno-31-15" name="__codelineno-31-15" href="#__codelineno-31-15"></a>│ 1 │ 1 │ 1 │ 1 │ 1 │ 1 │ 1 │ 1 │  95% bits set, ~90% FP!
+<a id="__codelineno-31-16" name="__codelineno-31-16" href="#__codelineno-31-16"></a>└───┴───┴───┴───┴───┴───┴───┴───┘
+<a id="__codelineno-31-17" name="__codelineno-31-17" href="#__codelineno-31-17"></a>
+<a id="__codelineno-31-18" name="__codelineno-31-18" href="#__codelineno-31-18"></a>At saturation, almost every query returns "might be present"
+</code></pre></div>
+<p><strong>Mitigation:</strong>
+- Size filter correctly for expected element count
+- Use Scalable Bloom Filter for unknown element counts
+- Monitor fill rate and rebuild when necessary</p>
+<h3 id="5-cannot-count-occurrences">5. Cannot Count Occurrences</h3>
+<p>Standard Bloom filters cannot track how many times an element was added:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>Adding Same Element Multiple Times:
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>add("apple")  → sets bits 2, 7, 11
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>add("apple")  → same bits already set (no change)
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a>add("apple")  → same bits already set (no change)
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a>
+<a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a>Query: "How many times was 'apple' added?" → UNKNOWN
+<a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a>
+<a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a>The filter only knows "apple might be present" - not the count
+</code></pre></div>
+<p><strong>Workaround:</strong> Use Count-Min Sketch for frequency estimation</p>
+<h3 id="6-hash-function-dependency">6. Hash Function Dependency</h3>
+<p>Poor hash functions lead to uneven bit distribution and higher false positive rates:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>Good Hash Function:
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>  Bits set uniformly across array
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>  FP rate matches theoretical predictions
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>Bad Hash Function:
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>  Bits clustered in certain regions
+<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>  ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+<a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a>  │ 1 │ 1 │ 1 │ 1 │ 1 │ 1 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │
+<a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a>  └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+<a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a>  Uneven distribution → higher FP rate than expected
+</code></pre></div>
+<hr>
+<h2 id="performance-comparison">Performance Comparison</h2>
+<h3 id="bloom-filter-vs-other-data-structures">Bloom Filter vs Other Data Structures</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Bloom Filter</th>
+<th>Hash Set</th>
+<th>Sorted Array</th>
+<th>Trie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Space</td>
+<td>O(1) fixed</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>Add</td>
+<td>O(k)</td>
+<td>O(1) avg</td>
+<td>O(n)</td>
+<td>O(m)</td>
+</tr>
+<tr>
+<td>Query</td>
+<td>O(k)</td>
+<td>O(1) avg</td>
+<td>O(log n)</td>
+<td>O(m)</td>
+</tr>
+<tr>
+<td>Delete</td>
+<td>No*</td>
+<td>O(1)</td>
+<td>O(n)</td>
+<td>O(m)</td>
+</tr>
+<tr>
+<td>False Positives</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>False Negatives</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Enumerate</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Memory per item</td>
+<td>~10 bits</td>
+<td>64+ bits</td>
+<td>64+ bits</td>
+<td>Variable</td>
+</tr>
+</tbody>
+</table>
+<p>*Standard Bloom filter; Counting Bloom filter supports deletion</p>
+<h3 id="when-to-use-bloom-filters">When to Use Bloom Filters</h3>
+<p><strong>Use Bloom Filters When:</strong>
+- Memory is constrained
+- False positives are acceptable
+- False negatives are not acceptable
+- You don't need to enumerate elements
+- You don't need to delete elements (or can use counting variant)
+- Query speed is critical</p>
+<p><strong>Don't Use Bloom Filters When:</strong>
+- You need exact membership (no false positives)
+- You need to enumerate stored elements
+- You need to track element counts
+- Your element set is very small (hash set is simpler)
+- False positive cost is very high</p>
+<hr>
+<h2 id="summary">Summary</h2>
+<p>Bloom filters are a powerful tool in the systems programmer's toolkit. They provide an elegant trade-off between space, speed, and accuracy that makes them ideal for many large-scale systems.</p>
+<p><strong>Key Takeaways:</strong></p>
+<ol>
+<li><strong>Probabilistic "No"</strong>: "Definitely not present" is always correct</li>
+<li><strong>Probabilistic "Yes"</strong>: "Might be present" has a controllable false positive rate</li>
+<li><strong>Space Efficient</strong>: ~10 bits per element for 1% false positive rate</li>
+<li><strong>Fast</strong>: O(k) operations where k is typically 3-10</li>
+<li><strong>No Deletions</strong>: Standard filters don't support removal (use counting variant)</li>
+<li><strong>Size Matters</strong>: Must be sized correctly for expected element count</li>
+</ol>
+<p><strong>Quick Sizing Formula:</strong>
+- Bits needed: <span class="arithmatex">\(m = -\frac{n \ln p}{(\ln 2)^2}\)</span>
+- Hash functions: <span class="arithmatex">\(k = -\log_2 p\)</span>
+- 1% FP rate ≈ 10 bits/element with 7 hash functions</p>
+<p>Bloom filters power some of the most critical systems in modern computing, from browser security to database optimization to distributed systems synchronization.</p></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 <a href="https://github.com/abhishekghoshh"  target="_blank" rel="noopener">Abhishek Ghosh</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/abhishekghoshh" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://x.com/abhishek_ghoshh" target="_blank" rel="noopener" title="x.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/abhishek-ghosh-220679132/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5m282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>

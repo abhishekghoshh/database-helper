@@ -6,6 +6,10 @@
 - [w3schools](https://www.w3schools.com/sql/default.asp)
 
 
+## Build your own database
+
+- [Let's Build a Simple Database](https://cstack.github.io/db_tutorial/)
+
 
 
 ## Youtube

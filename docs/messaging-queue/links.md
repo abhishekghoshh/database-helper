@@ -3,9 +3,22 @@
 
 ## Youtube
 
+
+### Message Queues
+
+- [Message Queues in System Design Interviews w/ Meta Staff Engineer](https://www.youtube.com/watch?v=1ISRd0bS714)
+- [Master Queues | System Design Interview](https://www.youtube.com/watch?v=2tCfITBVKjA)
+
+
+### Comparisions
+
+- [Kafka vs RabbitMQ](https://www.youtube.com/watch?v=1HOVtQ-_fcE)
 - [The Best Queue System for Scaling - Not Kafka!](https://www.youtube.com/watch?v=xVkMrozIBpg)
 - [What is a Message Queue and When should you use Messaging Queue Systems Like RabbitMQ and Kafka](https://www.youtube.com/watch?v=W4_aGb_MOls)
 - [When to Use Kafka or RabbitMQ | System Design](https://www.youtube.com/watch?v=w8xWTIFU4C8)
 - [Kafka vs. RabbitMQ - who wins and why? | Systems Design Interview 0 to 1 with Ex-Google SWE](https://www.youtube.com/watch?v=_5mu7lZz5X4)
+
+
+
 
 

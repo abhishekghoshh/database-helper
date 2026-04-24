@@ -6,26 +6,44 @@
 - [Kubernetes - Configure PostgreSQL Streaming Replication](https://integralzone.com/kubernetes-configure-postgresql-streaming-replication)
 
 
+## Udemy
+
+- [SQL and PostgreSQL: The Complete Developer's Guide](https://udemy.com/course/sql-and-postgresql/)
+- [PostgreSQL Bootcamp : Go From Beginner to Advanced, 60+hours](https://udemy.com/course/postgresqlmasterclass/)
+
+
+## Medium
+
+
+
 ## Youtube
 
 ## Introduction
 
+- [99% of Developers Don't Get PostgreSQL](https://www.youtube.com/watch?v=P8rrhZTPEAQ)
+- [Why Postgres Is So Popular](https://www.youtube.com/watch?v=0lXjf3nxiGg)
+
+
+## How postgres can replace entire tech stack
+
 - [I replaced my entire tech stack with Postgres...](https://www.youtube.com/watch?v=qfRQ5zhYuJE)
 - [Postgres can replace your entire stack...](https://www.youtube.com/watch?v=1qs9bQ0MlpQ)
 - [Delete Redis, RabbitMQ, AWS SQS....](https://www.youtube.com/watch?v=xcjfbnN6b28)
-- [5 Secrets for making PostgreSQL run BLAZING FAST. How to improve database performance.](https://www.youtube.com/watch?v=YON9PliOYFk)
-- [Solving one of PostgreSQL's biggest weaknesses.](https://www.youtube.com/watch?v=ruUlK6zRwS8)
 - [Wait... PostgreSQL can do WHAT?](https://www.youtube.com/watch?v=VEWXmdjzIpQ)
-- [Why Postgres Is So Popular](https://www.youtube.com/watch?v=0lXjf3nxiGg)
 - [Postgres Just Killed Elasticsearch](https://www.youtube.com/watch?v=XEiQV4zRC-U)
-- [99% of Developers Don't Get PostgreSQL](https://www.youtube.com/watch?v=P8rrhZTPEAQ)
+- [I replaced my entire stack with Postgres...](https://www.youtube.com/watch?v=TdondBmyNXc)
+- [Using PostgreSQL WAL as a Video Stream Transport in Go: A Deep Dive](https://www.youtube.com/watch?v=IcMjwFotY6A)
 
 
 
 ## Internal
 
 - [Postgres Architecture Explained](https://www.youtube.com/watch?v=Q56kljmIN14)
+- [5 Secrets for making PostgreSQL run BLAZING FAST. How to improve database performance.](https://www.youtube.com/watch?v=YON9PliOYFk)
 - [The Database That Keeps Every Mistake | PostgreSQL Documentary](https://www.youtube.com/watch?v=_rfXU8mCZkk)
+- [Postgres Trick I bet you didn't knew!](https://www.youtube.com/watch?v=4-Z_I4SwgJQ)
+- [Solving one of PostgreSQL's biggest weaknesses.](https://www.youtube.com/watch?v=ruUlK6zRwS8)
+
 
 
 ## Playlists and tutorial
@@ -57,7 +75,10 @@
   - [Introduction to PostgreSQL](https://www.youtube.com/playlist?list=PLHq1uqvAteVsnMSMVp-Tcb0MSBVKQ7GLg)
 
 
-## Udemy
 
-- [SQL and PostgreSQL: The Complete Developer's Guide](https://udemy.com/course/sql-and-postgresql/)
-- [PostgreSQL Bootcamp : Go From Beginner to Advanced, 60+hours](https://udemy.com/course/postgresqlmasterclass/)
+### Alternative
+
+- [The Postgres Performance Trap Every Developer Falls Into](https://www.youtube.com/watch?v=BharE_Kc9sQ)
+
+
+

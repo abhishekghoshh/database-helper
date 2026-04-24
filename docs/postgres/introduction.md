@@ -6,3 +6,8 @@ Connection pooling with PgBouncer
 Why Postgress is not so good with Write heavy
 MVCC: Multiversion Concurrency Controll
 Vaccuming old data created for MVCC
+
+
+How postgres can replace entire tech stack?
+
+1. 

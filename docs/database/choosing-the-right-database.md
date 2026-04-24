@@ -12,8 +12,10 @@
 - [Which Database Model to Choose?](https://www.youtube.com/watch?v=9mdadNspP_M)
 - [Did I Pick The Right Database???](https://www.youtube.com/watch?v=cC6HFd1zcbo)
 
+- [Backend That Never Goes Down](https://www.youtube.com/watch?v=MPfK5ge-f94)
 
 
+- [Why Netflix, Instagram, and Twitter Pick Different Databases](https://www.youtube.com/watch?v=XjHZCprrEgk)
 
 ## Theory
 

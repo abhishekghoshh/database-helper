@@ -4,7 +4,12 @@
 
 - [21. Database Indexing: How DBMS Indexing done to improve search query performance? Explained](https://www.youtube.com/watch?v=6ZquiVH8AGU)
 
-
+- [DB Indexing in System Design Interviews - B-tree, Geospatial, Inverted Index, and more!](https://www.youtube.com/watch?v=BHCSL_ZifI0)
+- [How do indexes make databases read faster?](https://www.youtube.com/watch?v=3G293is403I)
+- [Database Indexes - You Might Be Using Them Wrong](https://www.youtube.com/watch?v=RufupUDBtYY)
+- [Database Indexing for Dumb Developers](https://www.youtube.com/watch?v=lYh6LrSIDvY)
+- [How SQL Indexes Actually Work (Step-by-Step)](https://www.youtube.com/watch?v=teMXE6hzva0)
+- [SQL Indexes (Visually Explained) | Clustered vs Nonclustered | #SQL Course 35](https://www.youtube.com/watch?v=BxAj3bl00-o)
 
 ## Theory
 

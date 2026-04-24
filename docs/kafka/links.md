@@ -46,7 +46,6 @@
 - [MASTER Apache Kafka in just 8 minutes to Build Real-Time Apps](https://www.youtube.com/watch?v=feKBnsvO2Pk)
 
 
-
 ### Playlists
 
 - [ByteByteGo](https://www.youtube.com/@ByteByteGo/playlists)
@@ -54,6 +53,11 @@
   - [System Design: Apache Kafka In 3 Minutes](https://www.youtube.com/watch?v=HZklgPkboro)
   - [System Design: Why is Kafka fast?](https://www.youtube.com/watch?v=UNUz1-msbOM)
   - [Top Kafka Use Cases You Should Know](https://www.youtube.com/watch?v=Ajz6dBp_EB4)
+
+- [Hello Interview - SWE Interview Preparation](https://www.youtube.com/@hello_interview)
+  - [Message Queues in System Design Interviews w/ Meta Staff Engineer](https://www.youtube.com/watch?v=1ISRd0bS714)
+  - [Kafka System Design Deep Dive w/ a Ex-Meta Staff Engineer](https://www.youtube.com/watch?v=DU8o-OTeoCc)
+  - [Kafka](https://www.hellointerview.com/learn/system-design/deep-dives/kafka)
 
 - [Piyush Garg](https://www.youtube.com/@piyushgargdev/videos)
   - [Why do we need Kafka?](https://www.youtube.com/watch?v=pl3sJ-RoD3Q)

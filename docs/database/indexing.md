@@ -23,6 +23,7 @@
 
 ## Theory
 
+
 ### What is Database Indexing?
 
 **Database indexing** is a data structure technique used to quickly locate and access data in a database without scanning every row. An index creates a separate data structure (usually a B-Tree or B+ Tree) that stores a subset of columns with pointers to the actual rows, dramatically improving query performance.
@@ -709,6 +710,52 @@ CREATE FULLTEXT INDEX idx_description ON products(description);
 -- Enables: WHERE MATCH(description) AGAINST ('wireless mouse')
 ```
 
+#### 8. Hash Index
+
+Uses a hash function to map keys to bucket locations. Only supports **equality lookups** (`=`), not range queries.
+
+```sql
+-- In PostgreSQL:
+CREATE INDEX idx_email_hash ON users USING HASH (email);
+-- Fast for: WHERE email = 'john@example.com'
+-- Cannot use for: WHERE email > 'j%' (range queries not supported)
+```
+
+**Best for**: Exact-match lookups on high-cardinality columns where range queries are not needed.
+
+#### 9. Geospatial Index (R-Tree)
+
+Indexes 2D/3D spatial data using R-Tree structures. Used for location-based queries.
+
+```sql
+-- In MySQL:
+CREATE SPATIAL INDEX idx_location ON stores(coordinates);
+-- Enables: Find all stores within 5km of a point
+
+-- In PostGIS (PostgreSQL):
+CREATE INDEX idx_geo ON locations USING GIST (geom);
+-- Enables: ST_DWithin(geom, ST_MakePoint(-73.99, 40.73), 5000)
+```
+
+**Best for**: "Find nearby" queries, geofencing, map applications.
+
+#### 10. Bitmap Index
+
+Stores a bitmap (bit array) for each distinct value in a column. Each bit represents a row — `1` if the row has that value, `0` otherwise.
+
+```sql
+-- In Oracle:
+CREATE BITMAP INDEX idx_status ON orders(status);
+-- Column values: 'pending', 'shipped', 'delivered'
+
+-- Bitmap representation:
+-- 'pending':   1 0 0 1 0 1 0 0 ...
+-- 'shipped':   0 1 0 0 0 0 1 0 ...
+-- 'delivered': 0 0 1 0 1 0 0 1 ...
+```
+
+**Best for**: Low-cardinality columns (few distinct values like gender, status, boolean flags). Very efficient for data warehousing and OLAP queries with multiple AND/OR conditions.
+
 ---
 
 ## Question 3: Understanding Data Structures Used for Indexing
@@ -755,6 +802,16 @@ CREATE INDEX idx_price ON products(price);
    - Every update must update index
 ❌ **Table has heavy INSERT/UPDATE workload**
    - Indexes slow down writes
+
+**Common Index Mistakes:**
+
+| Mistake | Problem | Solution |
+|---------|---------|----------|
+| **Over-indexing** | Every column indexed → slow writes, wasted space | Only index columns used in queries |
+| **Unused indexes** | Indexes that no query ever uses | Audit with `pg_stat_user_indexes` or `sys.dm_db_index_usage_stats` |
+| **Wrong composite order** | `INDEX(a, b)` helps `WHERE a = ?` but NOT `WHERE b = ?` alone | Put most selective / most queried column first |
+| **Not monitoring** | Queries doing full scans despite indexes | Use `EXPLAIN` / `EXPLAIN ANALYZE` to verify index usage |
+| **Redundant indexes** | `INDEX(a)` is redundant if `INDEX(a, b)` exists | Remove the shorter index |
 
 ---
 

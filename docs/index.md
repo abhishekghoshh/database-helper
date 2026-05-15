@@ -1,151 +1,91 @@
-# Welcome to Database Helper
+# Database
 
 
-## Blogs and websites
+## Table of Contents
 
-- [w3schools](https://www.w3schools.com/sql/default.asp)
+### Database Concepts
 
-
-## Build your own database
-
-- [Let's Build a Simple Database](https://cstack.github.io/db_tutorial/)
-
-
-
-## Youtube
-
-## Short Videos
-
-- [How do Databases Work? | System Design](https://www.youtube.com/watch?v=FnsIJAaGRk4)
-
-
-### Introduction
-
-- [15 futuristic databases you've never heard of](https://www.youtube.com/watch?v=jb2AvF8XzII)
-- [What is Database Sharding?](https://www.youtube.com/watch?v=hdxdhCpgYo8)
-- [When should you shard your database?](https://www.youtube.com/watch?v=iHNovZUZM3A)
-- [Which Database Model to Choose?](https://www.youtube.com/watch?v=9mdadNspP_M)
-- [Secret To Optimizing SQL Queries - Understand The SQL Execution Order](https://www.youtube.com/watch?v=BHwzDmr6d7s)
-- [The fascinating history of Databases](https://www.youtube.com/watch?v=6szdySvorzA)
-
-
-### Databases
-
-- [Database Engineering](https://www.youtube.com/playlist?list=PLsdq-3Z1EPT2C-Da7Jscr7NptGcIZgQ2l)
-
-
-### Comparisions
-
-#### SQL vs NoSQL
-
-- [SQL vs NoSQL or MySQL vs MongoDB](https://www.youtube.com/watch?v=ZS_kXvOeQ5Y)
-- [Which Is Better? SQL vs NoSQL](https://www.youtube.com/watch?v=t0GlGbtMTio)
-- [10. SQL vs NoSQL | Difference between SQL & NoSQL | SQL Vs NoSQL Tutorial | SQL, NoSQL system design](https://www.youtube.com/watch?v=fG8c-huFt70)
-
-
-
-
-### Database
-
-- [Database](https://www.youtube.com/playlist?list=PLCRMIe5FDPsdnSszazqVIQFh99t1ExH19)
-- [Database Design](https://www.youtube.com/playlist?list=PLZDOU071E4v6epq3GS0IqZicZc3xwwBN_)
-- [Complete DBMS Course](https://www.youtube.com/playlist?list=PLrL_PSQ6q062cD0vPMGYW_AIpNg6T0_Fq)
-- [SQL Course](https://www.youtube.com/playlist?list=PLrL_PSQ6q062H5CetdplYW7xQKeq8XaR0)
-- [Databases in Depth](https://www.youtube.com/playlist?list=PLliXPok7ZonnALnedG5doBOSCXlU14yJF)
-- [Database Programming from scratch](https://www.youtube.com/playlist?list=PLdYoxziVZt9DWfdxTnXDYdc3F2TFT9jzV)
-- [DBMS Placements Series](https://www.youtube.com/playlist?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU)
-- [Database Tutorials](https://www.youtube.com/playlist?list=PLiMWaCMwGJXnhmmh5pu9sdWekdRwAzV5f)
-- [Database in kubernetes](https://www.youtube.com/playlist?list=PLyicRj904Z9_58pmbrkCrQqgvijy8JnP2)
-- [Database Engineering](https://www.youtube.com/playlist?list=PLQnljOFTspQXjD0HOzN7P2tgzu7scWpl2)
-- [Relational database (RDBMS) by Decomplexify](https://www.youtube.com/playlist?list=PLNITTkCQVxeXryTQvY0JBWTyN9ynxxPH8)
-
-
-
-### SQL
-
-- [SQL Tutorial - Full Database Course for Beginners](https://www.youtube.com/watch?v=HXV3zeQKqGY)
-
+- [Database Introduction](database/introduction.md)
+- [Choosing the right Database](database/choosing-the-right-database.md)
+- [Primary Key](database/primary-key.md)
+- [Database Index](database/indexing.md)
+- [B-Tree and B+ Tree](database/b-tree-and-b-plus-tree.md)
+- [LSM Tree](database/lsm-tree.md)
+- [Bloom Filters](database/bloom-filters.md)
+- [Sharding](database/sharding.md)
+- [NoSQL](database/nosql.md)
+- [ORM](database/orm.md)
+- [Graph Database](database/graph-database.md)
+- [Vector Database](database/vector-database.md)
+- [Message Queues](database/message-queues.md)
+- [Build your own Database](database/build-your-own-database.md)
 
 ### PostgreSQL
 
-
-
-### NOSQL
-
-- [How do NoSQL databases work? Simply Explained!](https://www.youtube.com/watch?v=0buKQHokLK8)
-- [The Secret Sauce Behind NoSQL: LSM Tree](https://www.youtube.com/watch?v=I6jB0nM9SKU)
-- [Cassandra vs MongoDB vs HBase | Difference Between Popular NoSQL Databases | Edureka](https://www.youtube.com/watch?v=QlqylUeqeis)
-
-
-### Graph database
-
-- [Graph Databases Will Change Your Freakin' Life (Best Intro Into Graph Databases)](https://www.youtube.com/watch?v=GekQqFZm7mA)
-
-
-### Vector database
-
-- [The Power of Vector Databases For Knowledge Search](https://www.youtube.com/watch?v=awIm3rQOBxE)
-- [Vector databases are so hot right now. WTF are they?](https://www.youtube.com/watch?v=klTvEwg3oJ4)
-
-
-### DBMS(IIT)
-
-- [Data Base Management System | IIT-KGP](https://www.youtube.com/playlist?list=PLIwC9bZ0rmjSkm1VRJROX4vP2YMIf4Ebh)
-- [Database Management Systems | IIT-MADRAS](https://www.youtube.com/playlist?list=PLZ2ps__7DhBYc4jkUk_yQAjYEVFzVzhdU)
-
-
-## Udemy
-
-### Introduction
-
-- [Cloud Computing for Beginners - Database Technologies](https://www.udemy.com/course/cloud-computing-for-beginners-database-technologies/)
-- [Relational Database Design](https://www.udemy.com/course/relational-database-design/)
-
-
-### DBMS
-
-- [Fundamentals of Database Engineering](https://www.udemy.com/course/database-engines-crash-course/)
-- [Database Management System from scratch in parts]()
-    - [Database Management System from scratch - Part 1](https://www.udemy.com/course/database-management-systems/)
-    - [Database Management System from scratch - Part 2](https://www.udemy.com/course/database-management-system-course/)
-    - [Database Management Systems Part 3 : SQL Interview Course](https://www.udemy.com/course/sql-interview-preparation-course/)
-    - [Database Management Systems Part 4 : Transactions](https://www.udemy.com/course/database-management-systems-transactions/)
-    - [Database Management Final Part (5): Indexing,B Trees,B+Trees](https://www.udemy.com/course/database-management-indexing-course-btree/)
-- [Complete SQL and Databases Bootcamp](https://www.udemy.com/course/complete-sql-databases-bootcamp-zero-to-mastery/)
-
-
-
-## Blogs
-
-### Introduction
-
-- [Strong Consistency vs Eventual Consistency](https://medium.com/@abhirup.acharya009/strong-consistency-vs-eventual-consistency-19ce6f87c112)
-- [6 Reasons Why PostgreSQL is Not So Popular, Yet!](https://blog.stackademic.com/6-reason-for-why-postgresql-is-not-so-popular-yet-2c46bdfd0f03)
-- [Why MongoDB is Still Popular?](https://blog.stackademic.com/why-mongodb-is-still-popular-ae8dd42bbe0e)
-- [LSM Trees: the Go-To Data Structure for Databases, Search Engines, and More](https://medium.com/@dwivedi.ankit21/lsm-trees-the-go-to-data-structure-for-databases-search-engines-and-more-c3a48fa469d2)
-- [Optimistic Locking vs Pessimistic Locking: Managing Concurrent Access](https://medium.com/@abhirup.acharya009/managing-concurrent-access-optimistic-locking-vs-pessimistic-locking-0f6a64294db7)
-- [Redis Pub-Sub or Kafka: Choosing the Right Tool for Your Use Case](https://medium.com/@abhirup.acharya009/redis-pub-sub-or-kafka-choosing-the-right-tool-for-your-use-case-7241bfa87690)
-- [Understand the basic Kafka architecture before you go crazy with it!](https://medium.com/devops-techable/understand-the-basic-kafka-architecture-before-you-go-crazy-with-it-57f87aab921f)
-- [The Simplified Introduction of Vector Databases](https://medium.com/@dwivedi.ankit21/the-simplified-introduction-of-vector-databases-d1d9c22ea828)
-- [SSTables and LSM Trees](https://medium.com/the-developers-diary/sstables-and-lsm-trees-2e4b6c8be251)
-- [B-Trees](https://medium.com/the-developers-diary/b-trees-bfc04edeff72)
-- [Concurrency Challenges in Database Transactions: Isolation Levels and Locking Mechanisms](https://dip-mazumder.medium.com/concurrency-challenges-in-database-transactions-isolation-levels-and-locking-mechanisms-9672d335d432)
-- [Hash Indexing](https://medium.com/the-developers-diary/hash-indexing-42f505f63fa0)
-- [Leaderless Replication In Distributed System](https://medium.com/the-developers-diary/leaderless-replication-unveiled-5f6910dd9825)
-- [Understanding Database Partitioning in Distributed Systems : Rebalancing Partitions](https://medium.com/the-developers-diary/understanding-database-partitioning-in-distributed-systems-rebalancing-partitions-fa7fee542fd3)
-- [Introduction To Database Indexing](https://medium.com/@rtawadrous/introduction-to-database-indexes-9b488e243cc1)
-- [Design Metrics Aggregation System | LSM Tree | Storage Engine](https://medium.com/@eugene-s/design-metrics-aggregation-system-lsm-tree-storage-engine-d52a6d10ac21)
-- [The only local MongoDB replica set with Docker Compose guide you'll ever need!](https://medium.com/workleap/the-only-local-mongodb-replica-set-with-docker-compose-guide-youll-ever-need-2f0b74dd8384)
-
+- [Introduction](postgres/introduction.md)
+- [Links](postgres/links.md)
 
 ### SQL
 
-- [SQL Fundamentals](https://medium.com/@sqlfundamentals)
-    - [20 Advanced SQL Techniques](https://blog.stackademic.com/20-advanced-sql-techniques-dcbe4da6c288)
-    - [9 Advanced SQL Queries for Data Mastery](https://blog.stackademic.com/9-advanced-sql-queries-for-data-mastery-ce37ae78837e)
-    - [Top 10 Advanced SQL Queries](https://blog.devops.dev/top-10-advanced-sql-queries-dd5717b7e902)
-- [Learning SQL](https://medium.com/learning-sql)
-    - [Writing SQL Like a Pro: Advanced Techniques Showcased in a Real-Life Scenario](https://medium.com/learning-sql/writing-sql-like-a-pro-advanced-techniques-showcased-in-a-real-life-scenario-2811a848d34a)
-    - [12 Tips for Optimizing SQL Queries for Faster Performance](https://medium.com/learning-sql/12-tips-for-optimizing-sql-queries-for-faster-performance-8c6c092d7af1)
-- [Dev Genius](https://blog.devgenius.io/)
-    - [9 SQL Mistakes to Avoid for Effective Queries](https://blog.devgenius.io/9-sql-mistakes-to-avoid-for-effective-queries-f26017519fcd)   
+- [Introduction](sql/introduction.md)
+- [Leetcode](sql/leetcode.md)
+- [Links](sql/links.md)
+
+### Redis
+
+- [Introduction](redis/001-introduction.md)
+- [Links](redis/links.md)
+
+### MongoDB
+
+- [Introduction](mongodb/introduction.md)
+- [CRUD](mongodb/crud.md)
+- [Data Types](mongodb/data-types.md)
+- [Create](mongodb/create.md)
+- [Operators](mongodb/operators.md)
+- [Read](mongodb/read.md)
+- [Update](mongodb/update.md)
+- [Delete](mongodb/delete.md)
+- [Index](mongodb/index.md)
+- [Geospatial Data](mongodb/geospatial-data.md)
+- [Aggregation Framework](mongodb/aggregation-framework.md)
+- [Advance Commands](mongodb/advance-commands.md)
+- [Links](mongodb/links.md)
+
+### Kafka
+
+- [Introduction](kafka/introduction.md)
+- [Confluent vs Apache Kafka](kafka/kafka.md)
+- [Deploy on Docker](kafka/deploy-on-docker.md)
+- [Kafka Deploy on Docker (KRaft)](kafka/kafka-deploy-on-docker.md)
+- [Kafbat UI](kafka/kafbat-ui.md)
+- [Links](kafka/links.md)
+
+### Neo4j
+
+- [Introduction](database/neo4j.md)
+
+
+### SQLite
+
+- [Introduction](database/sqlite.md)
+
+
+### Elasticsearch
+
+- [Introduction](database/elastic-search.md)
+
+
+### Cassandra
+
+- [Introduction](database/cassandra.md)
+
+
+### SurrealDB
+
+- [Introduction](database/SurrealDB.md)
+
+
+### RabbitMQ
+
+- [Introduction](database/rabbitMQ.md)

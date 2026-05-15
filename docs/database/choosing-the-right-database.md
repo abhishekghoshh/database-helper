@@ -4,6 +4,9 @@
 
 ## Youtube
 
+
+### Choosing the right Database
+
 - [How To Choose The Right Database?](https://www.youtube.com/watch?v=kkeFE6iRfMM)
 - [7 Database Paradigms](https://www.youtube.com/watch?v=W2Z7fbCLSTw)
 - [Picking the right Database for your Project (Avoid Common Mistakes!)](https://www.youtube.com/watch?v=XH-bKOjB0Bc)
@@ -16,6 +19,19 @@
 
 
 - [Why Netflix, Instagram, and Twitter Pick Different Databases](https://www.youtube.com/watch?v=XjHZCprrEgk)
+
+
+### SQL vs NoSQL
+
+- [SQL vs NoSQL or MySQL vs MongoDB](https://www.youtube.com/watch?v=ZS_kXvOeQ5Y)
+- [Which Is Better? SQL vs NoSQL](https://www.youtube.com/watch?v=t0GlGbtMTio)
+- [10. SQL vs NoSQL | Difference between SQL & NoSQL | SQL Vs NoSQL Tutorial | SQL, NoSQL system design](https://www.youtube.com/watch?v=fG8c-huFt70)
+
+
+
+
+
+
 
 ## Theory
 

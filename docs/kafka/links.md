@@ -133,6 +133,7 @@
 
 
 
+
 ### Apache Kafka
 
 - [Apache Kafka: The Complete Guide to Distributed Event Streaming](https://medium.com/@tanmoysantra67/apache-kafka-the-complete-guide-to-distributed-event-streaming-d6ce9df28647)
@@ -142,9 +143,8 @@
 - [Kafka](https://medium.com/@bhaumikmaan/list/kafka-549d42bfaa31)
 - [Managing Kafka Consumer Lag and Offsets](https://aws.plainenglish.io/managing-kafka-consumer-lag-and-offsets-925e9bb1f6a1)
 - [Extending Kafka's Exactly-Once Semantics to External Systems](https://medium.com/@raviatadobe/extending-kafkas-exactly-once-semantics-to-external-systems-c395267935bd)
-
-
-
+- [Understand the basic Kafka architecture before you go crazy with it!](https://medium.com/devops-techable/understand-the-basic-kafka-architecture-before-you-go-crazy-with-it-57f87aab921f)
+- [Redis Pub-Sub or Kafka: Choosing the Right Tool for Your Use Case](https://medium.com/@abhirup.acharya009/redis-pub-sub-or-kafka-choosing-the-right-tool-for-your-use-case-7241bfa87690)
 - [Building the Foundation — Initial Project Setup for Our Kafka Event Pipeline — Day 1](https://codefarm0.medium.com/building-the-foundation-initial-project-setup-for-our-kafka-event-pipeline-day-1-bff67b2b17d1)
 
 

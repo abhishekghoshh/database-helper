@@ -14,6 +14,7 @@
 
 ## Medium
 
+- [6 Reasons Why PostgreSQL is Not So Popular, Yet!](https://blog.stackademic.com/6-reason-for-why-postgresql-is-not-so-popular-yet-2c46bdfd0f03)
 
 
 ## Youtube
@@ -22,11 +23,12 @@
 
 - [99% of Developers Don't Get PostgreSQL](https://www.youtube.com/watch?v=P8rrhZTPEAQ)
 - [Why Postgres Is So Popular](https://www.youtube.com/watch?v=0lXjf3nxiGg)
+- [How PostgreSQL Quietly Took Over](https://www.youtube.com/watch?v=0hD4K3Ab3Fc)
 
 
 ## How postgres can replace entire tech stack
 
-- [I replaced my entire tech stack with Postgres...](https://www.youtube.com/watch?v=qfRQ5zhYuJE)
+- [I replaced my entire tech stack with Postgres...](https://www.youtube.com/watch?v=3JW732GrMdg)
 - [Postgres can replace your entire stack...](https://www.youtube.com/watch?v=1qs9bQ0MlpQ)
 - [Delete Redis, RabbitMQ, AWS SQS....](https://www.youtube.com/watch?v=xcjfbnN6b28)
 - [Wait... PostgreSQL can do WHAT?](https://www.youtube.com/watch?v=VEWXmdjzIpQ)

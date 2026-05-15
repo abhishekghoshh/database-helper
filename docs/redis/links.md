@@ -1,9 +1,5 @@
 # Redis basics
 
-## Resources
-- [introduction](./introduction.md)
-
-
 ## Youtube
 
 #### Introduction
@@ -26,6 +22,8 @@
 
 #### Course
 
+- [Redis Deep Dive w/ a Ex-Meta Senior Manager](https://www.youtube.com/watch?v=fmT5nlEkl3U)
+- [Redis Crash Course | Master Redis in one video [Hindi]](https://www.youtube.com/watch?v=aqFFghu541I)
 - [Redis Crash Course](https://www.youtube.com/watch?v=Vx2zPMPvmug)
 - [Learn Redis in ONE video](https://www.youtube.com/watch?v=Y46wlauVH_o)
 - [Redis Enterprise Cloud](https://www.youtube.com/playlist?list=PL83Wfqi-zYZG6uGxBagsbqjpsi2XBEj1K)

@@ -1,5 +1,16 @@
 # LSM Tree (Log-Structured Merge-tree)
 
+
+
+
+## Medium
+
+- [SSTables and LSM Trees](https://medium.com/the-developers-diary/sstables-and-lsm-trees-2e4b6c8be251)
+- [LSM Trees: the Go-To Data Structure for Databases, Search Engines, and More](https://medium.com/@dwivedi.ankit21/lsm-trees-the-go-to-data-structure-for-databases-search-engines-and-more-c3a48fa469d2)
+- [Design Metrics Aggregation System | LSM Tree | Storage Engine](https://medium.com/@eugene-s/design-metrics-aggregation-system-lsm-tree-storage-engine-d52a6d10ac21)
+
+
+
 ## Introduction
 
 The Log-Structured Merge-tree (LSM-tree) is a data structure designed to provide high write throughput while maintaining good read performance. It was introduced by Patrick O'Neil and others in 1996 and has become the foundation for many modern databases, particularly those optimized for write-heavy workloads.

@@ -1,5 +1,46 @@
 ## Introduction
 
+Indexes are special data structures that store a small portion of the collection's data in an easily traversable form. They dramatically improve query performance by avoiding full collection scans.
+
+```
+Without Index (COLLSCAN):            With Index (IXSCAN):
+
+  ┌─────────────────────┐             ┌──────────────┐
+  │ Scan ALL documents   │             │ B-Tree Index │
+  │ doc1 → check         │             │   ┌───┐      │
+  │ doc2 → check         │             │   │ M │      │
+  │ doc3 → check         │             │  ┌┴─┬─┴┐    │
+  │ ...                  │             │  │D │ │R│    │
+  │ docN → check         │             │  └┬─┘ └┬┘   │
+  │                      │             │  Jump directly│
+  │ O(n) — slow          │             │  to matches   │
+  └─────────────────────┘             │  O(log n)     │
+                                      └──────────────┘
+```
+
+**Index Types at a Glance:**
+
+| Index Type | Created With | Use Case |
+|-----------|-------------|----------|
+| **Single Field** | `{field: 1}` | Queries on one field |
+| **Compound** | `{a: 1, b: 1}` | Queries on multiple fields (order matters!) |
+| **Multikey** | `{arrayField: 1}` | Queries on array contents |
+| **Text** | `{field: "text"}` | Full-text search |
+| **Geospatial** | `{loc: "2dsphere"}` | Location queries |
+| **Hashed** | `{field: "hashed"}` | Hash-based sharding |
+| **Wildcard** | `{"$**": 1}` | Dynamic/unknown field structures |
+| **TTL** | `{date: 1}, {expireAfterSeconds: N}` | Auto-delete expired documents |
+
+**Index Trade-offs:**
+
+| Benefit | Cost |
+|---------|------|
+| Faster reads (`find`, `sort`) | Slower writes (`insert`, `update`, `delete`) |
+| Supports covered queries | Uses disk space & RAM |
+| Enables efficient sorting | Max 64 indexes per collection |
+
+---
+
 Why Indexes?
 
 An index can speed up our find update and delete query. If our query is like `db.products.find({ seller : "Max" })` then MongoDB will search for the entire collection for the seller name `"Max"`, which is also called as `COLLSCAN` and this can take a while if there is million record. 
@@ -283,7 +324,11 @@ Now the query did not search for the entire collection it has done an `IXSCAN`.
 
 
 
+---
+
 ## Indexes Behind the Scenes
+
+**Intent**: Understanding how indexes work internally helps you make better decisions about when and how to create them. MongoDB uses a **B-Tree** data structure for indexes.
 
 
 
@@ -311,8 +356,26 @@ Let's say all our document has `age` greater than 50 and in query `[db.infos.fin
 Index on Boolean value does not make much sense.
 
 
+---
+
 ## Compound index
 
+**Intent**: A compound index indexes multiple fields together. The **order of fields matters** — MongoDB can use the index for queries on the **prefix** (left-to-right) of the indexed fields, but NOT for queries on non-prefix fields alone.
+
+```
+Compound Index: { "dob.age": 1, "gender": 1 }
+
+  Index entries (sorted):
+  (20, "female") → doc
+  (20, "male")   → doc
+  (21, "female") → doc
+  ...
+  (35, "male")   → doc    ← Can find this efficiently
+
+  ✅ find({age: 35})              — Uses index (prefix match)
+  ✅ find({age: 35, gender: "m"}) — Uses index (full match)
+  ❌ find({gender: "male"})       — COLLSCAN (not a prefix)
+```
 
 first let's create a compound index
 ```js
@@ -665,7 +728,11 @@ Before creating index if there is already any duplicate email available then it 
 
 
 
+---
+
 ## Partial filter/Indexing
+
+**Intent**: Partial indexes only index documents that match a filter expression. This reduces index size and write overhead — useful when you only query a subset of documents frequently.
 
 We can always use compound indexing but the problem with the compound indexing is that it takes much space in discs. So, in that case we can use partial filter like if we know that gender male is frequently queried rather than female. So, we can create a partial index with gender male.
 
@@ -722,7 +789,11 @@ To allow this condition we can use unique true with partial filter expression.
 }
 ```
 
+---
+
 ## Time to live index(TTL)
+
+**Intent**: TTL indexes automatically delete documents after a specified time period. Perfect for session data, logs, cache entries, or any data with a natural expiration.
 
 It is only applicable for `date or timestamp`. With this indexing after certain time the document will automatically be `deleted`.
 
@@ -758,7 +829,11 @@ This can be useful for session or carts in online shopping where the cart item a
 
 
 
+---
+
 ## Query Diagnosis and & Query Planning
+
+**Intent**: The `explain()` method is your primary tool for understanding query performance — it shows which indexes MongoDB uses, how many documents it scans, and how long it takes.
 
 **explain() method takes three type of string:**
 
@@ -790,7 +865,13 @@ To find the `winning plan` mongodb check the query and available index then it w
 
 
 
+---
+
 ## Multikey index
+
+**Intent**: Multikey indexes are automatically created when you index a field that contains an array. MongoDB creates separate index entries for **each element** in the array, enabling efficient queries on array contents.
+
+**Restriction**: In a compound index, at most **one** field can be an array (to avoid exponential cartesian product growth).
 
 We can also create indexes on array values. Let's say we are adding one document like this.
 ```js
@@ -885,7 +966,13 @@ But we cannot create a compound index if both values are array. <br>
 
 
 
+---
+
 ## Text index
+
+**Intent**: Text indexes support full-text search on string fields. MongoDB tokenizes the text, removes stop words (like "the", "is", "a"), and stores the remaining keywords. This is far more efficient than `$regex` for text search.
+
+**Key constraints**: Only **one** text index per collection (but it can span multiple fields).
 
 If we search using regex that is very low in performance rather, we can use text indexes.<br>
 Text string is just an array of words. So, mongodb stores the main keywords and removes the stop words like "is", "the", "a" etc.<br>
@@ -977,7 +1064,11 @@ db.infos.find({
 })
 ```
 
+---
+
 ## Building Index
+
+**Intent**: By default, `createIndex()` runs in the **foreground** and locks the collection, blocking all reads and writes. In production, use background builds to avoid downtime.
 
 When we are creating any index using createIndex method on that time the collection got locked. On that time if we try to insert any document then we have to wait for a certain time. The down time will depend on the size of the collection. It is adjustable in lower environment, but we cannot afford this in production. To deal with this create index in background. The time taken for creating the index is slow in background than foreground.
 ```js
@@ -989,7 +1080,11 @@ db.infos.createIndex(
 
 
 
+---
+
 ## More Examples
+
+**Quick reference for common index operations.**
 
 ### List Indexes
 

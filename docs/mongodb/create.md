@@ -1,14 +1,40 @@
 ## General
 
+**Insert operations** add new documents to a MongoDB collection. If the collection does not exist, MongoDB creates it automatically on the first insert.
+
+```
+Insert Flow:
+
+  Application
+       │
+       ↓
+  ┌─────────────────────────────────────┐
+  │          Insert Operation            │
+  │                                     │
+  │  1. Validate document against       │
+  │     schema (if validator exists)    │
+  │  2. Generate _id (if not provided)  │
+  │  3. Write to oplog (replica sets)   │
+  │  4. Write to collection             │
+  │  5. Return acknowledgment           │
+  └─────────────────────────────────────┘
+```
+
 **We have three methods for inserting documents**
 
-- `insertOne` 
-- `insertMany`
-- `insert`
+- `insertOne` — Insert a single document. Returns `{ acknowledged, insertedId }`.
+- `insertMany` — Insert an array of documents. Returns `{ acknowledged, insertedIds }`.
+- `insert` — Can handle single or multiple documents (legacy).
 
 Though `insert` method is flexible enough to handle one document or multiple but still it is deprecated on purpose.
 
 Also, we can directly import from a json file using mongoimort command
+
+---
+
+### Ordered vs Unordered Inserts
+
+**Intent**: When inserting multiple documents, the `ordered` option controls whether MongoDB stops on the first error or continues inserting the remaining valid documents.
 
 If we are using insert many and we are inserting multiple documents in a shot then if there is a issue with any document in that list then from that onwards there will be no insertions, only the documents before the wrecked document will be inserted, it will not be rolled back.
 
@@ -32,6 +58,17 @@ If we again try to run the previous code in shell it will again give us the erro
 [ { "_id" : "yoga" }, { "_id" : "sports" }, { "_id" : "maths" } ]
 ```
 
+**Summary:**
+
+| Mode | Behavior on Error | Use When |
+|------|-------------------|----------|
+| `ordered: true` (default) | Stops at first error, documents before it are inserted | Order matters, prefer consistency |
+| `ordered: false` | Continues past errors, inserts all valid documents | Bulk loading, duplicate handling |
+
+---
+
+### insertOne and insertMany Examples
+
 Example of `insertOne` and `insertMany`
 ```js
 > use contacts
@@ -53,6 +90,41 @@ switched to db contacts
 }
 ```
 
+---
+
+### The _id Field
+
+Every document in MongoDB **must have an `_id` field** that serves as the primary key. If you don't provide one, MongoDB auto-generates an `ObjectId`.
+
+```js
+// Auto-generated _id (ObjectId)
+db.users.insertOne({ name: "Alice" })
+// Result: { _id: ObjectId("64a1b2c3..."), name: "Alice" }
+
+// Custom _id (any unique value)
+db.users.insertOne({ _id: "user-001", name: "Bob" })
+// Result: { _id: "user-001", name: "Bob" }
+
+// Custom numeric _id
+db.counters.insertOne({ _id: 1, count: 0 })
+```
+
+**ObjectId structure (12 bytes):**
+```
+ObjectId("507f1f77bcf86cd799439011")
+         ├──────┤├──┤├──┤├────┤
+         │       │    │    └── 3 bytes: counter (auto-incrementing)
+         │       │    └─────── 2 bytes: process ID
+         │       └──────────── 5 bytes: random value
+         └──────────────────── 4 bytes: Unix timestamp (seconds)
+
+// Extract timestamp from ObjectId:
+ObjectId("507f1f77bcf86cd799439011").getTimestamp()
+// ISODate("2012-10-17T20:46:31Z")
+```
+
+---
+
 ## WriteConcern
 
 ### Description
@@ -73,6 +145,31 @@ the `w` option to request acknowledgment that the write operation has propagated
 the `j` option to request acknowledgment that the write operation has been written to the on-disk journal.
 
 the `wtimeout` option to specify a time limit to prevent write operations from blocking indefinitely.
+
+**Write Concern Visualization:**
+
+```
+Write Concern: { w: "majority", j: true }
+
+  Application
+       │
+       │  insertOne({...})
+       ↓
+  ┌──────────┐     Write to journal
+  │ PRIMARY   │─────────────────────→ Journal on disk ✅
+  └─────┬─────┘
+        │  Replicate via oplog
+   ┌────┴────┐
+   ↓         ↓
+┌──────┐ ┌──────┐
+│SEC-1 │ │SEC-2 │
+│  ✅  │ │ ...  │    ← Majority (2 of 3) acknowledged
+└──────┘ └──────┘
+
+Application receives acknowledgment only after:
+  1. Primary has written to journal (j: true)
+  2. Majority of replica set members have acknowledged (w: "majority")
+```
 
 ### Write Concern Levels
 MongoDB has the following levels of conceptual write concern, listed from weakest to strongest:

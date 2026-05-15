@@ -1,5 +1,39 @@
 ## Introduction
 
+**Update operations** modify existing documents in a MongoDB collection. Unlike SQL `UPDATE` which directly sets column values, MongoDB uses **update operators** (`$set`, `$inc`, `$push`, etc.) to precisely control what changes.
+
+```
+Update Operation Flow:
+
+  db.collection.updateOne(filter, update, options)
+       │              │         │         │
+       │              │         │         └── {upsert, writeConcern, arrayFilters}
+       │              │         └──────────── {$set: {...}, $inc: {...}, ...}
+       │              └────────────────────── Which document(s) to match
+       ↓
+  ┌──────────────────────────────────────┐
+  │ 1. Find matching document(s)         │
+  │ 2. Apply update operators            │
+  │ 3. Validate constraints/schema       │
+  │ 4. Write changes (atomic per doc)    │
+  │ 5. Update indexes if needed          │
+  │ 6. Return {matchedCount, modifiedCount}│
+  └──────────────────────────────────────┘
+```
+
+**Update Methods:**
+
+| Method | Behavior |
+|--------|----------|
+| `updateOne()` | Updates the **first** document matching the filter |
+| `updateMany()` | Updates **all** documents matching the filter |
+| `replaceOne()` | Replaces the **entire document** body (except `_id`) |
+| `findOneAndUpdate()` | Updates one document and returns it (before or after) |
+
+**Key distinction**: `updateOne/Many` uses operators to modify specific fields. `replaceOne` replaces the whole document — if you forget a field, it's gone.
+
+---
+
 In the Users db Info collection all the documents in the following type
 
 ```js
@@ -444,6 +478,9 @@ If we want to remove the last element from the array, then we can use `$pop` ope
 ## More examples
 
 ### Basic Updates
+
+**Intent**: These are the most common field-level update operations — set values, remove fields, rename, increment counters, and track timestamps.
+
 ```js
 db.coll.updateOne({"_id": 1}, {$set: {"year": 2016, name: "Max"}})
 db.coll.updateOne({"_id": 1}, {$unset: {"year": 1}})
@@ -457,6 +494,9 @@ db.coll.updateOne({"_id": 1}, {$currentDate: {"lastModified": {$type: "timestamp
 ```
 
 ### Array Updates
+
+**Intent**: These operators modify array fields — add elements, remove elements, update specific elements by position or condition.
+
 ```js
 db.coll.updateOne({"_id": 1}, {$push :{"array": 1}})
 db.coll.updateOne({"_id": 1}, {$pull :{"array": 1}})
@@ -471,17 +511,68 @@ db.coll.updateMany({}, {$inc: {"grades.$[]": 10}})
 db.coll.updateMany({}, {$set: {"grades.$[element]": 100}}, {multi: true, arrayFilters: [{"element": {$gte: 100}}]})
 ```
 
+**Array Update Operators Summary:**
+
+| Operator | Action | Duplicates Allowed? |
+|----------|--------|:---:|
+| `$push` | Append element to array | Yes |
+| `$addToSet` | Append only if not exists | No (set semantics) |
+| `$pull` | Remove all matching elements | N/A |
+| `$pullAll` | Remove specific values | N/A |
+| `$pop` | Remove first (`-1`) or last (`1`) element | N/A |
+| `$each` | Used with `$push`/`$addToSet` to add multiple | Depends on parent |
+| `$sort` | Used with `$push` + `$each` to maintain order | N/A |
+| `$slice` | Used with `$push` + `$each` to cap array size | N/A |
+
 ### FindOneAndUpdate
+
+**Intent**: Atomically finds a document, updates it, and returns either the original or updated document. Useful for implementing atomic counters, queue-like processing, or when you need the document value.
+
 ```js
 db.coll.findOneAndUpdate({"name": "Max"}, {$inc: {"points": 5}}, {returnNewDocument: true})
 ```
 
+```js
+// Atomic counter — increment and return the new value
+db.counters.findOneAndUpdate(
+    { _id: "orderId" },
+    { $inc: { seq: 1 } },
+    { returnNewDocument: true, upsert: true }
+)
+// Returns: { _id: "orderId", seq: 43 } (the new value)
+
+// Queue pattern — claim the next unprocessed job
+db.jobs.findOneAndUpdate(
+    { status: "pending" },
+    { $set: { status: "processing", worker: "worker-1", startedAt: new Date() } },
+    { sort: { priority: -1, createdAt: 1 }, returnNewDocument: true }
+)
+```
+
 ### Upsert
+
+**Intent**: Update if exists, insert if not. Combines update + insert in a single atomic operation. The `$setOnInsert` operator sets fields **only when inserting** (not when updating an existing document).
+
 ```js
 db.coll.updateOne({"_id": 1}, {$set: {item: "apple"}, $setOnInsert: {defaultQty: 100}}, {upsert: true})
 ```
 
+```js
+// Track daily page views — create if first visit, increment if exists
+db.pageViews.updateOne(
+    { page: "/home", date: "2024-06-15" },
+    {
+        $inc: { views: 1 },
+        $setOnInsert: { page: "/home", date: "2024-06-15", firstViewAt: new Date() }
+    },
+    { upsert: true }
+)
+```
+
 ### Replace
+
+**Intent**: Replace the entire document body (except `_id`). Use when you want to overwrite a document completely rather than modifying individual fields. **Any fields not in the replacement document will be removed.**
+
 ```js
 db.coll.replaceOne({"name": "Max"}, {"firstname": "Maxime", "surname": "Beugnet"})
 ```

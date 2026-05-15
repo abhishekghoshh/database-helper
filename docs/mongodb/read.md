@@ -1,5 +1,25 @@
 ## Introduction
 
+**Read operations** retrieve documents from a MongoDB collection. MongoDB provides a rich query language with operators for filtering, comparing, matching arrays, and combining conditions.
+
+```
+Read Query Flow:
+
+  db.collection.find(filter, projection)
+       │              │          │
+       │              │          └── Which fields to return
+       │              └───────────── Which documents to match
+       ↓
+  ┌──────────────────────────────────────┐
+  │ 1. Query Planner evaluates indexes   │
+  │ 2. Choose winning plan (IXSCAN or   │
+  │    COLLSCAN)                         │
+  │ 3. Execute query                     │
+  │ 4. Apply projection (field filter)   │
+  │ 5. Return cursor (batches of 20)     │
+  └──────────────────────────────────────┘
+```
+
 **Following are the components of mongodb reads**
 
 - Methods, Filters and Operators
@@ -23,6 +43,11 @@ Examples
 
 Operators are reserved fields started with dollar like $gt, $gte, $lt, $lte
 
+---
+
+### Query Selectors
+
+Query selectors determine **how** documents are matched. They fall into these categories:
 
 **Query Selectors**
 
@@ -34,6 +59,22 @@ Operators are reserved fields started with dollar like $gt, $gte, $lt, $lte
 - Comments
 - Geospatial
 
+| Category | Operators | Purpose |
+|----------|-----------|---------|
+| **Comparison** | `$eq, $gt, $gte, $lt, $lte, $ne, $in, $nin` | Compare field values |
+| **Logical** | `$and, $or, $not, $nor` | Combine multiple conditions |
+| **Element** | `$exists, $type` | Check field presence/data type |
+| **Evaluation** | `$regex, $expr, $text, $mod` | Pattern match, cross-field comparison |
+| **Array** | `$all, $elemMatch, $size` | Query array contents |
+| **Geospatial** | `$near, $geoWithin, $geoIntersects` | Location-based queries |
+
+For detailed operator reference with examples, see [Operators](operators.md).
+
+---
+
+### Projection Operators
+
+Projection controls which fields are included in the output:
 
 **Projection Operator**
 
@@ -42,6 +83,16 @@ Operators are reserved fields started with dollar like $gt, $gte, $lt, $lte
 - $meta
 - $slice
 
+| Operator | Purpose | Example |
+|----------|---------|---------|
+| `$` | Returns the first matching array element | `{"scores.$": 1}` |
+| `$elemMatch` | Returns the first array element matching a condition | `{scores: {$elemMatch: {$gte: 90}}}` |
+| `$meta` | Returns metadata (e.g., text search score) | `{score: {$meta: "textScore"}}` |
+| `$slice` | Returns a subset of an array | `{comments: {$slice: 5}}` (first 5) |
+
+---
+
+## Comparison Operators
 
 first it will search the document where name is "Under the Dome" then it only return name, type and language
 ```js
@@ -90,15 +141,36 @@ it will find all the documents where runtime is neither 30 nor 42
 db.infos.find({runtime: {$nin: [30,42]}}) 
 ```
 
+---
+
+## Querying Nested Documents
+
 average is a field which is inside of rating, so to querying anything in average we can use something like this layer1.layer2.layer3.targetField then our query operator
 ```js
 db.infos.findOne({"rating.average": {$gt: 9}}) 
+```
+
+**Intent**: Use **dot notation** to access fields inside embedded documents. This works at any depth level.
+
+```js
+// Query nested field
+db.users.findOne({"address.city": "Berlin"})
+
+// Query deeply nested field
+db.orders.find({"shipping.address.zipcode": "10001"})
+
+// Combine with comparison operators
+db.products.find({"specs.weight": {$lt: 2.5}})
 ```
 
 here genres is a array. If we search for this, it will not equate as a string it will check that genres contain Drama or not
 ```js
 db.infos.findOne({"genres": "Drama"}) 
 ```
+
+---
+
+## Logical Operators
 
 `$or` operator takes an array of queries. Here average is either greater than 8 or less than 7. We can combine more than two queries.
 ```js
@@ -126,7 +198,13 @@ we have also `$not` operator that we can use like this. `$not` is just like anot
 
 not of this query `db.infos.find({"rating.average": {$lt: 8}}).count()` will be `db.infos.find({"rating.average": {$not :{$lt: 8}}}).count()`
 
+---
+
+## Element Operators ($exists and $type)
+
 There are two element type operators `$exist` and `$type`
+
+**Intent**: Since MongoDB is schema-less, documents in the same collection can have different fields. Element operators help query based on whether a field **exists** or what **data type** it holds.
 
 As mongodb is schemaless so sometimes there may be a case a **field** may or may not be **exist** so we can check that a field is exist or not like this:
 
@@ -164,9 +242,21 @@ phone no is string or double in which document. We can use array. It will act as
 db.users.findOne({"phoneNo": {$type: ["double", "string"]}})
 ```
 
+---
+
+## Evaluation Operators ($regex, $expr)
+
 It will use regex to search any document have the musical word in the summary or not. But it is not that efficient better to use text indexing
 ```js
 db.infos.find({summary: {$regex: /musical/}}) 
+```
+
+```js
+// Case-insensitive regex
+db.infos.find({name: {$regex: /^john/i}})
+
+// Regex with options parameter
+db.infos.find({summary: {$regex: "musical", $options: "i"}})
 ```
 
 it will search all the documents where weight is greater that runtime. We can use $expr like this where it will take the query inside it. 
@@ -176,6 +266,23 @@ db.infos.find({$expr: {$gt: ["$weight", "$runtime"]}})
 
 
 We can use if, then an inside $cond and the $expr will evaluate everything.
+
+```js
+// $expr with $cond — conditional logic
+db.orders.find({
+    $expr: {
+        $gt: [
+            "$total",
+            { $cond: {
+                if: { $eq: ["$type", "premium"] },
+                then: 1000,
+                else: 500
+            }}
+        ]
+    }
+})
+// Finds premium orders > $1000 and regular orders > $500
+```
 
 
 ## Querying to Arrays
@@ -239,6 +346,23 @@ In `MongoDB`, the `find()` method return the `cursor`, now to access the documen
 
 **Note**: If a `cursor` inactive for `10 min`, then `MongoDB` server will automatically close that cursor.
 
+**Cursor Methods Overview:**
+
+| Method | Purpose | Returns |
+|--------|---------|---------|
+| `.pretty()` | Format output for readability | Cursor |
+| `.toArray()` | Convert all documents to array | Array |
+| `.count()` | Count matching documents | Number |
+| `.hasNext()` | Check if more documents exist | Boolean |
+| `.next()` | Get next document | Document |
+| `.forEach(fn)` | Iterate with callback | void |
+| `.sort(obj)` | Sort results | Cursor |
+| `.skip(n)` | Skip first n documents | Cursor |
+| `.limit(n)` | Limit to n documents | Cursor |
+| `.map(fn)` | Transform each document | Array |
+
+**Execution order**: Regardless of the order you chain methods, MongoDB always executes: **sort → skip → limit**
+
 It will fetch the `cursor` of first 20 elements.
 ```js
 db.infos.find().pretty() 
@@ -292,6 +416,23 @@ db.infos.find().sort({"rating.average" :1}).limit(2)
 It will sort all the elements on `average` element on rating then `skip 2 elements` and show only `2` elements
 ```js
 db.infos.find().sort({"rating.average" :1}).skip(2).limit(2) 
+```
+
+**Pagination Pattern using skip + limit:**
+```js
+// Page 1 (items 1-10)
+db.products.find().sort({_id: 1}).skip(0).limit(10)
+// Page 2 (items 11-20)
+db.products.find().sort({_id: 1}).skip(10).limit(10)
+// Page 3 (items 21-30)
+db.products.find().sort({_id: 1}).skip(20).limit(10)
+
+// ⚠️ skip() is slow for large offsets (must scan and discard skipped documents)
+// For large datasets, use range-based pagination instead:
+// Page 1
+db.products.find().sort({_id: 1}).limit(10)
+// Page 2 (using last _id from page 1)
+db.products.find({_id: {$gt: lastId}}).sort({_id: 1}).limit(10)
 ```
 
 It will show only the `name` and the `_id` of first `20` documents. `_id` is shown by default.

@@ -1,6 +1,54 @@
 ## What is MongoDB?
 MongoDB is a document-oriented NoSQL database used to store large amounts of data as documents. It has collections similar to tables in relational databases. It has no schema. We can use JSON objects to store data, but behind the scenes, the MongoDB server stores this JSON in binary format.
 
+```
+MongoDB Architecture Overview:
+
+  Client (mongosh / Driver)
+       │
+       ▼
+  ┌──────────────┐
+  │   mongos     │  ← Query router (for sharded clusters)
+  └──────┬───────┘
+         │
+  ┌──────▼───────────────────────────────┐
+  │         mongod (Server Process)       │
+  │  ┌─────────────────────────────────┐ │
+  │  │  Database                       │ │
+  │  │  ├── Collection (≈ table)       │ │
+  │  │  │   ├── Document (≈ row)       │ │
+  │  │  │   │   └── BSON (binary JSON) │ │
+  │  │  │   ├── Document               │ │
+  │  │  │   └── ...                    │ │
+  │  │  ├── Collection                 │ │
+  │  │  └── ...                        │ │
+  │  └─────────────────────────────────┘ │
+  │  Storage Engine: WiredTiger          │
+  └──────────────────────────────────────┘
+```
+
+**When to use MongoDB:**
+
+| Good Fit | Not Ideal |
+|----------|-----------|
+| Flexible/evolving schemas | Complex multi-table JOINs |
+| Document-oriented data (JSON-like) | Strict relational integrity |
+| High write throughput | Heavy aggregation across tables |
+| Horizontal scaling (sharding) | Small dataset with fixed schema |
+| Real-time analytics, IoT, catalogs | Banking transactions (though multi-doc ACID is supported since 4.0) |
+
+**SQL vs MongoDB Terminology:**
+
+| SQL | MongoDB |
+|-----|---------|
+| Database | Database |
+| Table | Collection |
+| Row | Document |
+| Column | Field |
+| Index | Index |
+| JOIN | `$lookup` / embedded documents |
+| PRIMARY KEY | `_id` (auto-generated ObjectId) |
+
 ### What is `mongod`?
 It is an executable file used to start the MongoDB server locally.
 

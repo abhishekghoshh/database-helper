@@ -1,0 +1,3568 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://abhishekghoshh.github.io/database-helper/database/indexing/">
+      
+      
+        <link rel="prev" href="../primary-key/">
+      
+      
+        <link rel="next" href="../b-tree-and-b-plus-tree/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>Database Index - Database Helper</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Database Index - Database Helper" >
+      
+        <meta  property="og:description"  content="None" >
+      
+        <meta  property="og:image"  content="https://abhishekghoshh.github.io/database-helper/assets/images/social/database/indexing.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://abhishekghoshh.github.io/database-helper/database/indexing/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Database Index - Database Helper" >
+      
+        <meta  name="twitter:description"  content="None" >
+      
+        <meta  name="twitter:image"  content="https://abhishekghoshh.github.io/database-helper/assets/images/social/database/indexing.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#dbms-indexing-to-improve-search-query-performance" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Database Helper" class="md-header__button md-logo" aria-label="Database Helper" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Database Helper
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Database Index
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../introduction/" class="md-tabs__link">
+          
+  
+  Database Technologies
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../postgres/introduction/" class="md-tabs__link">
+          
+  
+  postgres
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../sql/introduction/" class="md-tabs__link">
+          
+  
+  sql
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../redis/001-introduction/" class="md-tabs__link">
+          
+  
+  redis
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../mongodb/introduction/" class="md-tabs__link">
+          
+  
+  mongodb
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../kafka/introduction/" class="md-tabs__link">
+          
+  
+  kafka
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../neo4j/" class="md-tabs__link">
+          
+  
+  neo4j
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../sqlite/" class="md-tabs__link">
+          
+  
+  sqlite
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../elastic-search/" class="md-tabs__link">
+          
+  
+  elasticsearch
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../cassandra/" class="md-tabs__link">
+          
+  
+  cassandra
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../SurrealDB/" class="md-tabs__link">
+          
+  
+  surrealDB
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../rabbitMQ/" class="md-tabs__link">
+          
+  
+  rabbitMQ
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Database Helper" class="md-nav__button md-logo" aria-label="Database Helper" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Database Helper
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Database Technologies
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Database Technologies
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../choosing-the-right-database/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Choosing the right database
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../primary-key/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Primary Key
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Database Index
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Database Index
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#youtube" class="md-nav__link">
+    <span class="md-ellipsis">
+      Youtube
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#medium" class="md-nav__link">
+    <span class="md-ellipsis">
+      Medium
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#theory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Theory
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Theory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-database-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Database Indexing?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#question-1-how-is-table-data-rows-actually-stored" class="md-nav__link">
+    <span class="md-ellipsis">
+      Question 1: How is Table Data (Rows) Actually Stored?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Question 1: How is Table Data (Rows) Actually Stored?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Answer:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-pages-database-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Pages (Database Pages)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#row-offset-array-why-its-critical" class="md-nav__link">
+    <span class="md-ellipsis">
+      Row Offset Array: Why It's Critical
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Blocks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-storage-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete Storage Hierarchy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#question-2-what-types-of-indexing-are-present" class="md-nav__link">
+    <span class="md-ellipsis">
+      Question 2: What Types of Indexing are Present?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Question 2: What Types of Indexing are Present?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Answer:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Indexing?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advantages-of-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantages of Indexing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disadvantages-of-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disadvantages of Indexing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#types-of-indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Types of Indexes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Types of Indexes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-clustered-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Clustered Index
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-non-clustered-index-secondary-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Non-Clustered Index (Secondary Index)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clustered-vs-non-clustered-index-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clustered vs Non-Clustered Index Comparison
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-index-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other Index Types
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Other Index Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3-unique-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Unique Index
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-composite-index-multi-column-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Composite Index (Multi-Column Index)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-covering-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Covering Index
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-filtered-index-partial-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Filtered Index (Partial Index)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-full-text-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Full-Text Index
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-hash-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Hash Index
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-geospatial-index-r-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Geospatial Index (R-Tree)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-bitmap-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Bitmap Index
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#question-3-understanding-data-structures-used-for-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Question 3: Understanding Data Structures Used for Indexing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Question 3: Understanding Data Structures Used for Indexing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Answer:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-important-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Additional Important Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Additional Important Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q4-when-should-you-create-an-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q4: When Should You Create an Index?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-how-does-the-query-optimizer-use-indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q5: How Does the Query Optimizer Use Indexes?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q6-what-is-index-fragmentation-and-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q6: What is Index Fragmentation and Maintenance?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../b-tree-and-b-plus-tree/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    B-Tree and B+ Tree
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lsm-tree/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LSM Tree
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bloom-filters/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bloom Filters
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sharding-and-partition/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sharding and Partition
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scaling-and-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling and Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../denormalization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Denormalization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database Migration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nosql/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../orm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ORM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../graph-database/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Graph Database
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vector-database/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vector Database
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../message-queues/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Queues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build-your-own-database/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Build your own database
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    postgres
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            postgres
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    sql
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            sql
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sql/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sql/leetcode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Leetcode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sql/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/001-introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    mongodb
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            mongodb
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/crud/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CRUD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/data-types/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Types
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/create/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Create
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/operators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/read/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Read
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/update/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Update
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/delete/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Delete
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Index
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/geospatial-data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Geospatial Data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/aggregation-framework/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Aggregation Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/advance-commands/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Advance Commands
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongodb/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Confluent vs Apache Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/deploy-on-docker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deploy on Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-deploy-on-docker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Deploy on Docker (KRaft)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafbat-ui/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafbat UI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    neo4j
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            neo4j
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../neo4j/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    sqlite
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            sqlite
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sqlite/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    elasticsearch
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            elasticsearch
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../elastic-search/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    cassandra
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            cassandra
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cassandra/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    surrealDB
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            surrealDB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SurrealDB/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    rabbitMQ
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            rabbitMQ
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rabbitMQ/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<div><h1 id="dbms-indexing-to-improve-search-query-performance">DBMS Indexing to improve search query performance</h1>
+<h2 id="youtube">Youtube</h2>
+<ul>
+<li>
+<p><a href="https://www.youtube.com/watch?v=6ZquiVH8AGU">21. Database Indexing: How DBMS Indexing done to improve search query performance? Explained</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=BHCSL_ZifI0">DB Indexing in System Design Interviews - B-tree, Geospatial, Inverted Index, and more!</a></p>
+</li>
+<li><a href="https://www.youtube.com/watch?v=3G293is403I">How do indexes make databases read faster?</a></li>
+<li><a href="https://www.youtube.com/watch?v=RufupUDBtYY">Database Indexes - You Might Be Using Them Wrong</a></li>
+<li><a href="https://www.youtube.com/watch?v=lYh6LrSIDvY">Database Indexing for Dumb Developers</a></li>
+<li><a href="https://www.youtube.com/watch?v=teMXE6hzva0">How SQL Indexes Actually Work (Step-by-Step)</a></li>
+<li><a href="https://www.youtube.com/watch?v=BxAj3bl00-o">SQL Indexes (Visually Explained) | Clustered vs Nonclustered | #SQL Course 35</a></li>
+</ul>
+<h2 id="medium">Medium</h2>
+<ul>
+<li><a href="https://medium.com/@rtawadrous/introduction-to-database-indexes-9b488e243cc1">Introduction To Database Indexing</a></li>
+<li><a href="https://medium.com/the-developers-diary/hash-indexing-42f505f63fa0">Hash Indexing</a></li>
+</ul>
+<h2 id="theory">Theory</h2>
+<h3 id="what-is-database-indexing">What is Database Indexing?</h3>
+<p><strong>Database indexing</strong> is a data structure technique used to quickly locate and access data in a database without scanning every row. An index creates a separate data structure (usually a B-Tree or B+ Tree) that stores a subset of columns with pointers to the actual rows, dramatically improving query performance.</p>
+<p><strong>Analogy</strong>: Think of an index like the index at the back of a textbook. Instead of flipping through every page to find a topic, you look it up in the index which tells you exactly which page to go to.</p>
+<p><strong>Key Benefits:</strong>
+- ⚡ <strong>Faster Query Performance</strong>: Reduces query time from O(n) to O(log n)
+- 🎯 <strong>Efficient Data Retrieval</strong>: Avoids full table scans
+- 📊 <strong>Better Sort Performance</strong>: Pre-sorted index structure
+- 🔍 <strong>Optimized Searches</strong>: Especially for WHERE, JOIN, ORDER BY clauses</p>
+<p><strong>Trade-offs:</strong>
+- 💾 <strong>Extra Storage</strong>: Indexes consume additional disk space
+- ⏱️ <strong>Slower Writes</strong>: INSERT, UPDATE, DELETE operations must update indexes
+- 🧠 <strong>Maintenance Overhead</strong>: Indexes need to be rebuilt/reorganized periodically</p>
+<hr>
+<h2 id="question-1-how-is-table-data-rows-actually-stored">Question 1: How is Table Data (Rows) Actually Stored?</h2>
+<h3 id="answer">Answer:</h3>
+<p>Database tables store data in fixed-size blocks called <strong>pages</strong> or <strong>blocks</strong>. Understanding this storage mechanism is crucial for understanding how indexing improves performance.</p>
+<h3 id="data-pages-database-pages">Data Pages (Database Pages)</h3>
+<p><strong>What are Data Pages?</strong></p>
+<p>A <strong>data page</strong> (also called a database page or disk page) is the smallest unit of storage that a database management system uses to read from or write to disk. It's a fixed-size block of contiguous memory, typically 4KB, 8KB, or 16KB depending on the database system.</p>
+<p><strong>Page Structure:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────────────────┐
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│                    DATA PAGE (8KB)                      │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├─────────────────────────────────────────────────────────┤
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│  Page Header (96 bytes)                                 │
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│  ┌───────────────────────────────────────────────┐     │
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│  │ Page ID: 1001                                 │     │
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│  │ Page Type: DATA_PAGE                          │     │
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│  │ Previous Page: 1000                           │     │
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│  │ Next Page: 1002                               │     │
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│  │ Free Space Start: 7800                        │     │
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│  │ Free Space End: 8000                          │     │
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│  │ Number of Records: 45                         │     │
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│  │ Checksum: 0xABCD1234                          │     │
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>│  │ LSN (Log Sequence Number): 12345678           │     │
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│  └───────────────────────────────────────────────┘     │
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>├─────────────────────────────────────────────────────────┤
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│  Row Offset Array (90 bytes)                            │
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>│  ┌───────────────────────────────────────────────┐     │
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>│  │ Offset[0]: 200   (points to first row)       │     │
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>│  │ Offset[1]: 350   (points to second row)      │     │
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>│  │ Offset[2]: 520   (points to third row)       │     │
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>│  │ ...                                           │     │
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>│  │ Offset[44]: 7650 (points to 45th row)        │     │
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>│  └───────────────────────────────────────────────┘     │
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>│                                                          │
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>│  WHY OFFSET ARRAY IS NEEDED:                            │
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>│  • Variable-length rows: Rows can be different sizes    │
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>│  • Direct access: Jump to any row without scanning      │
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>│  • Update efficiency: Relocate rows without affecting   │
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>│    other rows' positions                                │
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>│  • Deletion handling: Mark slots as deleted, reuse      │
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>│    space without shifting all rows                      │
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>│                                                          │
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>├─────────────────────────────────────────────────────────┤
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>│  Data Records (7814 bytes)                              │
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>│  ┌───────────────────────────────────────────────┐     │
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>│  │ Record 1: [id=1, name='John', age=30, ...]    │     │
+<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>│  │ Record 2: [id=2, name='Jane', age=25, ...]    │     │
+<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>│  │ Record 3: [id=3, name='Bob', age=35, ...]     │     │
+<a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>│  │ ...                                           │     │
+<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>│  │ Record 45: [id=45, name='Alice', ...]         │     │
+<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a>│  └───────────────────────────────────────────────┘     │
+<a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a>├─────────────────────────────────────────────────────────┤
+<a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a>│  Free Space (200 bytes)                                 │
+<a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a>│  [Available for new records or updates]                 │
+<a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a>└─────────────────────────────────────────────────────────┘
+</code></pre></div>
+<p><strong>Page Header Components (Detailed):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Size</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Page ID</strong></td>
+<td>4 bytes</td>
+<td>Unique identifier for this page</td>
+</tr>
+<tr>
+<td><strong>Page Type</strong></td>
+<td>1 byte</td>
+<td>Type: DATA_PAGE, INDEX_PAGE, etc.</td>
+</tr>
+<tr>
+<td><strong>Previous Page</strong></td>
+<td>4 bytes</td>
+<td>Pointer to previous page (doubly-linked list)</td>
+</tr>
+<tr>
+<td><strong>Next Page</strong></td>
+<td>4 bytes</td>
+<td>Pointer to next page</td>
+</tr>
+<tr>
+<td><strong>Free Space Start</strong></td>
+<td>2 bytes</td>
+<td>Byte offset where free space begins</td>
+</tr>
+<tr>
+<td><strong>Free Space End</strong></td>
+<td>2 bytes</td>
+<td>Byte offset where free space ends</td>
+</tr>
+<tr>
+<td><strong>Number of Records</strong></td>
+<td>2 bytes</td>
+<td>Count of records in this page</td>
+</tr>
+<tr>
+<td><strong>Checksum</strong></td>
+<td>4 bytes</td>
+<td>For data integrity verification</td>
+</tr>
+<tr>
+<td><strong>LSN</strong></td>
+<td>8 bytes</td>
+<td>Log Sequence Number (for recovery)</td>
+</tr>
+<tr>
+<td><strong>Page Level</strong></td>
+<td>2 bytes</td>
+<td>Level in B-Tree (0 for leaf)</td>
+</tr>
+<tr>
+<td><strong>Flags</strong></td>
+<td>2 bytes</td>
+<td>Status flags (dirty, compressed, etc.)</td>
+</tr>
+<tr>
+<td><strong>Reserved</strong></td>
+<td>~60 bytes</td>
+<td>Database-specific metadata</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Who Controls Data Pages?</strong></p>
+<p>The <strong>Buffer Manager</strong> (part of the database storage engine) controls data pages:
+- Manages page cache (buffer pool) in memory
+- Handles page reads from disk
+- Handles page writes to disk
+- Implements page replacement algorithms (LRU, Clock)
+- Ensures page consistency and integrity</p>
+<h3 id="row-offset-array-why-its-critical">Row Offset Array: Why It's Critical</h3>
+<p><strong>The Problem: Variable-Length Rows</strong></p>
+<p>Database rows are <strong>not fixed-size</strong> because of:
+- VARCHAR columns (variable-length strings)
+- NULL values (may occupy no space)
+- TEXT/BLOB columns
+- Different character encodings (UTF-8 can use 1-4 bytes per character)</p>
+<p><strong>Example Problem Without Offset Array:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Fixed-size approach (DOESN'T WORK):
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>┌─────────────────────────────────────────┐
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│ Row 1 (150 bytes) | Row 2 (80 bytes)   │
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│ Row 3 (200 bytes) | ...                │
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>└─────────────────────────────────────────┘
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>❌ Problem: How to find Row 3 quickly?
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>   - Can't calculate: Position = row_number × row_size
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>   - Must scan: Row 1 → Row 2 → Row 3
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>   - O(n) time to access any row!
+</code></pre></div>
+<p><strong>Solution: Row Offset Array</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>With Offset Array:
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>┌─────────────────────────────────────────┐
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>│ Header                                  │
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>│ ┌──────────────────────┐                │
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>│ │ Offset[0] = 200      │ ← Points to Row 1 at byte 200
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>│ │ Offset[1] = 350      │ ← Points to Row 2 at byte 350
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>│ │ Offset[2] = 430      │ ← Points to Row 3 at byte 430
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>│ │ Offset[3] = 630      │ ← Points to Row 4 at byte 630
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>│ └──────────────────────┘                │
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>│                                          │
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>│ Data Area:                               │
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>│ [byte 200] Row 1 (150 bytes)            │
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>│ [byte 350] Row 2 (80 bytes)             │
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>│ [byte 430] Row 3 (200 bytes)            │
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>│ [byte 630] Row 4 (...)                  │
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>└─────────────────────────────────────────┘
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>✅ Advantage: Direct access to Row 3 in O(1):
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>   1. Read Offset[2] = 430
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>   2. Jump to byte 430
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>   3. Read row
+</code></pre></div>
+<p><strong>Why Row Offset Array is Needed:</strong></p>
+<ol>
+<li>
+<p><strong>Variable-Length Row Support</strong>
+   </p><div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Without offsets: Must scan from start
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>With offsets: Direct jump to any row
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Example with VARCHAR:
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>Row 1: id=1, name="Jo" (short)
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>Row 2: id=2, name="Christopher Alexander" (long)
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>Row 3: id=3, name="Li" (short)
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>Offset[0] = 200  (Row 1 starts)
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>Offset[1] = 220  (Row 2 starts, 20 bytes after)
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>Offset[2] = 265  (Row 3 starts, 45 bytes after)
+</code></pre></div>
+</li>
+<li>
+<p><strong>Fast Random Access</strong>
+   </p><div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Access row #5:
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>- WITHOUT offset array: O(n) - scan rows 0→1→2→3→4→5
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>- WITH offset array: O(1) - read Offset[5], jump directly
+</code></pre></div>
+</li>
+<li>
+<p><strong>Efficient Updates (Row Relocation)</strong>
+   </p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>UPDATE users SET name = 'Very Long Name Here' WHERE id = 2;
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Old Row 2: 80 bytes
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>New Row 2: 150 bytes (doesn't fit in original location!)
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>Solution:
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>1. Move Row 2 to end of page (new location)
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>2. Update Offset[1] to new location
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>3. Other rows' offsets unchanged!
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>┌────────────────────────────────────────┐
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>│ Offset[0] = 200  (unchanged)           │
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>│ Offset[1] = 7800 (updated!)            │
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>│ Offset[2] = 430  (unchanged)           │
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>└────────────────────────────────────────┘
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>No need to shift Row 3, Row 4, Row 5... in memory!
+</code></pre></div>
+</li>
+<li>
+<p><strong>Efficient Deletion (Slot Reuse)</strong>
+   </p><div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>DELETE FROM users WHERE id = 2;
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Method 1 - WITHOUT offset array:
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>- Shift all following rows backward
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>- Expensive for large pages (thousands of bytes moved)
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>Method 2 - WITH offset array:
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>- Mark Offset[1] as NULL/deleted (-1)
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>- Don't move any data
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>- Reuse slot for future inserts
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>┌────────────────────────────────────────┐
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>│ Offset[0] = 200                        │
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>│ Offset[1] = -1     (deleted!)          │
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>│ Offset[2] = 430                        │
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>│ Offset[3] = 630                        │
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>└────────────────────────────────────────┘
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>Space at old Row 2 location becomes free space!
+</code></pre></div>
+</li>
+<li>
+<p><strong>Maintains Row Order Without Physical Order</strong>
+   </p><div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Logical order (by primary key):
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Row 0: id=1
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Row 1: id=2
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Row 2: id=3
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>Physical storage (after updates):
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>[byte 200] id=1 (original)
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>[byte 350] id=3 (inserted later)
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>[byte 430] id=2 (updated, relocated)
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>Offset array maintains logical order:
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>Offset[0] = 200  → id=1
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>Offset[1] = 430  → id=2 (points to relocated position)
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>Offset[2] = 350  → id=3
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>Queries still return rows in correct order!
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Advantages of Row Offset Array:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Advantage</th>
+<th>Description</th>
+<th>Performance Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>O(1) Row Access</strong></td>
+<td>Direct jump to any row without scanning</td>
+<td>100x faster for large pages</td>
+</tr>
+<tr>
+<td><strong>No Data Movement on Update</strong></td>
+<td>Just update offset pointer when row relocates</td>
+<td>Saves thousands of memory copies</td>
+</tr>
+<tr>
+<td><strong>Fast Deletion</strong></td>
+<td>Mark offset as deleted, don't shift data</td>
+<td>O(1) instead of O(n)</td>
+</tr>
+<tr>
+<td><strong>Space Reuse</strong></td>
+<td>Deleted slots can be reused by new inserts</td>
+<td>Better space utilization</td>
+</tr>
+<tr>
+<td><strong>Logical vs Physical Separation</strong></td>
+<td>Rows can be physically scattered but logically ordered</td>
+<td>Flexibility in storage</td>
+</tr>
+<tr>
+<td><strong>Update-in-Place Optimization</strong></td>
+<td>If new data fits in old location, no relocation needed</td>
+<td>Minimal overhead</td>
+</tr>
+<tr>
+<td><strong>Compact Array</strong></td>
+<td>Offsets are small (2-4 bytes each)</td>
+<td>Minimal space overhead (~0.1% of page)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Real-World Performance Example:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Scenario: Page with 100 rows, access row #87
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>WITHOUT Offset Array:
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>1. Start at byte 96 (after header)
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>2. Read row 0 length → skip row 0
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>3. Read row 1 length → skip row 1
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>...
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>87. Read row 86 length → skip row 86
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>88. Finally read row 87
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>Time: ~87 reads × 10μs = 870μs
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>WITH Offset Array:
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>1. Read Offset[87] = 6543
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>2. Jump to byte 6543
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>3. Read row 87
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>Time: ~2 reads × 10μs = 20μs
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>Result: 43x faster!
+</code></pre></div>
+<p><strong>Memory Overhead Calculation:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Page size: 8KB (8192 bytes)
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>Average row size: 100 bytes
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>Rows per page: ~80 rows
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>Offset Array Size:
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>- 2 bytes per offset × 80 rows = 160 bytes
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>- Overhead: 160 / 8192 = 1.95% of page
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>Trade-off:
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>- Cost: ~2% storage overhead
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>- Benefit: O(n) → O(1) access, massively faster updates/deletes
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>Conclusion: Worth it! 2% overhead for 10-100x performance gain
+</code></pre></div>
+<p><strong>How Databases Use Offset Arrays:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>PostgreSQL:
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>- Array at start of page
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>- 4-byte offsets (ItemIdData)
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>- Format: [offset, length, flags]
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>MySQL InnoDB:
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>- "Record directory" at end of page
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>- 2-byte offsets
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>- Grows backward from page end
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>SQL Server:
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>- "Slot array" after page header
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>- 2-byte offsets
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>- Supports row versioning
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>Oracle:
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>- "Row directory" in page header
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>- Variable-size offsets
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>- Supports row chaining
+</code></pre></div>
+<h3 id="data-blocks">Data Blocks</h3>
+<p><strong>What are Data Blocks?</strong></p>
+<p>A <strong>data block</strong> is the physical storage unit on disk, typically managed by the operating system or file system. In many contexts, "block" and "page" are used interchangeably, but there's a subtle difference:</p>
+<ul>
+<li><strong>Data Block</strong>: Physical storage unit on disk (OS level)</li>
+<li><strong>Data Page</strong>: Logical storage unit in database (DBMS level)</li>
+</ul>
+<p><strong>Data Block Structure:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Physical Disk Layout:
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>┌─────────────────────────────────────────────────────────────┐
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>│                    DISK (Hard Drive / SSD)                  │
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>├─────────────────────────────────────────────────────────────┤
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>│  Block 0  │  Block 1  │  Block 2  │  Block 3  │  Block 4   │
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>│  (4KB)    │  (4KB)    │  (4KB)    │  (4KB)    │  (4KB)     │
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>├─────────────────────────────────────────────────────────────┤
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>│           ↓ Database maps pages to blocks                   │
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>├─────────────────────────────────────────────────────────────┤
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>│  Page 1   │  Page 2   │  Page 3   │  Index    │  Page 5    │
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>│  (8KB)    │  (8KB)    │  (8KB)    │  Page     │  (8KB)     │
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>│  2 blocks │  2 blocks │  2 blocks │  (8KB)    │  2 blocks  │
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>└─────────────────────────────────────────────────────────────┘
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>Mapping: Database Page → Physical Blocks
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>- Page size: 8KB
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>- Block size: 4KB
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>- Each page occupies 2 contiguous blocks
+</code></pre></div>
+<p><strong>Who Controls Data Blocks?</strong></p>
+<p>The <strong>Operating System</strong> and <strong>File System</strong> control data blocks:
+- Allocates disk blocks to files
+- Manages block I/O operations
+- Handles block caching at OS level
+- Ensures data persistence</p>
+<p><strong>How Pages Map to Blocks:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Database File: users.dbf
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>┌──────────────────────────────────────────────┐
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>│ Page 0 → Blocks 0-1   (Header page)         │
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>│ Page 1 → Blocks 2-3   (Data page)           │
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>│ Page 2 → Blocks 4-5   (Data page)           │
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>│ Page 3 → Blocks 6-7   (Index page)          │
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>│ ...                                          │
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>└──────────────────────────────────────────────┘
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>Mapping maintained by: Storage Manager / File Manager
+</code></pre></div>
+<h3 id="complete-storage-hierarchy">Complete Storage Hierarchy</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>┌────────────────────────────────────────────────────────┐
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>│         APPLICATION LAYER                              │
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>│         SQL Query: SELECT * FROM users WHERE id = 5    │
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>└────────────────┬───────────────────────────────────────┘
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>                 ↓
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>┌────────────────────────────────────────────────────────┐
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>│         QUERY OPTIMIZER                                │
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>│         Decides: Use index or full table scan?         │
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>└────────────────┬───────────────────────────────────────┘
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>                 ↓
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>┌────────────────────────────────────────────────────────┐
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>│         BUFFER MANAGER                                 │
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>│         ┌────────────────────────────────┐            │
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>│         │  Buffer Pool (Memory Cache)    │            │
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>│         │  ┌──────┐ ┌──────┐ ┌──────┐  │            │
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>│         │  │Page 1│ │Page 5│ │Page 9│  │  ← Hot pages│
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>│         │  └──────┘ └──────┘ └──────┘  │            │
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>│         └────────────────────────────────┘            │
+<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a>│         If page not in buffer → Read from disk        │
+<a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a>└────────────────┬───────────────────────────────────────┘
+<a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a>                 ↓
+<a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>┌────────────────────────────────────────────────────────┐
+<a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a>│         STORAGE MANAGER                                │
+<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a>│         Translates: Page ID → Disk Block Address       │
+<a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a>│         Page 5 → File: users.dbf, Offset: 40960 bytes │
+<a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a>└────────────────┬───────────────────────────────────────┘
+<a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a>                 ↓
+<a id="__codelineno-13-28" name="__codelineno-13-28" href="#__codelineno-13-28"></a>┌────────────────────────────────────────────────────────┐
+<a id="__codelineno-13-29" name="__codelineno-13-29" href="#__codelineno-13-29"></a>│         FILE SYSTEM (OS)                               │
+<a id="__codelineno-13-30" name="__codelineno-13-30" href="#__codelineno-13-30"></a>│         Reads blocks from disk file                    │
+<a id="__codelineno-13-31" name="__codelineno-13-31" href="#__codelineno-13-31"></a>└────────────────┬───────────────────────────────────────┘
+<a id="__codelineno-13-32" name="__codelineno-13-32" href="#__codelineno-13-32"></a>                 ↓
+<a id="__codelineno-13-33" name="__codelineno-13-33" href="#__codelineno-13-33"></a>┌────────────────────────────────────────────────────────┐
+<a id="__codelineno-13-34" name="__codelineno-13-34" href="#__codelineno-13-34"></a>│         PHYSICAL DISK                                  │
+<a id="__codelineno-13-35" name="__codelineno-13-35" href="#__codelineno-13-35"></a>│         Hard Drive / SSD                               │
+<a id="__codelineno-13-36" name="__codelineno-13-36" href="#__codelineno-13-36"></a>│         Block 80-81 → Contains Page 5 data             │
+<a id="__codelineno-13-37" name="__codelineno-13-37" href="#__codelineno-13-37"></a>└────────────────────────────────────────────────────────┘
+</code></pre></div>
+<p><strong>Example: Reading a Row</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Step-by-step process:</strong></p>
+<ol>
+<li><strong>Query Parser</strong>: Parses SQL query</li>
+<li><strong>Query Optimizer</strong>: Checks if index exists on <code>id</code> column</li>
+<li>If YES: Use index to find page number</li>
+<li>If NO: Full table scan (read all pages)</li>
+<li><strong>Buffer Manager</strong>: Check if page is in memory</li>
+<li>Cache HIT: Return page from buffer pool (fast!)</li>
+<li>Cache MISS: Read page from disk</li>
+<li><strong>Storage Manager</strong>: Translate page ID to disk location</li>
+<li>Page 5 → File offset: 40960 bytes (5 × 8KB)</li>
+<li><strong>File System</strong>: Read 8KB from disk at offset 40960</li>
+<li><strong>Buffer Manager</strong>: Store page in buffer pool, return data</li>
+<li><strong>Query Executor</strong>: Scan page for record with id=5, return result</li>
+</ol>
+<p><strong>Without Index:</strong>
+- Must read ALL pages (e.g., 10,000 pages = 80MB of data)
+- Time: ~100-500ms for large tables</p>
+<p><strong>With Index:</strong>
+- Index lookup finds page number instantly
+- Read only 1-3 pages (8-24KB of data)
+- Time: ~1-10ms</p>
+<hr>
+<h2 id="question-2-what-types-of-indexing-are-present">Question 2: What Types of Indexing are Present?</h2>
+<h3 id="answer_1">Answer:</h3>
+<h3 id="what-is-indexing">What is Indexing?</h3>
+<p><strong>Indexing</strong> is the process of creating a data structure (index) that improves the speed of data retrieval operations on a database table. An index stores a sorted copy of selected columns along with pointers to the actual rows.</p>
+<h3 id="advantages-of-indexing">Advantages of Indexing</h3>
+<p>✅ <strong>Faster Query Performance</strong>
+- Reduces query execution time from seconds to milliseconds
+- Especially beneficial for large tables (millions of rows)</p>
+<p>✅ <strong>Efficient Searching</strong>
+- WHERE clause queries execute faster
+- Range queries (BETWEEN, &gt;, &lt;) are optimized</p>
+<p>✅ <strong>Faster Sorting</strong>
+- ORDER BY operations use pre-sorted index
+- No need to sort entire table</p>
+<p>✅ <strong>Improved JOIN Performance</strong>
+- Indexed foreign keys speed up JOIN operations</p>
+<p>✅ <strong>Uniqueness Enforcement</strong>
+- UNIQUE indexes prevent duplicate values</p>
+<h3 id="disadvantages-of-indexing">Disadvantages of Indexing</h3>
+<p>❌ <strong>Extra Storage Space</strong>
+- Each index requires additional disk space (10-20% of table size)</p>
+<p>❌ <strong>Slower Write Operations</strong>
+- INSERT: Must add entry to all indexes
+- UPDATE: Must update indexes if indexed columns change
+- DELETE: Must remove entry from all indexes</p>
+<p>❌ <strong>Maintenance Overhead</strong>
+- Indexes become fragmented over time
+- Need periodic rebuilding/reorganization</p>
+<p>❌ <strong>Index Selection Complexity</strong>
+- Too many indexes slow down writes significantly
+- Wrong indexes waste space without helping queries</p>
+<h3 id="types-of-indexes">Types of Indexes</h3>
+<h4 id="1-clustered-index">1. Clustered Index</h4>
+<p><strong>Definition</strong>: A clustered index determines the <strong>physical order</strong> of data rows in a table. The table data is sorted and stored in the order of the clustered index key.</p>
+<p><strong>Key Characteristics:</strong>
+- ✅ <strong>One per table</strong>: Only one clustered index allowed (because physical order is unique)
+- 📊 <strong>Table is the index</strong>: Leaf nodes contain actual data rows, not pointers
+- 🔢 <strong>Physical ordering</strong>: Rows are stored in sorted order on disk
+- ⚡ <strong>Fast range queries</strong>: Sequential disk reads</p>
+<p><strong>Structure:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Clustered Index B+ Tree:
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>                    [Root Node]
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>                        50
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>                    /        \
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>                   /          \
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>          [Internal Node]   [Internal Node]
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>             20    35           65    80
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>            /  |   |  \         /  |   |  \
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>           /   |   |   \       /   |   |   \
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>    [Leaf: Actual Data Rows - Stored in sorted order]
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>    [10,John,30] → [15,Jane,25] → [20,Bob,35] → [25,Alice,28] →
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>    [35,Tom,40]  → [40,Sara,22] → [50,Mike,33] → [60,Lisa,29]  →
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>    [65,Dave,45] → [70,Emma,31] → [80,Paul,27] → [90,Kate,38]
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>    ↑ Leaf nodes contain the ACTUAL table data, sorted by index key
+</code></pre></div>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1">-- Create clustered index on primary key</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="p">(</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span><span class="w">  </span><span class="c1">-- Automatically creates clustered index</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">    </span><span class="n">age</span><span class="w"> </span><span class="nb">INT</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="p">);</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="c1">-- Data is physically stored sorted by id:</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="c1">-- Page 1: id 1-100</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="c1">-- Page 2: id 101-200</span>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="c1">-- Page 3: id 201-300</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="c1">-- ...</span>
+</code></pre></div>
+<p><strong>Advantages:</strong>
+- ✅ Extremely fast for range queries (e.g., <code>WHERE id BETWEEN 100 AND 200</code>)
+- ✅ Data is already sorted (no sorting needed for ORDER BY on indexed column)
+- ✅ Faster for queries returning large result sets</p>
+<p><strong>Disadvantages:</strong>
+- ❌ Only one per table
+- ❌ Slower INSERT/UPDATE if data isn't inserted in index order
+- ❌ Page splits occur when inserting into middle of sorted data</p>
+<h4 id="2-non-clustered-index-secondary-index">2. Non-Clustered Index (Secondary Index)</h4>
+<p><strong>Definition</strong>: A non-clustered index creates a <strong>separate structure</strong> from the table data. It contains index keys and pointers (row locators) to the actual data rows.</p>
+<p><strong>Key Characteristics:</strong>
+- ✅ <strong>Multiple per table</strong>: Can have many non-clustered indexes
+- 🔗 <strong>Separate structure</strong>: Index stored separately from table data
+- 📍 <strong>Contains pointers</strong>: Leaf nodes contain row pointers, not actual data
+- 🎯 <strong>Flexible</strong>: Can index any column(s)</p>
+<p><strong>Structure:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Non-Clustered Index B+ Tree (on 'name' column):
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>                    [Root Node]
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>                       'Jane'
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>                    /          \
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>                   /            \
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>          [Internal Node]    [Internal Node]
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>           'Alice' 'Dave'      'Mike' 'Tom'
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>           /   |    |   \      /   |   |   \
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>          /    |    |    \    /    |   |    \
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>    [Leaf: Index Keys + Pointers to Actual Rows]
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>    ['Alice', ptr→Row3] → ['Bob', ptr→Row1]   → ['Dave', ptr→Row4]  →
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>    ['Emma', ptr→Row7]  → ['Jane', ptr→Row2]  → ['John', ptr→Row5]  →
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>    ['Kate', ptr→Row9]  → ['Lisa', ptr→Row8]  → ['Mike', ptr→Row6]  →
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>    ['Paul', ptr→Row10] → ['Sara', ptr→Row11] → ['Tom', ptr→Row12]
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>    ↑ Leaf nodes contain index key + pointer to actual row location
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>    Actual Table Data (stored in clustered index or heap order):
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>    Row1: [20, 'Bob',   35]
+<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>    Row2: [15, 'Jane',  25]
+<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a>    Row3: [25, 'Alice', 28]
+<a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a>    Row4: [65, 'Dave',  45]
+<a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a>    ...
+</code></pre></div>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1">-- Create non-clustered index on name column</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_name</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">users</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="c1">-- Index is separate from table data</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="c1">-- When querying: SELECT * FROM users WHERE name = 'Alice'</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="c1">-- 1. Search index for 'Alice' → Get pointer to Row3</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="c1">-- 2. Use pointer to fetch actual row data</span>
+</code></pre></div>
+<p><strong>Advantages:</strong>
+- ✅ Multiple indexes possible on same table
+- ✅ Can optimize different query patterns
+- ✅ Doesn't affect physical data ordering</p>
+<p><strong>Disadvantages:</strong>
+- ❌ Requires extra disk space (separate structure)
+- ❌ Two lookups: Index lookup + data fetch (bookmark lookup)
+- ❌ Slower than clustered index for range queries</p>
+<h3 id="clustered-vs-non-clustered-index-comparison">Clustered vs Non-Clustered Index Comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Clustered Index</th>
+<th>Non-Clustered Index</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Number per table</strong></td>
+<td>One only</td>
+<td>Multiple (typically up to 999)</td>
+</tr>
+<tr>
+<td><strong>Data storage</strong></td>
+<td>Leaf nodes contain actual rows</td>
+<td>Leaf nodes contain pointers to rows</td>
+</tr>
+<tr>
+<td><strong>Physical order</strong></td>
+<td>Determines row order on disk</td>
+<td>Doesn't affect row order</td>
+</tr>
+<tr>
+<td><strong>Space</strong></td>
+<td>No extra space (table itself)</td>
+<td>Extra space for separate structure</td>
+</tr>
+<tr>
+<td><strong>Speed</strong></td>
+<td>Faster for range queries</td>
+<td>Faster for specific lookups</td>
+</tr>
+<tr>
+<td><strong>INSERT impact</strong></td>
+<td>Can cause page splits</td>
+<td>Less impact on inserts</td>
+</tr>
+<tr>
+<td><strong>Common use</strong></td>
+<td>Primary key</td>
+<td>Foreign keys, search columns</td>
+</tr>
+</tbody>
+</table>
+<h3 id="other-index-types">Other Index Types</h3>
+<h4 id="3-unique-index">3. Unique Index</h4>
+<p>Ensures all values in the indexed column(s) are distinct.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_email</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">users</span><span class="p">(</span><span class="n">email</span><span class="p">);</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="c1">-- Prevents duplicate emails</span>
+</code></pre></div>
+<h4 id="4-composite-index-multi-column-index">4. Composite Index (Multi-Column Index)</h4>
+<p>Index on multiple columns, useful for queries filtering on multiple fields.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_name_age</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">users</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">age</span><span class="p">);</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="c1">-- Optimizes: WHERE name = 'John' AND age = 30</span>
+</code></pre></div>
+<p><strong>Column Order Matters:</strong>
+- Index on (name, age) helps: <code>WHERE name = 'John'</code> or <code>WHERE name = 'John' AND age = 30</code>
+- Does NOT help: <code>WHERE age = 30</code> (first column not used)</p>
+<h4 id="5-covering-index">5. Covering Index</h4>
+<p>Index that includes all columns needed by a query, avoiding table lookup.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_covering</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">users</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="n">INCLUDE</span><span class="w"> </span><span class="p">(</span><span class="n">age</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="p">);</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="c1">-- Query: SELECT name, age, email WHERE name = 'John'</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="c1">-- All data retrieved from index, no table access needed!</span>
+</code></pre></div>
+<h4 id="6-filtered-index-partial-index">6. Filtered Index (Partial Index)</h4>
+<p>Index on subset of rows matching a condition.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_active_users</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">users</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'active'</span><span class="p">;</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="c1">-- Only indexes active users, smaller and faster</span>
+</code></pre></div>
+<h4 id="7-full-text-index">7. Full-Text Index</h4>
+<p>Specialized index for text search operations.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="n">FULLTEXT</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_description</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">description</span><span class="p">);</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="c1">-- Enables: WHERE MATCH(description) AGAINST ('wireless mouse')</span>
+</code></pre></div>
+<h4 id="8-hash-index">8. Hash Index</h4>
+<p>Uses a hash function to map keys to bucket locations. Only supports <strong>equality lookups</strong> (<code>=</code>), not range queries.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1">-- In PostgreSQL:</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_email_hash</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">HASH</span><span class="w"> </span><span class="p">(</span><span class="n">email</span><span class="p">);</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="c1">-- Fast for: WHERE email = 'john@example.com'</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="c1">-- Cannot use for: WHERE email &gt; 'j%' (range queries not supported)</span>
+</code></pre></div>
+<p><strong>Best for</strong>: Exact-match lookups on high-cardinality columns where range queries are not needed.</p>
+<h4 id="9-geospatial-index-r-tree">9. Geospatial Index (R-Tree)</h4>
+<p>Indexes 2D/3D spatial data using R-Tree structures. Used for location-based queries.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1">-- In MySQL:</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="n">SPATIAL</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_location</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">stores</span><span class="p">(</span><span class="n">coordinates</span><span class="p">);</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="c1">-- Enables: Find all stores within 5km of a point</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="c1">-- In PostGIS (PostgreSQL):</span>
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_geo</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">locations</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">);</span>
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="c1">-- Enables: ST_DWithin(geom, ST_MakePoint(-73.99, 40.73), 5000)</span>
+</code></pre></div>
+<p><strong>Best for</strong>: "Find nearby" queries, geofencing, map applications.</p>
+<h4 id="10-bitmap-index">10. Bitmap Index</h4>
+<p>Stores a bitmap (bit array) for each distinct value in a column. Each bit represents a row — <code>1</code> if the row has that value, <code>0</code> otherwise.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="c1">-- In Oracle:</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="n">BITMAP</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_status</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">orders</span><span class="p">(</span><span class="n">status</span><span class="p">);</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="c1">-- Column values: 'pending', 'shipped', 'delivered'</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="c1">-- Bitmap representation:</span>
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="c1">-- 'pending':   1 0 0 1 0 1 0 0 ...</span>
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="c1">-- 'shipped':   0 1 0 0 0 0 1 0 ...</span>
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="c1">-- 'delivered': 0 0 1 0 1 0 0 1 ...</span>
+</code></pre></div>
+<p><strong>Best for</strong>: Low-cardinality columns (few distinct values like gender, status, boolean flags). Very efficient for data warehousing and OLAP queries with multiple AND/OR conditions.</p>
+<hr>
+<h2 id="question-3-understanding-data-structures-used-for-indexing">Question 3: Understanding Data Structures Used for Indexing</h2>
+<h3 id="answer_2">Answer:</h3>
+<p>For detailed B-Tree and B+ Tree internals, structure diagrams, comparisons, and complete C implementations, see <a href="../b-tree-and-b-plus-tree/">B-Tree and B+ Tree</a>.</p>
+<hr>
+<h2 id="additional-important-questions">Additional Important Questions</h2>
+<h3 id="q4-when-should-you-create-an-index">Q4: When Should You Create an Index?</h3>
+<p><strong>Create an index when:</strong></p>
+<p>✅ <strong>Column frequently used in WHERE clause</strong>
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="c1">-- Query: SELECT * FROM users WHERE email = 'john@example.com'</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_email</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">users</span><span class="p">(</span><span class="n">email</span><span class="p">);</span>
+</code></pre></div>
+<p>✅ <strong>Column used in JOIN operations</strong>
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c1">-- Query: SELECT * FROM orders JOIN users ON orders.user_id = users.id</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_user_id</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">orders</span><span class="p">(</span><span class="n">user_id</span><span class="p">);</span>
+</code></pre></div>
+<p>✅ <strong>Column used in ORDER BY</strong>
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1">-- Query: SELECT * FROM products ORDER BY price</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_price</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">products</span><span class="p">(</span><span class="n">price</span><span class="p">);</span>
+</code></pre></div>
+<p>✅ <strong>Table is large</strong> (&gt;100,000 rows)
+- Small tables: Full scan is often faster than index</p>
+<p><strong>Do NOT create index when:</strong></p>
+<p>❌ <strong>Table is small</strong> (&lt;1,000 rows)
+❌ <strong>Column has low cardinality</strong> (few distinct values)
+   - Example: gender (M/F) - only 2 values, index not helpful
+❌ <strong>Column frequently updated</strong>
+   - Every update must update index
+❌ <strong>Table has heavy INSERT/UPDATE workload</strong>
+   - Indexes slow down writes</p>
+<p><strong>Common Index Mistakes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Mistake</th>
+<th>Problem</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Over-indexing</strong></td>
+<td>Every column indexed → slow writes, wasted space</td>
+<td>Only index columns used in queries</td>
+</tr>
+<tr>
+<td><strong>Unused indexes</strong></td>
+<td>Indexes that no query ever uses</td>
+<td>Audit with <code>pg_stat_user_indexes</code> or <code>sys.dm_db_index_usage_stats</code></td>
+</tr>
+<tr>
+<td><strong>Wrong composite order</strong></td>
+<td><code>INDEX(a, b)</code> helps <code>WHERE a = ?</code> but NOT <code>WHERE b = ?</code> alone</td>
+<td>Put most selective / most queried column first</td>
+</tr>
+<tr>
+<td><strong>Not monitoring</strong></td>
+<td>Queries doing full scans despite indexes</td>
+<td>Use <code>EXPLAIN</code> / <code>EXPLAIN ANALYZE</code> to verify index usage</td>
+</tr>
+<tr>
+<td><strong>Redundant indexes</strong></td>
+<td><code>INDEX(a)</code> is redundant if <code>INDEX(a, b)</code> exists</td>
+<td>Remove the shorter index</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="q5-how-does-the-query-optimizer-use-indexes">Q5: How Does the Query Optimizer Use Indexes?</h3>
+<p><strong>Query Optimization Process:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="c1">-- Query</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">25</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">city</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'NYC'</span><span class="p">;</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="c1">-- Optimizer checks:</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="mi">1</span><span class="p">.</span><span class="w"> </span><span class="n">Indexes</span><span class="w"> </span><span class="n">available</span><span class="o">?</span>
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">idx_age</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="p">(</span><span class="n">age</span><span class="p">)</span>
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">idx_city</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="p">(</span><span class="n">city</span><span class="p">)</span>
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">idx_age_city</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="p">(</span><span class="n">age</span><span class="p">,</span><span class="w"> </span><span class="n">city</span><span class="p">)</span><span class="w">  </span><span class="err">←</span><span class="w"> </span><span class="n">Composite</span>
+<a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a>
+<a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a><span class="mi">2</span><span class="p">.</span><span class="w"> </span><span class="n">Selectivity</span><span class="w"> </span><span class="n">analysis</span><span class="p">:</span>
+<a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">25</span><span class="p">:</span><span class="w"> </span><span class="k">Returns</span><span class="w"> </span><span class="mi">70</span><span class="o">%</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="p">(</span><span class="k">not</span><span class="w"> </span><span class="n">selective</span><span class="p">)</span>
+<a id="__codelineno-30-12" name="__codelineno-30-12" href="#__codelineno-30-12"></a><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">city</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'NYC'</span><span class="p">:</span><span class="w"> </span><span class="k">Returns</span><span class="w"> </span><span class="mi">5</span><span class="o">%</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="p">(</span><span class="n">highly</span><span class="w"> </span><span class="n">selective</span><span class="p">)</span>
+<a id="__codelineno-30-13" name="__codelineno-30-13" href="#__codelineno-30-13"></a><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="k">Both</span><span class="p">:</span><span class="w"> </span><span class="k">Returns</span><span class="w"> </span><span class="mi">3</span><span class="o">%</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">rows</span>
+<a id="__codelineno-30-14" name="__codelineno-30-14" href="#__codelineno-30-14"></a>
+<a id="__codelineno-30-15" name="__codelineno-30-15" href="#__codelineno-30-15"></a><span class="mi">3</span><span class="p">.</span><span class="w"> </span><span class="n">Cost</span><span class="w"> </span><span class="n">estimation</span><span class="p">:</span>
+<a id="__codelineno-30-16" name="__codelineno-30-16" href="#__codelineno-30-16"></a><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="k">Full</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">scan</span><span class="p">:</span><span class="w"> </span><span class="k">Read</span><span class="w"> </span><span class="k">all</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">000</span><span class="w"> </span><span class="n">pages</span>
+<a id="__codelineno-30-17" name="__codelineno-30-17" href="#__codelineno-30-17"></a><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">Use</span><span class="w"> </span><span class="n">idx_age</span><span class="p">:</span><span class="w"> </span><span class="k">Read</span><span class="w"> </span><span class="k">index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">fetch</span><span class="w"> </span><span class="mi">700</span><span class="w"> </span><span class="n">pages</span><span class="w"> </span><span class="p">(</span><span class="k">not</span><span class="w"> </span><span class="n">good</span><span class="p">)</span>
+<a id="__codelineno-30-18" name="__codelineno-30-18" href="#__codelineno-30-18"></a><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">Use</span><span class="w"> </span><span class="n">idx_city</span><span class="p">:</span><span class="w"> </span><span class="k">Read</span><span class="w"> </span><span class="k">index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">fetch</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="n">pages</span><span class="w"> </span><span class="p">(</span><span class="n">good</span><span class="o">!</span><span class="p">)</span>
+<a id="__codelineno-30-19" name="__codelineno-30-19" href="#__codelineno-30-19"></a><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">Use</span><span class="w"> </span><span class="n">idx_age_city</span><span class="p">:</span><span class="w"> </span><span class="k">Read</span><span class="w"> </span><span class="k">index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">fetch</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="n">pages</span><span class="w"> </span><span class="p">(</span><span class="n">best</span><span class="o">!</span><span class="p">)</span>
+<a id="__codelineno-30-20" name="__codelineno-30-20" href="#__codelineno-30-20"></a>
+<a id="__codelineno-30-21" name="__codelineno-30-21" href="#__codelineno-30-21"></a><span class="mi">4</span><span class="p">.</span><span class="w"> </span><span class="n">Decision</span><span class="p">:</span><span class="w"> </span><span class="n">Use</span><span class="w"> </span><span class="n">idx_age_city</span><span class="w"> </span><span class="p">(</span><span class="n">lowest</span><span class="w"> </span><span class="n">cost</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>View optimizer decision:</strong>
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">25</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">city</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'NYC'</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+<h3 id="q6-what-is-index-fragmentation-and-maintenance">Q6: What is Index Fragmentation and Maintenance?</h3>
+<p><strong>Index Fragmentation:</strong></p>
+<p>Over time, indexes become fragmented due to INSERT/UPDATE/DELETE operations:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>Healthy Index Page:
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>┌────────────────────────────────┐
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>│ [10] [20] [30] [40] [50] [60]  │ ← Full page, sequential
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>└────────────────────────────────┘
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a>
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a>Fragmented Index Page (after many operations):
+<a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a>┌────────────────────────────────┐
+<a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a>│ [10] [__] [30] [__] [50] [__]  │ ← Gaps, wasted space
+<a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a>└────────────────────────────────┘
+</code></pre></div>
+<p><strong>Page Splits:</strong></p>
+<p>When inserting into a full page:
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>Before (full):
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>Page 1: [10, 20, 30, 40]  ← Full
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>Insert 25:
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>Page 1: [10, 20]           ← Split
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>Page 2: [25, 30, 40]       ← New page
+<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>
+<a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a>Result: Pages not contiguous, poor sequential read performance
+</code></pre></div>
+<p><strong>Maintenance Operations:</strong></p>
+<p><strong>1. Rebuild Index:</strong>
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_name</span><span class="w"> </span><span class="n">REBUILD</span><span class="p">;</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="c1">-- Completely recreates index, removes fragmentation</span>
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="c1">-- Offline operation (locks table)</span>
+</code></pre></div>
+<p><strong>2. Reorganize Index:</strong>
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_name</span><span class="w"> </span><span class="n">REORGANIZE</span><span class="p">;</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="c1">-- Defragments leaf level, compacts pages</span>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="c1">-- Online operation (minimal locking)</span>
+</code></pre></div>
+<p><strong>3. Update Statistics:</strong>
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="k">UPDATE</span><span class="w"> </span><span class="k">STATISTICS</span><span class="w"> </span><span class="n">users</span><span class="p">;</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="c1">-- Refreshes optimizer statistics</span>
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="c1">-- Helps optimizer make better decisions</span>
+</code></pre></div>
+<hr>
+<h3 id="summary">Summary</h3>
+<p><strong>Key Takeaways:</strong></p>
+<ol>
+<li><strong>Data Storage</strong>: Database uses pages (8KB blocks) to store data, managed by buffer manager</li>
+<li><strong>Index Types</strong>: Clustered (physical order) vs Non-Clustered (separate structure with pointers)</li>
+<li><strong>Data Structures</strong>: B+ Trees are optimal for databases due to linked leaves and range query efficiency</li>
+<li><strong>Index Strategy</strong>: Create indexes on frequently queried columns, but balance against write performance</li>
+<li><strong>Maintenance</strong>: Regularly rebuild/reorganize indexes to prevent fragmentation</li>
+</ol>
+<p><strong>Performance Impact:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Without Index</th>
+<th>With Index</th>
+<th>Improvement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Point query</strong></td>
+<td>O(n) - scan all rows</td>
+<td>O(log n) - tree search</td>
+<td>100-1000x faster</td>
+</tr>
+<tr>
+<td><strong>Range query</strong></td>
+<td>O(n) - scan all rows</td>
+<td>O(log n + k) - k results</td>
+<td>50-500x faster</td>
+</tr>
+<tr>
+<td><strong>Sort</strong></td>
+<td>O(n log n) - sort data</td>
+<td>O(1) - already sorted</td>
+<td>10-100x faster</td>
+</tr>
+<tr>
+<td><strong>INSERT</strong></td>
+<td>O(1) - append</td>
+<td>O(log n) - update index</td>
+<td>2-5x slower</td>
+</tr>
+</tbody>
+</table></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 <a href="https://github.com/abhishekghoshh"  target="_blank" rel="noopener">Abhishek Ghosh</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/abhishekghoshh" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://x.com/abhishek_ghoshh" target="_blank" rel="noopener" title="x.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/abhishek-ghosh-220679132/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5m282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>

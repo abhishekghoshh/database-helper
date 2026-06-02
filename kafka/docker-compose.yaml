@@ -1,0 +1,300 @@
+networks:
+  kafka-net:
+    driver: bridge
+
+volumes:
+  kafka-cluster:
+
+services:
+  busybox:
+    image: confluentinc/cp-kafka:7.8.0
+    container_name: busybox
+    hostname: busybox
+    command: /scripts/init-script.sh
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+    environment:
+      TZ: "America/New_York"
+      # set up the kafka environment variables for easy access
+      KAFKA_BROKER_1: kafka1:9092
+      KAFKA_BROKER_2: kafka2:9092
+      KAFKA_BROKER_3: kafka3:9092
+    volumes:
+      - kafka-cluster:/mnt/shared
+      - ./scripts:/scripts
+    working_dir: /scripts
+    networks:
+      - kafka-net
+  # Service to initialize directory structure and permissions
+  init-kafka:
+    image: alpine:latest
+    container_name: init-kafka
+    command: >
+      sh -c "
+      echo 'Creating directory structure...';
+      mkdir -p /mnt/shared/kafka1/data /mnt/shared/kafka1/logs;
+      mkdir -p /mnt/shared/kafka2/data /mnt/shared/kafka2/logs;
+      mkdir -p /mnt/shared/kafka3/data /mnt/shared/kafka3/logs;
+      echo 'Setting permissions...';
+      chmod -R 777 /mnt/shared;
+      echo 'Initialization complete.';
+      "
+    volumes:
+      - kafka-cluster:/mnt/shared
+    networks:
+      - kafka-net
+  kafka-init-topics:
+    image: confluentinc/cp-kafka:7.8.0
+    container_name: kafka-init-topics
+    volumes:
+       - ./data/message.json:/data/message.json
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+    command: "sh -c 'echo Waiting for Kafka to be ready... && \
+               cub kafka-ready -b kafka1:9092 1 30 && \
+               kafka-topics --create --topic users --partitions 3 --replication-factor 3 --if-not-exists --bootstrap-server kafka1:9092 && \
+               kafka-topics --create --topic messages --partitions 3 --replication-factor 3 --if-not-exists --bootstrap-server kafka1:9092 && \
+               kafka-console-producer --bootstrap-server kafka1:9092 --topic users < /data/message.json'"
+    networks:
+      - kafka-net
+  kafka1:
+    image: confluentinc/cp-kafka:7.8.0
+    hostname: kafka1
+    container_name: kafka1
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+      - "9997:9997"
+    depends_on:
+      - init-kafka
+    environment:
+      KAFKA_NODE_ID: 1 #
+      KAFKA_BROKER_ID: 1 # 
+      CLUSTER_ID: 'EmptNWtoR4GGWx-BH6nGLQ'
+      KAFKA_PROCESS_ROLES: 'broker,controller' #
+
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:9093,2@kafka2:9093,3@kafka3:9093' #
+      KAFKA_LISTENERS: 'PLAINTEXT://kafka1:9092,CONTROLLER://kafka1:9093' #
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka1:9092' #
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT' # 
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER' #
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT' #
+      
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3 #
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0 #
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_JMX_PORT: 9997
+      KAFKA_JMX_OPTS: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka1 -Dcom.sun.management.jmxremote.rmi.port=9997
+
+      # ... DIRECTORY CONFIGURATION (The Magic Part) ...
+      # 1. Point the Data (Topic Messages) here:
+      KAFKA_LOG_DIRS: '/mnt/shared/kafka1/data'
+      # 2. Point the App Logs (server.log, gc.log) here:
+      LOG_DIR: '/mnt/shared/kafka1/logs'
+    volumes:
+      - kafka-cluster:/mnt/shared
+    networks:
+      - kafka-net
+
+  kafka2:
+    image: confluentinc/cp-kafka:7.8.0
+    hostname: kafka2
+    container_name: kafka2
+    ports:
+      - "9094:9092"
+      - "9095:9093"
+    depends_on:
+      - init-kafka
+    environment:
+      KAFKA_NODE_ID: 2
+      KAFKA_BROKER_ID: 2
+      CLUSTER_ID: 'EmptNWtoR4GGWx-BH6nGLQ'
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:9093,2@kafka2:9093,3@kafka3:9093'
+      KAFKA_LISTENERS: 'PLAINTEXT://kafka2:9092,CONTROLLER://kafka2:9093'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka2:9092'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_JMX_PORT: 9997
+      KAFKA_JMX_OPTS: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka2 -Dcom.sun.management.jmxremote.rmi.port=9997
+
+      # ... DIRECTORY CONFIGURATION (The Magic Part) ...
+      # 1. Point the Data (Topic Messages) here:
+      KAFKA_LOG_DIRS: '/mnt/shared/kafka2/data'
+      # 2. Point the App Logs (server.log, gc.log) here:
+      LOG_DIR: '/mnt/shared/kafka2/logs'
+    volumes:
+      - kafka-cluster:/mnt/shared
+    networks:
+      - kafka-net
+
+  kafka3:
+    image: confluentinc/cp-kafka:7.8.0
+    hostname: kafka3
+    container_name: kafka3
+    depends_on:
+      - init-kafka
+    ports:
+      - "9096:9092"
+      - "9097:9093"
+    environment:
+      KAFKA_NODE_ID: 3
+      KAFKA_BROKER_ID: 3
+      CLUSTER_ID: 'EmptNWtoR4GGWx-BH6nGLQ'
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:9093,2@kafka2:9093,3@kafka3:9093'
+      KAFKA_LISTENERS: 'PLAINTEXT://kafka3:9092,CONTROLLER://kafka3:9093'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka3:9092'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_JMX_PORT: 9997
+      KAFKA_JMX_OPTS: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka3 -Dcom.sun.management.jmxremote.rmi.port=9997
+
+      # ... DIRECTORY CONFIGURATION (The Magic Part) ...
+      # 1. Point the Data (Topic Messages) here:
+      KAFKA_LOG_DIRS: '/mnt/shared/kafka3/data'
+      # 2. Point the App Logs (server.log, gc.log) here:
+      LOG_DIR: '/mnt/shared/kafka3/logs'
+    volumes:
+      - kafka-cluster:/mnt/shared
+    networks:
+      - kafka-net
+
+  kafka-ui:
+    image: ghcr.io/kafbat/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka1:9092,kafka2:9092,kafka3:9092
+      KAFKA_CLUSTERS_0_METRICS_PORT: 9997
+      KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS: http://kafka-connect:8083
+      
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry:8085
+      KAFKA_CLUSTERS_0_KAFKACONNECT_0_NAME: first
+
+      KAFKA_CLUSTERS_0_METRICS_STORE_PROMETHEUS_URL: "http://prometheus:9090"
+      KAFKA_CLUSTERS_0_METRICS_STORE_PROMETHEUS_REMOTEWRITE: 'true'
+      KAFKA_CLUSTERS_0_METRICS_STORE_KAFKA_TOPIC: "kafka_metrics"
+
+      DYNAMIC_CONFIG_ENABLED: 'true'
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+      - schema-registry
+      - kafka-connect
+    networks:
+      - kafka-net
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.8.0
+    hostname: schema-registry
+    container_name: schema-registry
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+    ports:
+      - "8081:8081"
+      - "8085:8085"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8081,http://schema-registry:8085
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka1:9092,PLAINTEXT://kafka2:9092,PLAINTEXT://kafka3:9092
+      SCHEMA_REGISTRY_DEBUG: 'true'
+
+      SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL: PLAINTEXT
+      SCHEMA_REGISTRY_SCHEMA_REGISTRY_INTER_INSTANCE_PROTOCOL: "http"
+      SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: INFO
+      SCHEMA_REGISTRY_KAFKASTORE_TOPIC: _schemas
+    networks:
+      - kafka-net
+  kafka-connect:
+    image: confluentinc/cp-kafka-connect:7.8.0
+    container_name: kafka-connect
+    hostname: kafka-connect
+    ports:
+      - 8083:8083
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+      - schema-registry
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: kafka1:9092,kafka2:9092,kafka3:9092
+      CONNECT_GROUP_ID: compose-connect-group
+      # High Availability for Connect internal topics
+      CONNECT_CONFIG_STORAGE_TOPIC: _connect_configs
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 3
+      CONNECT_OFFSET_STORAGE_TOPIC: _connect_offset
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 3
+      CONNECT_STATUS_STORAGE_TOPIC: _connect_status
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 3
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8085
+      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8085
+      CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_REST_ADVERTISED_HOST_NAME: kafka-connect
+      CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components"
+    networks:
+      - kafka-net
+  prometheus:
+    image: prom/prometheus:latest
+    hostname: prometheus
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./scripts:/etc/prometheus
+    command: --web.enable-remote-write-receiver  --config.file=/etc/prometheus/prometheus.yaml
+    networks:
+      - kafka-net
+  filebrowser:
+    image: filebrowser/filebrowser:latest
+    container_name: filebrowser
+    hostname: filebrowser
+    ports:
+      - "9999:80"
+    volumes:
+      # 1. Mount the Docker Volume to the data path
+      - kafka-cluster:/srv
+      # 2. THE DATABASE: Maps a local file to the internal DB location
+      - ./filebrowser/filebrowser.db:/database/filebrowser.db
+      # 3. THE CONFIG: Maps a local file to the internal JSON config
+      - ./filebrowser/settings.json:/.filebrowser.json
+    environment:
+      - FB_BASEURL=/
+      - FB_LOG=stdout
+    networks:
+      - kafka-net

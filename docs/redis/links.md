@@ -1,5 +1,13 @@
 # Redis basics
 
+
+## Medium
+
+- [How Redis Stays So Fast, Even with Just One Thread](https://blog.singhabhinav.in/how-redis-stays-so-fast-even-with-just-one-thread-6aa79235ea8f)
+- [Redis Data Structures](https://blog.singhabhinav.in/redis-data-structures-f72d3d44ea77)
+
+
+
 ## Youtube
 
 #### Introduction

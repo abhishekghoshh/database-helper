@@ -44,6 +44,8 @@
 - [What makes Kafka special? | System Design](https://www.youtube.com/watch?v=yKPVZgA6Oe0)
 - [3 Important Use Cases Why The Industry Is Using Kafka](https://www.youtube.com/watch?v=RCDnStviPVc)
 - [MASTER Apache Kafka in just 8 minutes to Build Real-Time Apps](https://www.youtube.com/watch?v=feKBnsvO2Pk)
+- [Apache Kafka Explained in 8 Minutes](https://www.youtube.com/watch?v=o2UkE1vNIN8)
+
 
 
 ### Playlists
@@ -62,6 +64,9 @@
 - [Piyush Garg](https://www.youtube.com/@piyushgargdev/videos)
   - [Why do we need Kafka?](https://www.youtube.com/watch?v=pl3sJ-RoD3Q)
   - [Apache Kafka Crash Course | What is Kafka? | Piyush Garg](https://www.youtube.com/watch?v=ZJJHm_bd9Zo)
+  - [Kafka is Dead!](https://www.youtube.com/watch?v=6gBJ5jAIdQI)
+
+- [Kafka in 3 Hours | System Design | Kafka vs Message Queue | Topic, Partition, Consumer Explained](https://www.youtube.com/watch?v=JFPN-GwON9U)
 
 - [Kafka for beginners | Java Techie](https://www.youtube.com/playlist?list=PLVz2XdJiJQxwpWGoNokohsSW2CysI6lDc)
 
@@ -130,7 +135,7 @@
   - [In Depth Explanation : Apache Kafka Key Terminologies and Architecture Internal Working | Features | Part 3](https://ramakrishna-01.medium.com/in-depth-explanation-apache-kafka-key-terminologies-and-architecture-internal-working-features-4963f1616557)
   - [Interview Prep: Kafka vs ActiveMQ vs RabbitMQ — Features, Use Cases & Q&A| Part 4](https://ramakrishna-01.medium.com/interview-prep-kafka-vs-activemq-vs-rabbitmq-features-use-cases-q-a-part-4-460d24a59509)
 - [Kafka Scenario-Based Interview Questions: 10 Real-World Challenges You Must Be Ready For](https://towardsdev.com/kafka-scenario-based-interview-questions-10-real-world-challenges-you-must-be-ready-for-69165a775fb9)
-
+- [11 Kafka Design Patterns for Every Backend Engineer](https://mvineetsharma.medium.com/11-kafka-design-patterns-for-every-backend-engineer-f053bdadd99e)
 
 
 

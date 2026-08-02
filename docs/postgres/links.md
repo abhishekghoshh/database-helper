@@ -24,10 +24,12 @@
 - [99% of Developers Don't Get PostgreSQL](https://www.youtube.com/watch?v=P8rrhZTPEAQ)
 - [Why Postgres Is So Popular](https://www.youtube.com/watch?v=0lXjf3nxiGg)
 - [How PostgreSQL Quietly Took Over](https://www.youtube.com/watch?v=0hD4K3Ab3Fc)
+- [The Database That Should Be Dead but Runs the Internet](https://www.youtube.com/watch?v=_CB_Aa2ODeM)
 
 
 ## How postgres can replace entire tech stack
 
+- [The Secret Power of Postgres (It's Not Just SQL)](https://www.youtube.com/watch?v=0FL_1hS9OeM)
 - [I replaced my entire tech stack with Postgres...](https://www.youtube.com/watch?v=3JW732GrMdg)
 - [Postgres can replace your entire stack...](https://www.youtube.com/watch?v=1qs9bQ0MlpQ)
 - [Delete Redis, RabbitMQ, AWS SQS....](https://www.youtube.com/watch?v=xcjfbnN6b28)
@@ -35,6 +37,8 @@
 - [Postgres Just Killed Elasticsearch](https://www.youtube.com/watch?v=XEiQV4zRC-U)
 - [I replaced my entire stack with Postgres...](https://www.youtube.com/watch?v=TdondBmyNXc)
 - [Using PostgreSQL WAL as a Video Stream Transport in Go: A Deep Dive](https://www.youtube.com/watch?v=IcMjwFotY6A)
+- [Postgres Just Got It's Biggest Upgrade In Years](https://www.youtube.com/watch?v=4Lmqvn_yz-c)
+- [Postgres is dropping a crazy new feature](https://www.youtube.com/watch?v=zPsr0n9DQ7o)
 
 
 
@@ -65,6 +69,7 @@
 
 ## Postgres at Scale
 
+- [How Instagram Scaled Postgres to 2 Billion Users](https://www.youtube.com/watch?v=YLoYcwnqVzM)
 - [New best postgres cloud ever?](https://www.youtube.com/watch?v=_XXKodf6Lh0)
 - [Postgres for 800 million ChatGPT users - Deep dive](https://www.youtube.com/watch?v=dApJ8X9XW9M)
 - [How OpenAI Handles 800 Million ChatGPT Users on a Single PostgreSQL Primary](https://www.youtube.com/watch?v=ubpUjovBMAM)

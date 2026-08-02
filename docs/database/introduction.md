@@ -11,6 +11,13 @@
 - [15 futuristic databases you've never heard of](https://www.youtube.com/watch?v=jb2AvF8XzII)
 
 
+
+### Database Optimization
+
+- [18 Database Optimization Techniques Every Backend Developer Must Know | Complete Masterclass](https://www.youtube.com/watch?v=Aceg0n04LJw)
+    - [Database Optimization Techniques you should now](https://www.learncodewithdurgesh.com/blogs/database-optimization--techniques-you-should-now)
+
+
 ### Playlists
 
 - [Database Engineering](https://www.youtube.com/playlist?list=PLsdq-3Z1EPT2C-Da7Jscr7NptGcIZgQ2l)

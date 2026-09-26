@@ -1,0 +1,108 @@
+volumes:
+  mongo_config:
+  mongo-data-1:
+  mongodb-log-1:
+  mongo-data-2:
+  mongodb-log-2:
+  mongo-data-3:
+  mongodb-log-3:
+services:
+  keyfile-gen:
+    image: mongo:latest
+    container_name: keyfile-gen
+    user: root
+    deploy:
+      replicas: ${MONGO_REPLICAS:-0}
+    volumes:
+      - mongo_config:/etc/mongo-config
+    command: >
+      bash -c "if [ ! -f /etc/mongo-config/mongo-keyfile ]; then
+        openssl rand -hex 512 | tr -d '\n\r' > /etc/mongo-config/mongo-keyfile;
+        chmod 400 /etc/mongo-config/mongo-keyfile;
+        chown 999:999 /etc/mongo-config/mongo-keyfile;
+        echo 'Clean Hex Keyfile generated.';
+      fi"
+  mongo1:
+    image: mongo:latest
+    container_name: mongo1
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    deploy:
+      replicas: ${MONGO_REPLICAS:-0}
+    volumes:
+      - mongo_config:/etc/mongo-config
+      - mongo-data-1:/data/db
+      - mongodb-log-1:/var/log/mongodb/
+    depends_on:
+      keyfile-gen:
+        condition: service_completed_successfully
+    command: >
+      mongod --replSet rs0 
+      --bind_ip_all 
+      --keyFile /etc/mongo-config/mongo-keyfile
+  mongo2:
+    image: mongo:latest
+    container_name: mongo2
+    depends_on:
+      keyfile-gen:
+        condition: service_completed_successfully
+    deploy:
+      replicas: ${MONGO_REPLICAS:-0}
+    ports:
+      - 27018:27017
+    volumes:
+      - mongo_config:/etc/mongo-config
+      - mongo-data-2:/data/db
+      - mongodb-log-2:/var/log/mongodb/
+    command: >
+      mongod --replSet rs0 
+      --bind_ip_all 
+      --keyFile /etc/mongo-config/mongo-keyfile
+    
+  mongo3:
+    image: mongo:latest
+    container_name: mongo3
+    depends_on:
+      keyfile-gen:
+        condition: service_completed_successfully
+    deploy:
+      replicas: ${MONGO_REPLICAS:-0}
+    ports:
+      - 27019:27017
+    volumes:
+      - mongo_config:/etc/mongo-config
+      - mongo-data-3:/data/db
+      - mongodb-log-3:/var/log/mongodb/
+    command: >
+      mongod --replSet rs0 
+      --bind_ip_all 
+      --keyFile /etc/mongo-config/mongo-keyfile
+  mongo-setup-replica:
+    image: mongo:latest
+    container_name: mongo-setup-replica
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    deploy:
+      replicas: ${MONGO_REPLICAS:-0}
+    volumes:
+      - ./init-rs.js:/init-rs.js
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD} 
+    entrypoint: 
+      - /bin/bash
+      - -c
+      - |
+        echo "Waiting for mongo1..."
+        until mongosh --host mongo1 -u ${MONGO_INITDB_ROOT_USERNAME} -p ${MONGO_INITDB_ROOT_PASSWORD} --authenticationDatabase admin --eval 'db.runCommand({ping:1})' &>/dev/null; do
+          echo "Database starting..."
+          sleep 2
+        done
+        echo "Mongo1 is ready! Running JS script..."
+        mongosh --host mongo1 -u ${MONGO_INITDB_ROOT_USERNAME} -p ${MONGO_INITDB_ROOT_PASSWORD} --authenticationDatabase admin /init-rs.js
+

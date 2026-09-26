@@ -1,0 +1,17 @@
+FROM mongo:latest
+
+# 1. Create a directory for the keyfile
+RUN mkdir -p /data/configdb
+
+# 2. Generate a random keyfile directly inside the image
+# This avoids permission issues with your host (Mac/Windows)
+RUN openssl rand -base64 756 > /data/configdb/mongodb-keyfile
+
+# 3. Set strict permissions (Required by MongoDB)
+# User 999 is the default 'mongodb' user
+RUN chown 999:999 /data/configdb/mongodb-keyfile && \
+    chmod 400 /data/configdb/mongodb-keyfile
+
+# 4. Use CMD to pass all necessary flags to the entrypoint
+# This ensures replication and auth are active
+CMD ["mongod",  "--storageEngine" ,"wiredTiger", "--replSet", "rs0", "--bind_ip_all", "--keyFile", "/data/configdb/mongodb-keyfile", "--auth"]

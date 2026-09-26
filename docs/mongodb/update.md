@@ -581,3 +581,22 @@ db.coll.replaceOne({"name": "Max"}, {"firstname": "Maxime", "surname": "Beugnet"
 ```js
 db.coll.updateMany({}, {$set: {"x": 1}}, {"writeConcern": {"w": "majority", "wtimeout": 5000}})
 ```
+
+---
+
+## Update Operations — Concepts and Interview Q&A
+
+
+Update operations modify existing documents using `updateOne()`, `updateMany()`, or `findOneAndUpdate()`, typically applying update operators like `$set`, `$inc`, `$unset`, or `$push` rather than replacing the whole document. By default, only matched fields specified with update operators are changed — other fields remain untouched.
+
+```javascript
+db.orders.updateMany(
+  { status: "PENDING" },
+  { $set: { status: "PROCESSING" }, $currentDate: { updatedAt: true } }
+)
+```
+
+**Interview Questions:**
+- What is the difference between `updateOne()`, `updateMany()`, and `findOneAndUpdate()`? — `updateOne()` modifies the first matching document, `updateMany()` modifies all matching documents, and `findOneAndUpdate()` updates a single matching document while also atomically returning either its pre- or post-update state.
+- What is the difference between using `$set` versus passing a plain replacement document to `updateOne()`? — Using `$set` only modifies the specified fields and leaves the rest of the document untouched, whereas passing a plain document without operators replaces the entire matched document (equivalent to `replaceOne()`), removing any fields not included.
+- How would you atomically increment a counter field on a document? — Use the `$inc` update operator, e.g. `{ $inc: { count: 1 } }`, which atomically increments the field's numeric value on the server without a separate read-modify-write cycle.

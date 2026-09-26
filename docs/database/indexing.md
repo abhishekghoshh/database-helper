@@ -907,6 +907,168 @@ UPDATE STATISTICS users;
 
 ---
 
+
+### DBMS Notes — Quick Reference
+
+
+### What is an Index?
+
+A database index is an auxiliary data structure that stores a sorted (or otherwise organized) reference to rows in a table, allowing the database engine to locate rows without scanning the entire table. It works much like the index at the back of a book: instead of reading every page to find a topic, you look up the topic in the index and jump straight to the relevant page. Indexes speed up `SELECT` queries with `WHERE`, `JOIN`, `ORDER BY`, and `GROUP BY` clauses, but they add overhead to `INSERT`, `UPDATE`, and `DELETE` operations because the index must be maintained alongside the table.
+
+```sql
+-- Without an index, this scans every row in the table
+SELECT * FROM employees WHERE last_name = 'Smith';
+
+-- Creating an index speeds up the lookup above
+CREATE INDEX idx_employees_last_name ON employees (last_name);
+```
+
+### Clustered Index
+
+A clustered index determines the physical storage order of rows in a table — the table data itself is stored in the order of the index key. Because the data rows and the index are physically the same structure, a table can have only **one** clustered index (typically on the primary key). Lookups by the clustered key are extremely fast since the leaf nodes of the index *are* the data pages.
+
+```sql
+-- In most RDBMS (e.g., SQL Server), the primary key creates a clustered index by default
+CREATE TABLE orders (
+    order_id INT PRIMARY KEY,   -- clustered index on order_id
+    customer_id INT,
+    order_date DATE
+);
+```
+
+### Non-Clustered Index
+
+A non-clustered index is a separate structure from the actual table data. It stores the indexed column(s) plus a pointer (row locator, such as a row ID or the clustered key) back to the actual row. A table can have **many** non-clustered indexes. Because an extra lookup step ("bookmark lookup") is needed to fetch the full row, non-clustered indexes are typically slightly slower than clustered indexes for retrieving entire rows, but they are ideal for supporting varied query patterns on non-primary-key columns.
+
+```sql
+CREATE INDEX idx_orders_customer_id ON orders (customer_id);
+```
+
+**Differences: Clustered vs Non-Clustered Index**
+
+| Aspect | Clustered Index | Non-Clustered Index |
+|---|---|---|
+| Data storage | Table rows physically sorted by index key | Separate structure with pointers to rows |
+| Count per table | One | Many |
+| Lookup speed | Faster (data is the index) | Slightly slower (extra row lookup) |
+| Storage overhead | None extra (reorders existing data) | Additional storage for the index structure |
+| Typical use | Primary key / range queries | Secondary search columns, foreign keys |
+
+### Composite Index
+
+A composite (or compound) index is built on two or more columns, in a specific order. The column order matters: the index is most effective for queries that filter on a leading prefix of the indexed columns (similar to how a phone book sorted by last name then first name only helps you search by last name alone, or by last name + first name, but not by first name alone).
+
+```sql
+CREATE INDEX idx_orders_customer_date ON orders (customer_id, order_date);
+
+-- Uses the index efficiently (leading column)
+SELECT * FROM orders WHERE customer_id = 42;
+
+-- Uses the index fully (both columns, in order)
+SELECT * FROM orders WHERE customer_id = 42 AND order_date = '2026-01-01';
+
+-- Cannot use this index effectively (skips leading column)
+SELECT * FROM orders WHERE order_date = '2026-01-01';
+```
+
+### Covering Index
+
+A covering index is an index that contains **all** the columns needed to satisfy a query, so the database engine can answer the query directly from the index without accessing the underlying table (no bookmark lookup). This is a key performance technique for read-heavy, latency-sensitive queries.
+
+```sql
+-- Query only needs customer_id, order_date, and status
+SELECT customer_id, order_date, status
+FROM orders
+WHERE customer_id = 42;
+
+-- This index "covers" the query above — no table access needed
+CREATE INDEX idx_orders_covering ON orders (customer_id, order_date, status);
+```
+
+### Unique Index
+
+A unique index enforces that no two rows have the same value(s) in the indexed column(s), while also providing the performance benefits of a regular index. Primary keys automatically get a unique index; `UNIQUE` constraints on other columns create one explicitly. NULLs are typically allowed (and, depending on the database, multiple NULLs may or may not be considered duplicates).
+
+```sql
+CREATE UNIQUE INDEX idx_users_email ON users (email);
+```
+
+### B-Tree Index
+
+The B-Tree (balanced tree) is the default and most common index structure used by relational databases (e.g., MySQL InnoDB, PostgreSQL). It keeps data sorted and balanced so that all leaf nodes are at the same depth, guaranteeing $O(\log n)$ lookup, insert, and delete performance. B-Trees are well suited for range queries (`BETWEEN`, `<`, `>`, `ORDER BY`) because leaf nodes are typically linked, allowing efficient sequential scans once the starting point is found.
+
+```mermaid
+graph TD
+    Root["Root Node<br/>(keys 50, 100)"]
+    Root --> A["Leaf: 10, 20, 30"]
+    Root --> B["Leaf: 60, 70, 80"]
+    Root --> C["Leaf: 110, 120, 130"]
+    A -.-> B
+    B -.-> C
+```
+
+### Hash Index
+
+A hash index applies a hash function to the indexed column's value to compute a bucket location, giving average $O(1)$ lookup time for exact-match equality queries (`=`). Hash indexes do **not** support range queries, ordering, or partial-key matches on composite indexes, since hashing destroys the natural ordering of values.
+
+**Differences: B-Tree vs Hash Index**
+
+| Aspect | B-Tree Index | Hash Index |
+|---|---|---|
+| Equality lookups (`=`) | Fast ($O(\log n)$) | Fast (average $O(1)$) |
+| Range queries (`<`, `>`, `BETWEEN`) | Supported | Not supported |
+| Sorted output (`ORDER BY`) | Supported directly | Not supported |
+| Typical use | General-purpose, default in most RDBMS | In-memory tables, exact-match lookups |
+
+### Index Selectivity
+
+Selectivity is the ratio of distinct values in a column to the total number of rows: $\text{selectivity} = \frac{\text{distinct values}}{\text{total rows}}$. A column with high selectivity (e.g., an email or SSN column, close to 1.0) is an excellent index candidate because each lookup filters out most rows. A column with low selectivity (e.g., a `boolean` "is_active" flag, close to 0) provides little benefit from indexing, since a query would still need to scan a large fraction of the table.
+
+### Advantages and Trade-offs of Indexes
+
+- **Advantages**
+  - Dramatically faster `SELECT`, `JOIN`, `ORDER BY`, and `GROUP BY` performance on large tables.
+  - Enables efficient enforcement of uniqueness constraints.
+  - Can eliminate the need to read table data at all (covering indexes).
+- **Disadvantages**
+  - Extra storage space for each index maintained.
+  - Slower `INSERT`/`UPDATE`/`DELETE` because indexes must be updated too.
+  - Over-indexing can confuse the query optimizer and increase maintenance (rebuilds/statistics updates).
+
+### Full-Text Index
+
+A full-text index is a specialized index designed for searching natural-language text within large text columns, supporting word-based searches, relevance ranking, and linguistic features like stemming and stop-word removal — capabilities a standard B-Tree index cannot provide efficiently. It is used when queries need to find rows containing specific words or phrases anywhere within a large text blob, rather than matching an exact or prefix value.
+
+```sql
+-- MySQL example
+CREATE FULLTEXT INDEX idx_articles_body ON articles (body);
+
+SELECT * FROM articles
+WHERE MATCH(body) AGAINST ('database indexing' IN NATURAL LANGUAGE MODE);
+```
+
+### Interview Questions (Quick Reference)
+
+- **Q: What is the difference between a clustered and a non-clustered index?**
+  A: A clustered index physically orders the table's rows by the index key (only one per table), while a non-clustered index is a separate structure with pointers back to the rows (a table can have many).
+- **Q: Why can a table have only one clustered index but multiple non-clustered indexes?**
+  A: The clustered index defines the physical row order on disk, and rows can only be physically sorted one way at a time; non-clustered indexes are independent structures that merely reference rows, so many can coexist.
+- **Q: What is a covering index and why is it useful?**
+  A: It's an index that includes all columns a query needs, so the engine can answer the query from the index alone without a costly lookup into the base table.
+- **Q: When would you choose a hash index over a B-Tree index?**
+  A: When the workload is purely equality lookups (no range queries or sorting needed) and you want average O(1) lookup time, such as an in-memory key-value lookup table.
+- **Q: What is index selectivity and why does it matter?**
+  A: It's the ratio of distinct values to total rows; high-selectivity columns benefit greatly from indexing while low-selectivity columns (e.g., a boolean flag) gain little, since the index still returns a large fraction of rows.
+- **Q: Why can too many indexes hurt performance?**
+  A: Every write operation (`INSERT`/`UPDATE`/`DELETE`) must update every affected index, increasing write latency, storage usage, and lock contention.
+- **Q: Given `CREATE INDEX idx (a, b, c)`, which queries benefit from this composite index?**
+  A: Queries filtering on `a`, on `a AND b`, or on `a AND b AND c` benefit (leftmost prefix rule); a query filtering only on `b` or `c` generally cannot use this index efficiently.
+- **Q: How does a full-text index differ from a standard B-Tree index on a VARCHAR column?**
+  A: A full-text index tokenizes text into words and supports relevance-ranked natural-language search anywhere within the text, while a B-Tree index only efficiently supports exact-match or prefix (`LIKE 'abc%'`) searches.
+- **Q: What is a unique index and how does it differ from a `UNIQUE` constraint?**
+  A: A unique index enforces no duplicate values while also speeding up lookups; a `UNIQUE` constraint is the logical rule, which the database typically implements internally by creating a unique index.
+
+
 ### Summary
 
 **Key Takeaways:**

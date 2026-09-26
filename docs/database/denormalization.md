@@ -1040,6 +1040,25 @@ Event stream keeps them in sync (eventual consistency)
 
 ---
 
+
+### DBMS Notes — Quick Reference
+
+### Denormalization (Quick Reference)
+
+Denormalization is the deliberate introduction of redundancy into a normalized schema, typically to improve read performance by reducing the number of joins needed for common queries (e.g., in reporting or analytics systems).
+
+**Advantages**
+
+- Fewer joins, faster reads for read-heavy workloads.
+- Simpler queries for reporting/analytics.
+
+**Disadvantages**
+
+- Reintroduces update anomalies and redundancy risk.
+- More complex write logic to keep duplicated data consistent.
+- Larger storage footprint.
+
+
 ### Summary
 
 **Key Takeaways:**

@@ -139,3 +139,19 @@ db.sessions.createIndex({ "expiresAt": 1 }, { expireAfterSeconds: 0 })
 // Documents are automatically deleted when expiresAt < current time
 // MongoDB checks every ~60 seconds
 ```
+
+---
+
+## Delete Operations — Concepts and Interview Q&A
+
+
+Delete operations remove documents using `deleteOne()` (removes the first match) or `deleteMany()` (removes all matches), both taking a filter document just like `find()`. There is no built-in "trash"/recycle bin — deletions are permanent, so applications requiring soft-deletes typically implement a boolean `isDeleted` flag instead of physically removing documents.
+
+```javascript
+db.orders.deleteMany({ status: "CANCELLED", createdAt: { $lt: new Date("2024-01-01") } })
+```
+
+**Interview Questions:**
+- What is the difference between `deleteOne()` and `deleteMany()`? — `deleteOne()` removes only the first document matching the filter, while `deleteMany()` removes every document that matches.
+- How would you implement a "soft delete" pattern in MongoDB? — Instead of physically removing documents, set a boolean flag such as `isDeleted: true` (optionally with a `deletedAt` timestamp) via an update, and filter out flagged documents in normal application queries.
+- Is a deleted document recoverable directly from MongoDB after a `deleteMany()` call? — No, MongoDB does not provide a built-in recycle bin, so a document removed via `deleteMany()` is permanently gone unless it was already captured in a backup or point-in-time snapshot.

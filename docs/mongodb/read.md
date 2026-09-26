@@ -601,3 +601,158 @@ db.coll.find().readConcern("majority")
 
 Since shell is made of JS so we can use JS function
 For reference: [Cursor Methods](https://www.mongodb.com/docs/manual/reference/method/js-cursor/)
+
+---
+
+## Read Operations — Concepts and Interview Q&A
+
+
+Read operations retrieve documents using `find()` (returns a cursor over multiple matching documents) or `findOne()` (returns the first match). Query filters use MongoDB Query Language operators (`$eq`, `$gt`, `$in`, etc.), and results can be shaped further with projections, sorting, and pagination via `sort()`, `limit()`, and `skip()`.
+
+```javascript
+db.orders.find({ total: { $gte: 50 } }, { customerId: 1, total: 1, _id: 0 })
+  .sort({ total: -1 })
+  .limit(10)
+```
+
+**Interview Questions:**
+- What is the difference between `find()` and `findOne()`? — `find()` returns a cursor over all documents matching the filter, allowing further chaining like `sort()` and `limit()`, while `findOne()` returns only the first matching document directly (or null if none match).
+- How do projections improve query performance and network efficiency? — Projections limit the fields returned from a query to only what's needed, reducing the amount of data transferred over the network and the memory/CPU needed to serialize and deserialize documents.
+- Why can `skip()` become inefficient for pagination over large datasets, and what's an alternative? — `skip()` still requires the server to scan and discard all skipped documents before returning results, making it increasingly slow at large offsets; a more efficient alternative is range-based (keyset) pagination using a query filter on the last seen sort key, such as `{ _id: { $gt: lastId } }`.
+
+---
+
+## Query Processing
+
+
+### Query Execution
+
+Query execution is the process by which MongoDB takes a parsed query, consults the query planner to select an execution plan, and then runs that plan against the storage engine to produce a result cursor. It involves stages such as index scans, document fetches, filtering, sorting, and projection, each represented as a node in the execution plan tree.
+
+```mermaid
+flowchart LR
+    A[Parse query] --> B[Query Planner]
+    B --> C[Select best plan]
+    C --> D[Execute plan]
+    D --> E[Return cursor to client]
+```
+
+**Interview Questions:**
+- What are the high-level steps MongoDB takes from receiving a query to returning results? — MongoDB parses the query, consults the query planner to select an execution plan from candidate indexes/access paths, executes that plan against the storage engine (index scans, fetches, filtering, sorting, projection), and returns a result cursor to the client.
+- What is a cursor and how does it relate to query execution? — A cursor is a pointer to the result set of a query that the server returns incrementally in batches rather than all at once, allowing the client to iterate through potentially large results without loading everything into memory at once.
+
+### Query Planner
+
+The query planner evaluates candidate indexes and access paths for a given query shape, running short trial executions of each candidate plan and selecting the most efficient one based on the fewest documents examined/work done. The winning plan is cached for reuse on subsequent queries with the same shape.
+
+**Interview Questions:**
+- How does the query planner choose between multiple candidate indexes? — The query planner runs a short trial execution of each candidate plan and selects the one that does the least work (fewest documents/keys examined) to satisfy the query, then caches that winning plan for the query's shape.
+- What is a "query shape" and why does it matter for plan caching? — A query shape is the structural signature of a query (its filter fields, sort, and projection) independent of literal values, and MongoDB caches one winning plan per shape so future queries with the same shape skip the planning competition.
+- When does MongoDB invalidate or re-evaluate a cached query plan? — A cached plan is invalidated and re-evaluated when indexes are added or dropped, the collection changes significantly, the server restarts, or after enough writes/executions have occurred since the plan was cached.
+
+### Execution Plans
+
+An execution plan is a tree of stages (e.g., `IXSCAN`, `COLLSCAN`, `FETCH`, `SORT`, `PROJECTION`) describing exactly how MongoDB will retrieve and process data for a query. Understanding this tree is essential for diagnosing slow queries.
+
+```javascript
+db.orders.find({ status: "SHIPPED" }).sort({ createdAt: -1 }).explain("executionStats");
+```
+
+**Interview Questions:**
+- What does an `IXSCAN` stage indicate versus a `COLLSCAN` stage? — `IXSCAN` indicates MongoDB traversed an index to find candidate documents, while `COLLSCAN` indicates a full collection scan reading every document, which is typically much slower for selective queries.
+- What does a `FETCH` stage do, and why is minimizing fetched documents important? — A `FETCH` stage retrieves the full document from disk/cache after an index scan identifies a candidate, and minimizing fetches (ideally via a covered query) is important because fetching documents is significantly more expensive than reading compact index entries.
+- What does a `SORT` stage appearing in the plan (rather than being satisfied by an index) imply about performance? — A `SORT` stage means MongoDB had to sort results in memory after retrieval rather than relying on an index's natural order, which is slower and can hit memory limits on large result sets, indicating a missing or poorly ordered index for that sort.
+
+### Explain Plans
+
+The `explain()` method reveals how a query was (or would be) executed, with three verbosity modes: `queryPlanner` (chosen plan only), `executionStats` (actual runtime stats like documents examined/returned), and `allPlansExecution` (stats for all candidate plans considered).
+
+```javascript
+db.orders.find({ status: "SHIPPED" }).explain("executionStats");
+```
+
+**Interview Questions:**
+- What is the difference between `queryPlanner`, `executionStats`, and `allPlansExecution` modes? — `queryPlanner` shows only the chosen plan without executing it, `executionStats` executes the query and reports actual runtime statistics like documents examined and returned, and `allPlansExecution` additionally reports stats for all candidate plans that were considered.
+- What key metrics would you check in `executionStats` to detect an inefficient query (e.g., `totalDocsExamined` vs `nReturned`)? — Compare `totalDocsExamined` and `totalKeysExamined` against `nReturned` — a large gap indicates the query is examining far more documents/index entries than it actually returns, signaling an inefficient or missing index.
+- How would you use `explain()` to confirm a covered query? — Check that the execution plan has no `FETCH` stage and that `totalDocsExamined` is 0, confirming all data was served directly from the index.
+
+### Query Optimization
+
+Query optimization is the practice of restructuring queries and indexes so MongoDB examines the minimum number of documents/index entries needed to satisfy a request. Techniques include adding appropriate indexes, following the ESR rule for compound indexes, using projections to limit returned fields, and avoiding unselective regex or `$where` queries.
+
+**Advantages:**
+- Reduces latency and server resource consumption
+- Improves throughput under concurrent load
+
+**Interview Questions:**
+- What is the ratio between `nReturned` and `totalDocsExamined` telling you about query efficiency? — A ratio close to 1 indicates an efficient query that examines roughly as many documents as it returns, while a low ratio (examining far more documents than returned) signals a missing or poor index requiring optimization.
+- Why are unanchored regular expressions (e.g., `/abc/`) generally bad for query performance? — Unanchored regex patterns can match anywhere within a string, so MongoDB cannot use an index range scan and typically must examine every document's field value, resulting in a full collection or full index scan.
+- How would you optimize a query that currently triggers a full collection scan? — Analyze the query's filter and sort fields with `explain()`, then create an appropriate single-field or compound index (following the ESR rule) covering those fields so the query can use an `IXSCAN` instead of a `COLLSCAN`.
+
+### Projection
+
+Projection controls which fields are included or excluded from query results, reducing network payload size and, when combined with a covering index, avoiding document fetches entirely. Projections can use inclusion (`{ field: 1 }`) or exclusion (`{ field: 0 }`), but generally not both (except for `_id`).
+
+```javascript
+db.users.find({ status: "ACTIVE" }, { name: 1, email: 1, _id: 0 });
+```
+
+**Interview Questions:**
+- Can you mix inclusion and exclusion in the same projection document? — Generally no, a projection must be either all-inclusion or all-exclusion, with the one exception being `_id`, which can be explicitly excluded (`_id: 0`) even in an otherwise inclusion-based projection.
+- How does projection interact with covered queries? — A projection that only requests fields already present in the index used for the query (and excludes `_id` unless it's also indexed) allows MongoDB to serve results entirely from the index without fetching documents, forming a covered query.
+- What is the default behavior for the `_id` field in projections? — By default, `_id` is included in query results even if not explicitly mentioned in an inclusion projection, unless it's explicitly excluded with `_id: 0`.
+
+### Pagination
+
+Pagination retrieves data in pages/chunks rather than all at once. MongoDB supports offset-based pagination (`skip()`/`limit()`) and cursor/range-based ("keyset") pagination using a sort field and `$gt`/`$lt` filters. Keyset pagination scales far better for deep pages since `skip()` still has to walk over skipped documents internally.
+
+```javascript
+// Offset-based (slow for large skip values)
+db.products.find().sort({ _id: 1 }).skip(1000).limit(20);
+
+// Keyset/range-based (efficient, uses index)
+db.products.find({ _id: { $gt: lastSeenId } }).sort({ _id: 1 }).limit(20);
+```
+
+**Differences:**
+
+| Aspect | Offset (`skip`/`limit`) | Keyset (range-based) |
+|---|---|---|
+| Performance at scale | Degrades with larger skip values | Consistent, index-driven |
+| Random page access | Yes (jump to page N) | No (sequential only) |
+| Implementation complexity | Simple | Requires tracking last seen key |
+
+**Interview Questions:**
+- Why does `skip()` become slow for large offsets even with an index? — Even with an index, `skip()` must still internally walk over and discard every skipped document before returning results, so the work grows linearly with the offset regardless of indexing.
+- How would you implement keyset (cursor-based) pagination in MongoDB? — Track the sort key value of the last document seen on the current page, then query for documents beyond that value (e.g., `{ _id: { $gt: lastSeenId } }`) combined with the same `sort()` and `limit()`, letting the index directly seek to the right starting point.
+- What are the tradeoffs of keyset pagination versus offset pagination? — Keyset pagination scales much better for deep pages since it's index-driven and doesn't degrade with offset, but it only supports sequential navigation and can't jump directly to an arbitrary page number like offset pagination can.
+
+### Sorting
+
+Sorting orders query results by one or more fields, either using an index (fast, no extra memory) or, if no suitable index exists, an in-memory sort (subject to a 100MB memory limit unless `allowDiskUse` is enabled in aggregation). Compound indexes matching the sort fields (in the ESR order) avoid expensive in-memory sorts.
+
+```javascript
+db.orders.createIndex({ status: 1, createdAt: -1 });
+db.orders.find({ status: "SHIPPED" }).sort({ createdAt: -1 }); // index-based sort
+```
+
+**Interview Questions:**
+- What happens when MongoDB cannot satisfy a sort using an index? — MongoDB performs an in-memory sort of the result set, which is slower and subject to a 100MB memory limit unless `allowDiskUse` is enabled for aggregation pipelines.
+- What is the 100MB in-memory sort limit, and how can it be worked around in aggregation pipelines? — MongoDB caps in-memory sort operations at 100MB of RAM by default; in aggregation pipelines, this can be worked around by enabling `allowDiskUse: true`, which lets MongoDB spill intermediate sort data to disk.
+- How does field order in a compound index affect whether it can support a sort? — A compound index can satisfy a sort only if the sort fields (and directions, accounting for reversal) match a prefix of the index's field order following any equality filters, per the ESR rule; mismatched order forces an in-memory sort.
+
+### Cursors
+
+A cursor is a pointer to the result set of a query, allowing the client to iterate through results in batches instead of loading everything into memory at once. Cursors are lazily evaluated on the server and can time out if left idle (unless configured otherwise), and methods like `sort()`, `limit()`, and `skip()` can be chained onto them before iteration begins.
+
+```javascript
+const cursor = db.orders.find({ status: "SHIPPED" }).batchSize(100);
+while (cursor.hasNext()) {
+  printjson(cursor.next());
+}
+```
+
+**Interview Questions:**
+- How does `batchSize()` affect network round trips when iterating a cursor? — `batchSize()` controls how many documents the server sends per network round trip; a larger batch size reduces the number of round trips needed to iterate the full result set at the cost of more memory used per batch.
+- What causes a cursor to time out, and how can you prevent it for long-running operations? — A cursor times out if left idle on the server for too long (default ~10 minutes) without being iterated; this can be prevented by using `noCursorTimeout()` (with care to always close it) or by iterating the cursor promptly.
+- How do cursors relate to pagination strategies in an application? — Cursors provide the underlying mechanism for streaming results in batches, which applications build pagination on top of, either by tracking cursor position/batches directly or by combining `sort()`/`limit()`/`skip()` or keyset filters with a fresh cursor per page request.

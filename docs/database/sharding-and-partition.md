@@ -1007,6 +1007,37 @@ Decision Flowchart:
 
 ---
 
+
+### DBMS Notes — Quick Reference
+
+
+### Sharding (Overview)
+
+Sharding splits a dataset horizontally across multiple independent database instances (shards), where each shard holds a subset of the rows, typically partitioned by a shard key (e.g., customer ID range or hash). Unlike replication, shards do not each hold the full dataset — together they hold the complete data, enabling both storage and write-throughput scaling.
+
+```mermaid
+flowchart TD
+    App[Application] --> Router{Shard Router<br/>by customer_id}
+    Router --> Shard1[(Shard 1<br/>customers 1-1000)]
+    Router --> Shard2[(Shard 2<br/>customers 1001-2000)]
+    Router --> Shard3[(Shard 3<br/>customers 2001-3000)]
+```
+
+- **Advantages:** scales both storage and write throughput, smaller indexes/datasets per node improve performance
+- **Disadvantages:** cross-shard queries/joins are complex and slow, rebalancing shards is operationally difficult, transactions spanning shards require distributed transaction coordination
+
+### Partitioning (Overview)
+
+Partitioning divides a large table into smaller, more manageable pieces (partitions), typically within a single database instance, based on a partition key such as date range, list, or hash. Unlike sharding, partitioning usually doesn't distribute data across separate servers — it's a way to improve query performance and manageability (e.g., dropping an old partition instead of deleting rows) within one database.
+
+| Aspect | Sharding | Partitioning |
+|---|---|---|
+| Scope | Across multiple servers/instances | Usually within a single database instance |
+| Goal | Scale storage/throughput horizontally | Improve query performance & manageability |
+| Query routing | Application/router must know shard location | Handled transparently by the database engine |
+| Complexity | High (cross-shard joins, rebalancing) | Lower (still one logical database) |
+
+
 ### Summary
 
 ```

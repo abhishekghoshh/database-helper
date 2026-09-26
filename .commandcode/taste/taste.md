@@ -1,0 +1,2 @@
+- When restructuring markdown docs (styling fixes, merges), requires zero content loss — understand content, then reorder sections properly and fix headings only as needed to meet markdown standards. Confidence: 0.9
+- When splitting a large doc, prefers distributing content by meaning into separate topic-named markdown files scoped to the same directory, merging matched content into the appropriate place in existing topic files rather than creating duplicates. Confidence: 0.85

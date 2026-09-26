@@ -1185,3 +1185,315 @@ db.coll.hideIndex("name_1")
 ```js
 db.coll.unhideIndex("name_1")
 ```
+
+---
+
+## Indexing
+
+
+### Index Fundamentals
+
+Indexes are special data structures (B-trees in MongoDB's WiredTiger engine) that store a small, ordered subset of a collection's data, allowing the query engine to find matching documents without scanning every document (a "collection scan"). Every collection automatically gets a default index on `_id`; all other indexes must be created explicitly based on query patterns.
+
+```mermaid
+flowchart TD
+    Q[Query arrives] --> P{Index available<br/>on filter field?}
+    P -- yes --> I[Index seek: traverse B-tree]
+    P -- no --> C[Collection scan: read every document]
+    I --> R[Fetch matching documents]
+    C --> R
+```
+
+**Advantages:**
+- Dramatically reduces query latency for selective filters, sorts, and joins (`$lookup`)
+- Enables efficient range queries and sorted results
+
+**Disadvantages:**
+- Each index adds write overhead (every insert/update/delete must maintain the index) and consumes RAM/disk
+- Poorly chosen indexes can be worse than no index at all (unused index bloat)
+
+**Interview Questions:**
+- What is the default index every MongoDB collection has? — Every collection automatically has a default unique index on the `_id` field.
+- What data structure does MongoDB use to implement indexes? — MongoDB's default WiredTiger storage engine implements indexes as B-trees.
+- What is the tradeoff between adding more indexes and write performance? — Every additional index must be updated on every insert, update, and delete, so more indexes improve read performance for the queries they support but add write latency and consume additional RAM/disk.
+- How do you determine whether a query is using an index effectively? — Run `explain("executionStats")` on the query and compare `totalDocsExamined`/`totalKeysExamined` against `nReturned` — values close to `nReturned` indicate efficient index usage, while a large gap or a `COLLSCAN` stage indicates poor or missing index usage.
+
+### Single Field Index
+
+A single field index is built on one field of the documents in a collection, in ascending (1) or descending (-1) order. It's the simplest and most common index type, ideal for equality and range queries on a specific field.
+
+```javascript
+db.users.createIndex({ email: 1 });
+db.users.find({ email: "a@example.com" }); // uses the index
+```
+
+**Interview Questions:**
+- Does the sort direction (1 vs -1) of a single field index matter for query performance? — For a single field index, sort direction generally doesn't matter for performance since MongoDB can traverse a single-field B-tree index in either direction efficiently; direction becomes significant mainly in compound indexes supporting multi-field sorts.
+- When would a single field index be insufficient and a compound index be required? — A single field index is insufficient when queries filter or sort on multiple fields together, since a compound index covering those fields in the right order can satisfy the whole query in one efficient index traversal.
+
+### Compound Index
+
+A compound index spans multiple fields, stored in the order the fields are declared. The order of fields matters greatly — MongoDB follows the "ESR rule" (Equality, Sort, Range) for optimal field ordering, and a compound index can support queries on a leading prefix of its fields (similar to how B-tree prefixes work).
+
+Real-world example: an e-commerce query that filters by `status` (equality), sorts by `createdAt`, would benefit from a compound index `{ status: 1, createdAt: -1 }`.
+
+```javascript
+db.orders.createIndex({ status: 1, createdAt: -1 });
+db.orders.find({ status: "SHIPPED" }).sort({ createdAt: -1 }); // fully covered by index
+```
+
+**Advantages:**
+- Supports multiple query shapes from one index (via prefix matching)
+- Can satisfy filter + sort in a single index traversal, avoiding an in-memory sort
+
+**Disadvantages:**
+- Field order is critical; a poorly ordered compound index may not be used as expected
+- More expensive to maintain on writes than a single-field index
+
+**Differences:**
+
+| Aspect | Single Field Index | Compound Index |
+|---|---|---|
+| Fields indexed | One | Two or more |
+| Prefix queries | N/A | Supports queries on leading prefixes |
+| Use case | Simple equality/range on one field | Multi-field filter/sort combinations |
+
+**Interview Questions:**
+- What is the ESR (Equality, Sort, Range) rule for compound index field ordering? — The ESR rule recommends ordering compound index fields as Equality filters first, then Sort fields, then Range filters, since this ordering lets MongoDB narrow down candidates with equality, use the index directly for sorting, and finally apply range bounds most efficiently.
+- Can a query use only part of a compound index? Explain prefix matching. — Yes, a compound index can support queries that only use a leading prefix of its fields (e.g., an index on `{a:1,b:1,c:1}` can serve a query filtering only on `a`, or `a` and `b`), similar to how B-tree prefixes work, but it cannot efficiently serve a query that skips the leading field(s).
+- Why does field order matter in a compound index but not necessarily in the query filter itself? — The index's field order determines how the B-tree is physically sorted and which prefixes can be used, whereas the query optimizer can match filter conditions against the index regardless of the order they're written in the query document.
+
+### Multikey Index
+
+A multikey index is automatically created when you index a field that holds an array — MongoDB creates a separate index entry for each element of the array. This lets you efficiently query for documents where an array field contains a specific value.
+
+```javascript
+db.products.createIndex({ tags: 1 });
+db.products.insertOne({ name: "Laptop", tags: ["electronics", "computers", "sale"] });
+db.products.find({ tags: "sale" }); // uses multikey index
+```
+
+**Disadvantages:**
+- Cannot create a compound multikey index where more than one field being indexed is an array in the same document
+- Larger index size proportional to array length
+
+**Differences:**
+
+| Aspect | Regular Index | Multikey Index |
+|---|---|---|
+| Field type | Scalar value | Array value |
+| Index entries per document | 1 | 1 per array element |
+| Compound restriction | None | Only one array field per compound index |
+
+**Interview Questions:**
+- Why can't a compound index have more than one array field? — Indexing more than one array field in the same compound index would require generating index entries for every combination of elements across both arrays, causing a combinatorial explosion in index size, so MongoDB disallows it.
+- How does MongoDB decide whether to build a multikey index automatically? — MongoDB automatically detects when any indexed field's value is an array during index creation or document insertion and marks the index as multikey, generating an entry per array element.
+- What is the storage cost implication of indexing a large array field? — Since a multikey index creates one entry per array element, indexing a field with large arrays significantly increases index size and write overhead proportional to the array length.
+
+### Text Index
+
+A text index enables full-text search across string content in one or more fields, supporting language-aware stemming, stop-word removal, and relevance scoring via `$text` and `$meta: "textScore"`. A collection can have at most one text index (though it can cover multiple fields).
+
+```javascript
+db.articles.createIndex({ title: "text", body: "text" });
+db.articles.find(
+  { $text: { $search: "mongodb indexing" } },
+  { score: { $meta: "textScore" } }
+).sort({ score: { $meta: "textScore" } });
+```
+
+**Advantages:**
+- Built-in relevance scoring and language stemming without an external search engine
+- Simple to set up for basic search requirements
+
+**Disadvantages:**
+- Limited compared to dedicated search engines (e.g., Atlas Search/Elasticsearch) — no fuzzy matching, typo tolerance, or advanced ranking
+- Only one text index allowed per collection
+
+**Interview Questions:**
+- How many text indexes can a single collection have? — A collection can have at most one text index, though that single text index can cover multiple fields.
+- How does `$text` search differ from a regex-based search? — `$text` search uses the text index with language-aware stemming, stop-word removal, and relevance scoring, while regex search performs literal pattern matching with no linguistic awareness or ranking, and generally cannot use an index unless the pattern is left-anchored.
+- When would you choose Atlas Search or an external search engine over a native text index? — Choose Atlas Search or a dedicated engine like Elasticsearch when you need fuzzy matching, typo tolerance, advanced relevance tuning, faceted search, or autocomplete, which go beyond what a native text index supports.
+
+### Geospatial Index
+
+Geospatial indexes (`2dsphere` for GeoJSON/earth-like geometry, `2d` for legacy planar coordinates) allow efficient queries on location data, such as finding documents within a radius, inside a polygon, or nearest to a point.
+
+```javascript
+db.places.createIndex({ location: "2dsphere" });
+db.places.find({
+  location: {
+    $near: {
+      $geometry: { type: "Point", coordinates: [-73.99, 40.73] },
+      $maxDistance: 5000
+    }
+  }
+});
+```
+
+**Interview Questions:**
+- What is the difference between a `2d` index and a `2dsphere` index? — A `2d` index supports legacy planar (flat) coordinate geometry, while a `2dsphere` index supports GeoJSON objects and calculates distances on a spherical (earth-like) surface, making it suitable for real-world geographic data.
+- What GeoJSON operators can be used alongside a `2dsphere` index (e.g., `$near`, `$geoWithin`, `$geoIntersects`)? — Common operators include `$near`/`$nearSphere` for proximity queries, `$geoWithin` for containment within a shape, and `$geoIntersects` for finding geometries that intersect a given shape.
+- What real-world features would require a geospatial index? — Features like "find nearby stores," "drivers within delivery radius," or "properties within a drawn map boundary" all require efficient location-based queries powered by a geospatial index.
+
+### Hashed Index
+
+A hashed index stores hashes of a field's value rather than the value itself, producing a uniform, random distribution of index keys. It's primarily used as a shard key strategy to avoid monotonically increasing shard keys causing "hot" shards, since hashing evenly spreads writes across the cluster.
+
+```javascript
+db.sessions.createIndex({ userId: "hashed" });
+sh.shardCollection("app.sessions", { userId: "hashed" });
+```
+
+**Advantages:**
+- Even data distribution across shards, avoiding hotspots
+- Good for equality queries on the hashed field
+
+**Disadvantages:**
+- Cannot efficiently support range queries (hashes destroy ordering)
+- Cannot be a compound index or a multikey index
+
+**Interview Questions:**
+- Why is a hashed index commonly used as a shard key? — Hashing a shard key produces a uniform, random distribution of values, spreading writes evenly across shards and avoiding the "hot shard" problem that a monotonically increasing key would cause by always routing new writes to the same shard.
+- Why can't a hashed index support range queries? — Hashing destroys the original ordering of values, so consecutive original values no longer map to consecutive hash values, making range scans over hashed index entries meaningless.
+- What problem does hashed sharding solve compared to range-based sharding on a monotonically increasing field? — Hashed sharding avoids concentrating all new writes on a single shard (a hotspot), which range-based sharding on a monotonically increasing field like a timestamp or auto-incrementing ID would otherwise cause.
+
+### TTL Index
+
+A TTL (Time-To-Live) index automatically deletes documents from a collection after a specified number of seconds past a date field, implemented via a background task that runs periodically (roughly every 60 seconds). It's commonly used for session data, verification tokens, caches, or logs that should expire automatically.
+
+```javascript
+db.sessions.createIndex({ lastAccessed: 1 }, { expireAfterSeconds: 1800 });
+```
+
+**Advantages:**
+- Automatic cleanup without cron jobs or application-level deletion logic
+- Reduces storage growth for transient data
+
+**Disadvantages:**
+- Deletion isn't immediate/precise — the background TTL thread runs periodically, so expired documents can linger briefly
+- Only works on a single date field per index (or via `expireAfterSeconds: 0` for exact expiry timestamps)
+
+**Interview Questions:**
+- How precise is the timing of TTL-based document deletion? — TTL deletion is not immediate; a background thread runs periodically (roughly every 60 seconds) to remove expired documents, so documents can linger briefly past their exact expiration time.
+- Can a TTL index be a compound index? — No, a TTL index must be a single-field index on a date field; it cannot be part of a compound index.
+- How would you implement a "delete exactly at a given timestamp" pattern using a TTL index? — Store the exact expiration timestamp in the date field and create the TTL index with `expireAfterSeconds: 0`, which causes documents to expire once the current time passes the stored date value.
+
+### Unique Index
+
+A unique index enforces that no two documents in a collection can have the same value for the indexed field(s), rejecting inserts/updates that would create a duplicate. It can be a single or compound index, and combined with `sparse` to allow multiple documents missing the field.
+
+```javascript
+db.users.createIndex({ email: 1 }, { unique: true });
+```
+
+**Interview Questions:**
+- What happens if you try to create a unique index on a field with existing duplicate values? — The index creation fails with a duplicate key error, since MongoDB cannot enforce uniqueness on a field that already contains duplicate values in the collection.
+- How do unique indexes interact with sharding (constraints on shard key)? — A unique index can only be enforced across the full range of a sharded collection if it is on the shard key itself (or a prefix of it), since MongoDB cannot efficiently enforce global uniqueness for arbitrary fields spread across independent shards.
+- How would you allow multiple documents to omit a uniquely-indexed field? — Combine the unique index with the `sparse` option, so the index only includes documents that actually have the field, allowing any number of documents missing the field to coexist without violating uniqueness.
+
+### Sparse Index
+
+A sparse index only includes documents that actually contain the indexed field, skipping documents where the field is missing. This keeps the index smaller and avoids issues like unique-index conflicts among documents that lack the field (which would otherwise all be treated as `null`).
+
+```javascript
+db.users.createIndex({ phoneNumber: 1 }, { sparse: true, unique: true });
+```
+
+**Disadvantages:**
+- Queries that don't account for sparseness might unexpectedly miss documents that don't have the field, when using that index for sorting
+
+**Differences:**
+
+| Aspect | Sparse Index | Partial Index |
+|---|---|---|
+| Inclusion rule | Skips docs missing the field | Skips docs not matching a filter expression |
+| Flexibility | Field-existence only | Arbitrary filter conditions |
+| Recommended usage | Legacy option | Preferred, more expressive (MongoDB recommends partial over sparse) |
+
+**Interview Questions:**
+- What is the difference between a sparse index and a partial index? — A sparse index only excludes documents missing the indexed field entirely, while a partial index excludes documents based on an arbitrary filter expression, offering much more flexible control over which documents are indexed.
+- Why might a sort operation behave unexpectedly when using a sparse index? — Because a sparse index omits documents lacking the field, a sort relying on that index may silently skip those documents rather than including them (e.g., with a null/missing value), producing incomplete results if not accounted for.
+- Why does MongoDB generally recommend partial indexes over sparse indexes today? — Partial indexes support arbitrary filter conditions rather than just field existence, making them a strict superset of sparse index functionality with more precise control over which documents get indexed.
+
+### Partial Index
+
+A partial index only indexes documents that satisfy a specified filter expression, reducing index size and maintenance cost by excluding irrelevant documents. This is more flexible than a sparse index since the filter can be any valid query expression, not just field existence.
+
+```javascript
+db.orders.createIndex(
+  { customerId: 1 },
+  { partialFilterExpression: { status: "ACTIVE" } }
+);
+```
+
+**Advantages:**
+- Smaller index size and lower write overhead by excluding irrelevant documents
+- More expressive filtering than sparse indexes
+
+**Interview Questions:**
+- How does a partial index reduce storage and write costs compared to a full index? — By only indexing documents matching the `partialFilterExpression`, a partial index excludes irrelevant documents entirely, resulting in a smaller index that's cheaper to maintain on every write.
+- Can a query use a partial index if its filter doesn't match the partial filter expression exactly? — The query planner can use a partial index only if the query's filter logically implies the partial filter expression (i.e., every document the query could match must satisfy the partial filter), otherwise it falls back to a different index or a collection scan.
+- Give an example of a real-world scenario where a partial index is preferable to a full index. — Indexing only `{ status: "ACTIVE" }` orders in a large orders collection where most historical orders are completed/archived and rarely queried is a good use case for a partial index, since it keeps the index small and focused on the hot subset of data.
+
+### Covered Queries
+
+A covered query is one where all the fields requested in the query (both the filter and the projection) are present in the index itself, so MongoDB can return results directly from the index without ever reading the actual documents. This significantly improves performance since it avoids extra document fetches.
+
+```javascript
+db.users.createIndex({ email: 1, name: 1 });
+db.users.find({ email: "a@example.com" }, { _id: 0, email: 1, name: 1 }); // covered
+```
+
+**Interview Questions:**
+- What conditions must be met for a query to be "covered" by an index? — Every field referenced in the query's filter and projection must be present in the index, and the `_id` field must be explicitly excluded from the projection unless it's also part of the index, so MongoDB never needs to fetch the actual document.
+- Why must `_id` be explicitly excluded in the projection for many covered queries? — Because `_id` is returned by default even without explicit projection, and if it's not part of the index being used, including it would force MongoDB to fetch the full document, breaking the covered query optimization.
+- How would you verify using `explain()` whether a query is covered? — Run `explain("executionStats")` and check that the plan contains no `FETCH` stage and that `totalDocsExamined` is 0, indicating results came entirely from the index.
+
+### Index Selection
+
+Index selection refers to the query planner's process of choosing which available index (if any) to use for a given query, based on the query shape, sort, and estimated selectivity. MongoDB caches winning query plans and may run a "plan ranking" competition among candidate indexes using sampled execution.
+
+```javascript
+db.orders.find({ status: "SHIPPED" }).explain("executionStats");
+```
+
+**Interview Questions:**
+- How does MongoDB decide which index to use when multiple indexes could satisfy a query? — The query planner runs a short trial competition among candidate indexes for the query shape, selecting the plan that examines the fewest documents/keys, and caches that winner for future queries with the same shape.
+- What is plan caching, and when does MongoDB re-evaluate a cached plan? — Plan caching stores the winning execution plan for a query shape so it can be reused without re-running the planning competition; MongoDB re-evaluates the plan when indexes change, the collection changes significantly, or after a threshold of executions since caching.
+- How can you force MongoDB to use a specific index? — You can use the `hint()` method to explicitly tell MongoDB which index to use for a query, overriding the query planner's own selection.
+
+### Index Best Practices
+
+Good indexing strategy balances query performance against write overhead and memory usage. Key practices: index fields used in frequent equality/range/sort filters, follow the ESR rule for compound indexes, avoid redundant/overlapping indexes, use partial indexes to shrink footprint, monitor with `$indexStats` and `explain()`, and drop unused indexes.
+
+```javascript
+db.orders.aggregate([{ $indexStats: {} }]); // shows usage counts per index
+```
+
+**Interview Questions:**
+- What metrics would you look at to decide whether an index is unused and safe to drop? — Use `$indexStats` to check the usage `count` and `since` timestamp for each index; an index with zero or near-zero usage over a representative time period is a strong candidate to drop.
+- What is index "prefix redundancy" and how do you avoid it? — Prefix redundancy occurs when one compound index's leading fields are a full prefix of another index (e.g., `{a:1}` is redundant if `{a:1,b:1}` exists), since the shorter index adds maintenance cost without enabling any query the longer index can't already serve; avoid it by auditing indexes and dropping true prefix duplicates.
+- How many indexes is "too many" for a write-heavy collection, and why? — There's no fixed number, but MongoDB's official guidance suggests being cautious beyond roughly a dozen indexes per collection, because each additional index adds write amplification and memory pressure that can outweigh its read benefits on write-heavy workloads.
+
+### Wildcard Index
+
+A wildcard index (`{ "field.$**": 1 }`) indexes all fields (or all fields under a subdocument/array) dynamically, which is useful for collections with highly variable or unknown schemas where you can't predict every field that will need indexing ahead of time.
+
+```javascript
+db.products.createIndex({ "attributes.$**": 1 });
+db.products.find({ "attributes.color": "red" }); // uses wildcard index
+```
+
+**Advantages:**
+- Supports flexible, schema-less or highly variable document shapes
+- Avoids needing to create/maintain dozens of individual field indexes
+
+**Disadvantages:**
+- Larger and more expensive to maintain than targeted indexes
+- Cannot be used as a unique index, and has restrictions around compound usage
+
+**Interview Questions:**
+- When would a wildcard index be preferable to creating many individual single-field indexes? — A wildcard index is preferable when a collection has a highly variable or unpredictable schema (e.g., user-defined attributes), letting you index all fields under a subdocument dynamically rather than maintaining dozens of individual indexes manually.
+- What are the limitations of wildcard indexes compared to targeted indexes? — Wildcard indexes are larger and more expensive to maintain, cannot serve as unique indexes, and have restrictions on compound usage compared to precisely targeted single-field or compound indexes.
+- Can a wildcard index enforce uniqueness? — No, wildcard indexes cannot be created as unique indexes.

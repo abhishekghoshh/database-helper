@@ -491,3 +491,104 @@ sh.updateZoneKeyRange("mydb.users",
 // Now all documents with region: "US*" go to shard-us-east
 // and region: "EU*" go to shard-eu-west
 ```
+
+---
+
+## Change Streams — Concepts and Interview Q&A
+
+
+### Change Streams
+
+Change Streams allow applications to subscribe to real-time notifications of data changes (inserts, updates, deletes, replaces) on a collection, database, or entire deployment, without the complexity and inefficiency of tailing the oplog directly. They are built on top of the replication oplog but expose a stable, versioned API that is resilient to internal storage changes.
+
+A common production use case is invalidating a cache or updating a search index (e.g. Elasticsearch) whenever a document changes, without polling the database or coupling the write path to secondary systems synchronously.
+
+```javascript
+// Open a change stream on a single collection
+const changeStream = db.orders.watch()
+
+changeStream.on('change', (change) => {
+  console.log('Change detected:', change)
+})
+```
+
+**Advantages:**
+- Real-time, push-based notification instead of polling
+- Resumable via resume tokens after a disconnect
+- Can filter changes with an aggregation pipeline
+
+**Disadvantages:**
+- Requires a replica set or sharded cluster (not available on standalone servers)
+- Consumers must handle resuming and de-duplication correctly to avoid missed or duplicated events
+
+**Interview Questions:**
+- What underlying mechanism do change streams use internally? — Change streams are built on top of the replication oplog, tailing it internally but exposing a stable, versioned public API rather than requiring applications to parse raw oplog entries directly.
+- Why are change streams not available on a standalone `mongod` instance? — Change streams depend on the oplog, which only exists on replica sets (and by extension sharded clusters); a standalone server has no oplog since it doesn't replicate, so there's nothing for change streams to tail.
+- How would you use a change stream to keep a search index in sync with MongoDB? — Open a change stream on the relevant collection(s), and for each insert/update/delete event received, apply the corresponding change to the search index (e.g. Elasticsearch) asynchronously, using resume tokens to ensure no events are missed across restarts.
+
+### Event Notifications
+
+Each change stream event is a document describing the operation type (`insert`, `update`, `delete`, `replace`, `invalidate`, etc.), the affected namespace, the document key, and — for updates — the specific fields that changed (`updateDescription`). Consumers can filter events using a `$match` stage passed to `watch()`.
+
+```javascript
+// Only watch for insert and update operations on the "orders" collection
+db.orders.watch([
+  { $match: { operationType: { $in: ['insert', 'update'] } } }
+])
+```
+
+```mermaid
+sequenceDiagram
+    participant App as Application
+    participant Mongo as MongoDB Replica Set
+    participant Oplog as Oplog
+    App->>Mongo: db.collection.watch()
+    Mongo->>Oplog: Subscribe to relevant oplog entries
+    Oplog-->>Mongo: New write operation recorded
+    Mongo-->>App: Change event (with resume token)
+```
+
+**Interview Questions:**
+- What fields are typically present in a change stream event document? — A change event typically includes `_id` (the resume token), `operationType`, `ns` (namespace), `documentKey`, `fullDocument` (for inserts/replaces or when configured), and `updateDescription` (for updates, listing changed and removed fields).
+- How would you filter a change stream to only receive events for a specific field update? — Pass a `$match` stage to `watch()` that filters on `operationType` and inspects `updateDescription.updatedFields` to only pass through events where the specific field of interest was modified.
+
+### Resume Tokens
+
+A resume token is an opaque value included in every change stream event that marks its position in the stream. If a consumer's connection drops, it can pass the last seen resume token back to `watch()` (via `resumeAfter` or `startAfter`) to continue exactly where it left off, without missing or reprocessing events.
+
+```javascript
+let resumeToken = null
+const stream = db.orders.watch()
+
+stream.on('change', (change) => {
+  resumeToken = change._id
+  // process change...
+})
+
+// On reconnect:
+db.orders.watch([], { resumeAfter: resumeToken })
+```
+
+**Interview Questions:**
+- What is a resume token used for and how does it enable fault-tolerant change stream consumers? — A resume token marks a change stream event's exact position in the underlying oplog; by persisting the last processed token, a consumer can reconnect after a crash or network drop and resume exactly where it left off, avoiding missed or duplicated events.
+- What is the difference between `resumeAfter` and `startAfter`? — `resumeAfter` resumes strictly after a given token and can fail if that token refers to an invalidating event, while `startAfter` can also resume after an invalidate event (such as a collection drop/rename), making it more resilient for certain reconnection scenarios.
+- What happens if the resume token refers to an oplog entry that has already been rolled off? — The change stream resume attempt fails with an error indicating the resume point is no longer available, since the corresponding oplog history has been overwritten; the consumer must then start a new change stream from the current time, potentially missing intervening events.
+
+### Real-Time Data Processing
+
+Change streams are commonly used to build event-driven pipelines: syncing data to caches or search engines, triggering microservice workflows, feeding data lakes, or driving real-time dashboards — all without a separate CDC (Change Data Capture) tool. In Spring applications, this is typically implemented with `MongoTemplate`'s reactive change stream support or Spring Data's `@Tailable` cursors for capped collections.
+
+```java
+// Spring Data MongoDB reactive change stream example
+ChangeStreamOptions options = ChangeStreamOptions.builder()
+    .filter(Aggregation.newAggregation(match(where("operationType").is("insert"))))
+    .build();
+
+reactiveMongoTemplate.changeStream("orders", options, Order.class)
+    .doOnNext(event -> System.out.println("Change: " + event.getBody()))
+    .subscribe();
+```
+
+**Interview Questions:**
+- How would you design a real-time notification system on top of MongoDB change streams? — Open a change stream (filtered to relevant operations) on the collections of interest, transform each change event into a notification payload, and publish it to connected clients via WebSockets or Server-Sent Events, persisting resume tokens so the pipeline can recover from restarts without losing events.
+- What are the trade-offs of using change streams versus a dedicated message broker (Kafka, RabbitMQ) for event-driven architectures? — Change streams avoid the operational overhead of running a separate messaging system and stay tightly consistent with the database, but lack advanced broker features like topic partitioning, long-term message retention, and cross-service pub/sub fan-out that a dedicated broker like Kafka provides.

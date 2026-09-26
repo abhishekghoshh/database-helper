@@ -248,3 +248,23 @@ db.coll.insertOne({date: ISODate()})
 ```js
 db.coll.insertOne({name: "Max"}, {"writeConcern": {"w": "majority", "wtimeout": 5000}})
 ```
+
+---
+
+## Insert Operations — Concepts and Interview Q&A
+
+
+Insert operations add new documents to a collection using `insertOne()` for a single document or `insertMany()` for multiple documents in one call. By default, `insertMany()` stops on the first error (ordered inserts), but this can be changed to continue past errors by passing `{ ordered: false }`. If `_id` is omitted, MongoDB generates it automatically.
+
+```javascript
+db.orders.insertOne({ customerId: 1, total: 59.99 })
+db.orders.insertMany(
+  [{ customerId: 2, total: 20 }, { customerId: 3, total: 45 }],
+  { ordered: false }
+)
+```
+
+**Interview Questions:**
+- What is the difference between `insertOne()` and `insertMany()`? — `insertOne()` adds a single document in one call, while `insertMany()` adds an array of documents in a single request, which is more efficient than issuing multiple `insertOne()` calls.
+- What does the `ordered` option control during a bulk insert? — The `ordered` option controls whether `insertMany()` stops at the first failed document (default, `ordered: true`) or continues attempting to insert the remaining documents after an error (`ordered: false`).
+- What happens if you attempt to insert a document with a duplicate `_id`? — MongoDB rejects that specific insert with a duplicate key error; with `ordered: true` this halts the remaining batch, while `ordered: false` allows subsequent documents to still be inserted.

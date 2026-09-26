@@ -6,7 +6,15 @@ nav:
   - Database Technologies: 
     - Database: database/introduction.md
     - Choosing the right database: database/choosing-the-right-database.md
-    - Primary Key: database/primary-key.md
+    - Database Fundamentals: database/database-fundamentals.md
+    - Relational Concepts: database/relational-concepts.md
+    - Database Keys: database/primary-key.md
+    - Table Relationships: database/relationships.md
+    - ER Modeling: database/er-modeling.md
+    - Normalization: database/normalization.md
+    - Constraints: database/constraints.md
+    - Transactions: database/transactions.md
+    - Concurrency Control: database/concurrency-control.md
     - Database Index: database/indexing.md
     - B-Tree and B+ Tree: database/b-tree-and-b-plus-tree.md
     - LSM Tree: database/lsm-tree.md
@@ -14,56 +22,200 @@ nav:
     - Sharding and Partition: database/sharding-and-partition.md
     - Scaling and Replication: database/scaling-and-replication.md
     - Denormalization: database/denormalization.md
+    - Database Storage: database/database-storage.md
+    - SQL and Query Languages: database/sql-query-language.md
+    - Query Processing: database/query-processing.md
+    - Database Design: database/database-design.md
+    - Database Performance: database/database-performance.md
+    - Database Security: database/database-security.md
+    - Backup and Recovery: database/backup-and-recovery.md
+    - Distributed Databases: database/distributed-databases.md
+    - ORM Concepts: database/orm-concepts.md
+    - Write-Ahead Logging: database/write-ahead-logging.md
     - Database Migration: database/migration.md
-    - NoSQL: database/nosql.md
-    - ORM: database/orm.md
-    - Graph Database: database/graph-database.md
-    - Vector Database: database/vector-database.md
-    - Message Queues: database/message-queues.md
+    - NoSQL: others/nosql.md
+    - ORM: others/orm.md
+    - Graph Database: others/graph-database.md
+    - Vector Database: others/vector-database.md
+    - Message Queues: others/message-queues.md
     - Build your own database: database/build-your-own-database.md
   - postgres:
+    - PostgreSQL Internals: postgres/README.md
     - Introduction: postgres/introduction.md  
+    - Architecture: postgres/postgresql-architecture.md
+    - Connection Internals: postgres/postgresql-connection-internals.md
+    - Memory Architecture: postgres/postgresql-memory-architecture.md
+    - Storage Architecture: postgres/postgresql-storage-architecture.md
+    - MVCC Internals: postgres/mvcc-internals.md
+    - VACUUM Internals: postgres/vacuum-internals.md
+    - WAL: postgres/wal.md
+    - Write Path: postgres/postgresql-write-path.md
+    - Checkpoints and Background Writer: postgres/checkpoints-background-writer.md
+    - Index Internals: postgres/index-internals.md
+    - Query Execution Internals: postgres/query-execution-internals.md
+    - Statistics: postgres/postgresql-statistics.md
+    - Locks and Concurrency: postgres/locks-concurrency-internals.md
+    - Isolation and Transactions: postgres/isolation-transaction-internals.md
+    - Replication Internals: postgres/replication-internals.md
+    - Logical Replication: postgres/logical-replication.md
+    - Logical Decoding and CDC: postgres/logical-decoding-cdc.md
+    - Partitioning Internals: postgres/partitioning-internals.md
+    - Tablespaces and Storage: postgres/tablespaces-storage.md
+    - Temporary Files and Disk Usage: postgres/temporary-files-disk-usage.md
+    - Parallel Query Internals: postgres/parallel-query-internals.md
+    - Extensions: postgres/postgresql-extensions.md
+    - Foreign Data Wrappers: postgres/foreign-data-wrappers.md
+    - Monitoring Internals: postgres/monitoring-postgres-internals.md
+    - Logging and Debugging: postgres/postgresql-logging-debugging.md
+    - Configuration Internals: postgres/configuration-internals.md
+    - Backup and Recovery: postgres/backup-recovery-internals.md
+    - Crash Recovery Internals: postgres/crash-recovery-internals.md
+    - Performance Internals: postgres/postgresql-performance-internals.md
+    - Write-Heavy Workloads: postgres/why-postgres-struggles-with-writes.md
+    - Scaling: postgres/postgresql-scaling.md
+    - PostgreSQL as a Platform: postgres/postgres-as-platform.md
+    - Replacing Parts of a Tech Stack: postgres/postgres-replacing-tech-stack.md
+    - Advanced Features: postgres/advanced-postgres-features.md
+    - Security Internals: postgres/postgresql-security-internals.md
+    - Source Code Architecture: postgres/postgresql-source-code-architecture.md
+    - System Catalogs: postgres/postgresql-system-catalogs.md
+    - Failure Scenarios: postgres/postgresql-failure-scenarios.md
+    - Real-World Architecture: postgres/real-world-postgres-architecture.md
+    - Architecture Case Studies: postgres/postgres-architecture-case-studies.md
+    - What Actually Happens?: postgres/what-actually-happens.md
+    - Internals Projects: postgres/postgresql-internals-projects.md
+    - Interview Guide: postgres/postgres-internals-interview.md
     - Links: postgres/links.md
   - sql:
     - Introduction: sql/introduction.md
+    - Database Objects: sql/database-objects.md
+    - Data Types: sql/data-types.md
+    - DDL: sql/ddl.md
+    - Constraints: sql/constraints.md
+    - DML: sql/dml.md
+    - Basic Queries: sql/basic-queries.md
+    - Filtering Data: sql/filtering-data.md
+    - Functions: sql/functions.md
+    - Group By: sql/group-by.md
+    - Joins: sql/joins.md
+    - Set Operations: sql/set-operations.md
+    - Subqueries and CTEs: sql/subqueries-cte.md
+    - Window Functions: sql/window-functions.md
+    - Views: sql/views.md
+    - Indexes: sql/indexes.md
+    - Transactions: sql/transactions.md
+    - Query Optimization: sql/query-optimization.md
+    - Relationships and Integrity: sql/relationships-integrity.md
+    - Stored Objects: sql/stored-objects.md
+    - Pagination: sql/pagination.md
+    - JSON Support: sql/json-support.md
+    - Spring JPA: sql/spring-jpa.md
+    - Advanced Concepts: sql/advanced-concepts.md
     - Leetcode: sql/leetcode.md
     - Links: sql/links.md 
   - redis:
-    - Introduction: redis/001-introduction.md 
+    - Fundamentals: redis/fundamentals.md
+    - Installation and Configuration: redis/installation-configuration.md
+    - Data Types: redis/data-types.md
+    - Modules and Extensions: redis/modules-extensions.md
+    - Key Management: redis/key-management.md
+    - Persistence: redis/persistence.md
+    - Memory Management: redis/memory-management.md
+    - Transactions: redis/transactions.md
+    - Concurrency and Atomicity: redis/concurrency-atomicity.md
+    - Pub/Sub Messaging: redis/pub-sub.md
+    - Streams: redis/streams.md
+    - Caching Concepts: redis/caching.md
+    - Expiration and Eviction: redis/expiration-eviction.md
+    - Replication and HA: redis/replication-ha.md
+    - Sentinel: redis/sentinel.md
+    - Cluster: redis/cluster.md
+    - Lua Scripting: redis/lua-scripting.md
+    - Security: redis/security.md
+    - Monitoring and Performance: redis/monitoring-performance.md
+    - Data Modeling: redis/data-modeling.md
+    - Design Patterns: redis/design-patterns.md
+    - Reliability and Recovery: redis/reliability-recovery.md
+    - Best Practices: redis/best-practices.md
+    - Spring Data Redis: redis/spring-data-redis.md
     - Links: redis/links.md
   - mongodb:
     - Introduction: mongodb/introduction.md
+    - Installation and Tools: mongodb/installation-tools.md
+    - Database Structure: mongodb/database-structure.md
     - CRUD: mongodb/crud.md
     - Data Types: mongodb/data-types.md
+    - ObjectId: mongodb/objectid.md
     - Create: mongodb/create.md
     - Operators: mongodb/operators.md
     - Read: mongodb/read.md
     - Update: mongodb/update.md
     - Delete: mongodb/delete.md
+    - Data Modeling: mongodb/data-modeling.md
+    - Collections: mongodb/collections.md
     - Index: mongodb/index.md
     - Geospatial Data: mongodb/geospatial-data.md
     - Aggregation Framework: mongodb/aggregation-framework.md
+    - Transactions: mongodb/transactions.md
+    - Concurrency: mongodb/concurrency.md
+    - Replication: mongodb/replication.md
+    - Sharding: mongodb/sharding.md
+    - Consistency and Availability: mongodb/consistency-availability.md
+    - Storage Engine: mongodb/storage-engine.md
+    - Security: mongodb/security.md
+    - Backup and Recovery: mongodb/backup-recovery.md
+    - Performance Tuning: mongodb/performance-tuning.md
+    - Monitoring: mongodb/monitoring.md
+    - GridFS: mongodb/gridfs.md
+    - Design Patterns: mongodb/design-patterns.md
+    - High Availability: mongodb/high-availability.md
+    - Best Practices: mongodb/best-practices.md
+    - Spring Data MongoDB: mongodb/spring-data-mongodb.md
     - Advance Commands: mongodb/advance-commands.md
     - Links: mongodb/links.md
   - kafka:
     - Introduction: kafka/introduction.md
-    - Confluent vs Apache Kafka: kafka/kafka.md
-    - Deploy on Docker: kafka/deploy-on-docker.md
-    - Kafka Deploy on Docker (KRaft): kafka/kafka-deploy-on-docker.md
+    - Fundamentals: kafka/fundamentals.md
+    - Architecture: kafka/architecture.md
+    - Topic Management: kafka/topic-management.md
+    - Partitions and Ordering: kafka/partitions-ordering.md
+    - Producers: kafka/producers.md
+    - Consumers: kafka/consumers.md
+    - Delivery Semantics: kafka/delivery-semantics.md
+    - Serialization: kafka/serialization.md
+    - Schema Management: kafka/schema-management.md
+    - Replication and Fault Tolerance: kafka/replication-fault-tolerance.md
+    - Storage and Retention: kafka/storage-retention.md
+    - Consumer Rebalancing: kafka/consumer-rebalancing.md
+    - Transactions: kafka/transactions.md
+    - Error Handling: kafka/error-handling.md
+    - Performance Tuning: kafka/performance-tuning.md
+    - Security: kafka/security.md
+    - Quotas and Multi-Tenancy: kafka/quotas-multi-tenancy.md
+    - Monitoring and Operations: kafka/monitoring-operations.md
+    - Kafka Streams: kafka/kafka-streams.md
+    - Kafka Connect: kafka/kafka-connect.md
+    - Event-Driven Architecture: kafka/event-driven-architecture.md
+    - Design Patterns: kafka/design-patterns.md
+    - Scalability: kafka/scalability.md
+    - Reliability: kafka/reliability.md
+    - Best Practices: kafka/best-practices.md
+    - Spring for Apache Kafka: kafka/spring-kafka.md
+    - Deploy using Docker: kafka/deploy-using-docker.md
     - Kafbat UI: kafka/kafbat-ui.md
     - Links: kafka/links.md
   - neo4j:
-    - Introduction: database/neo4j.md
+    - Introduction: others/neo4j.md
   - sqlite:
     - Introduction: database/sqlite.md
   - elasticsearch:
-    - Introduction: database/elastic-search.md
+    - Introduction: others/elastic-search.md
   - cassandra:
-    - Introduction: database/cassandra.md
+    - Introduction: others/cassandra.md
   - surrealDB:
-    - Introduction: database/SurrealDB.md
+    - Introduction: others/SurrealDB.md
   - rabbitMQ:
-    - Introduction: database/rabbitMQ.md
+    - Introduction: others/rabbitMQ.md
 
 
 
@@ -123,7 +275,6 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.mark
-  - attr_list
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg

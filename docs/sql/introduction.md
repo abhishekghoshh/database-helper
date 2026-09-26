@@ -1523,3 +1523,156 @@ ORDER BY day;
    │YugabyteDB│ │       │                       Prometheus
    └──────────┘ └───────┘
 ```
+
+---
+
+## SQL Fundamentals
+
+
+### What is SQL?
+
+SQL (Structured Query Language) is a domain-specific, declarative language used to define, manipulate, and query data held in relational database management systems (RDBMS). "Declarative" means you describe *what* result you want, not *how* to compute it — the database's query optimizer decides the execution strategy (which indexes to use, join order, etc.).
+
+- It operates on data organized as tables (relations) made up of rows (tuples) and columns (attributes).
+- It is used across nearly every RDBMS (PostgreSQL, MySQL, Oracle, SQL Server, SQLite) with a common core syntax plus vendor-specific extensions.
+- SQL is both a data definition tool (creating schema) and a data manipulation/query tool, unlike general-purpose languages that require explicit control flow to process data.
+
+```sql
+-- Declarative: describe the "what", not the "how"
+SELECT customer_id, SUM(amount) AS total_spent
+FROM orders
+WHERE order_date >= '2024-01-01'
+GROUP BY customer_id
+ORDER BY total_spent DESC;
+```
+
+**Real-life scenario:** A reporting dashboard needs "top spending customers this year." Instead of writing a loop that iterates over every order row and manually accumulates totals, SQL lets you express the aggregation directly and lets the database engine optimize execution (e.g., using an index on `order_date`).
+
+### SQL Standards
+
+SQL is standardized by ANSI (American National Standards Institute) and ISO/IEC, with the first standard published in 1986 (SQL-86) and major revisions since (SQL-92, SQL:1999, SQL:2003, SQL:2011, SQL:2016, SQL:2023 — each adding features like window functions, JSON support, recursive queries, and temporal tables).
+
+- The standard defines core syntax and behavior that all compliant databases should support (e.g., `SELECT`, `JOIN`, `WHERE`, transactions).
+- No database vendor is 100% standard-compliant; each has extensions and deviations for performance, usability, or historical reasons.
+- Standards compliance matters for portability — code written against pure ANSI SQL is more likely to run unchanged across different database engines.
+
+| Standard | Year | Notable Additions |
+|---|---|---|
+| SQL-86 / SQL-89 | 1986/1989 | Initial standard |
+| SQL-92 | 1992 | Joins, `CASE` expressions |
+| SQL:1999 | 1999 | Recursive queries, triggers, OO extensions |
+| SQL:2003 | 2003 | Window functions, `MERGE`, sequences |
+| SQL:2011 | 2011 | Temporal (time-versioned) tables |
+| SQL:2016 | 2016 | JSON support, row pattern matching |
+
+### SQL Dialects (PostgreSQL, MySQL, Oracle, SQL Server)
+
+While all major RDBMS implement the ANSI SQL core, each has its own "dialect" with unique syntax, functions, and data types. Understanding these differences is critical when writing portable code or migrating between databases.
+
+| Feature | PostgreSQL | MySQL | Oracle | SQL Server |
+|---|---|---|---|---|
+| Auto-increment | `SERIAL` / `GENERATED ALWAYS AS IDENTITY` | `AUTO_INCREMENT` | `IDENTITY` / sequences | `IDENTITY` |
+| Limit rows | `LIMIT n OFFSET m` | `LIMIT n OFFSET m` | `FETCH FIRST n ROWS ONLY` | `TOP n` / `OFFSET-FETCH` |
+| String concat | `\|\|` | `CONCAT()` | `\|\|` | `+` |
+| Upsert | `INSERT ... ON CONFLICT` | `INSERT ... ON DUPLICATE KEY UPDATE` | `MERGE` | `MERGE` |
+| Case-insensitive LIKE | `ILIKE` | `LIKE` (default collation dependent) | `LIKE` + `UPPER()` | `LIKE` (collation dependent) |
+| JSON support | `JSON` / `JSONB` | `JSON` | `JSON` (21c+) | `JSON` functions on `NVARCHAR` |
+
+```sql
+-- PostgreSQL pagination
+SELECT * FROM products ORDER BY id LIMIT 10 OFFSET 20;
+
+-- SQL Server pagination
+SELECT * FROM products ORDER BY id OFFSET 20 ROWS FETCH NEXT 10 ROWS ONLY;
+
+-- Oracle pagination (12c+)
+SELECT * FROM products ORDER BY id OFFSET 20 ROWS FETCH NEXT 10 ROWS ONLY;
+```
+
+**Why it matters:** Application code that hardcodes a dialect-specific feature (e.g., `LIMIT`) will break when porting to SQL Server without rewriting. ORMs like Hibernate/JPA abstract this away via database "dialect" classes.
+
+### SQL Statement Categories (DDL, DML, DQL, DCL, TCL)
+
+SQL statements are grouped into categories based on their purpose:
+
+- **DDL (Data Definition Language):** Defines/alters schema structure — `CREATE`, `ALTER`, `DROP`, `TRUNCATE`. Usually auto-commits in most databases.
+- **DML (Data Manipulation Language):** Modifies data — `INSERT`, `UPDATE`, `DELETE` (some include `MERGE`).
+- **DQL (Data Query Language):** Retrieves data — `SELECT`. Sometimes considered part of DML.
+- **DCL (Data Control Language):** Manages permissions — `GRANT`, `REVOKE`.
+- **TCL (Transaction Control Language):** Manages transactions — `COMMIT`, `ROLLBACK`, `SAVEPOINT`, `SET TRANSACTION`.
+
+```sql
+-- DDL
+CREATE TABLE employees (id INT PRIMARY KEY, name VARCHAR(100));
+
+-- DML
+INSERT INTO employees (id, name) VALUES (1, 'Alice');
+UPDATE employees SET name = 'Alicia' WHERE id = 1;
+
+-- DQL
+SELECT * FROM employees;
+
+-- DCL
+GRANT SELECT ON employees TO reporting_user;
+
+-- TCL
+BEGIN;
+UPDATE employees SET name = 'Bob' WHERE id = 1;
+COMMIT;
+```
+
+### SQL Execution Order
+
+SQL is written in a fixed clause order, but the database engine *processes* clauses in a different logical order. Understanding this is essential for debugging why an alias can't be used in `WHERE`, or why `HAVING` runs after `GROUP BY`.
+
+**Written order:** `SELECT` → `FROM` → `JOIN` → `WHERE` → `GROUP BY` → `HAVING` → `ORDER BY` → `LIMIT`
+
+**Logical execution order:**
+
+```mermaid
+flowchart TD
+    A[FROM / JOIN] --> B[WHERE]
+    B --> C[GROUP BY]
+    C --> D[HAVING]
+    D --> E[SELECT]
+    E --> F[DISTINCT]
+    F --> G[ORDER BY]
+    G --> H[LIMIT / OFFSET]
+```
+
+- `FROM`/`JOIN` builds the initial working row set.
+- `WHERE` filters individual rows before grouping (cannot reference aggregate results).
+- `GROUP BY` collapses rows into groups.
+- `HAVING` filters groups (can reference aggregates like `COUNT(*)`).
+- `SELECT` computes output expressions/aliases.
+- `ORDER BY` can reference `SELECT` aliases because it runs after `SELECT`.
+- `LIMIT`/`OFFSET` trims the final result set last.
+
+```sql
+-- This works: alias defined in SELECT can be used in ORDER BY (runs later)
+SELECT customer_id, SUM(amount) AS total_spent
+FROM orders
+GROUP BY customer_id
+ORDER BY total_spent DESC;
+
+-- This FAILS: WHERE runs before SELECT, so the alias doesn't exist yet
+SELECT customer_id, SUM(amount) AS total_spent
+FROM orders
+WHERE total_spent > 100  -- error: column "total_spent" does not exist
+GROUP BY customer_id;
+```
+
+#### Interview Questions
+
+1. **Is SQL a procedural or declarative language, and what does that mean in practice?**
+   SQL is declarative — you specify the desired result set, not the step-by-step algorithm to compute it. The query optimizer chooses the physical execution plan (join order, index usage), which is why the same query can perform differently across databases or after statistics change.
+2. **Why can't you use a `SELECT` alias in a `WHERE` clause, but you can in `ORDER BY`?**
+   Because of logical execution order: `WHERE` is evaluated before `SELECT`, so column aliases defined in `SELECT` don't exist yet. `ORDER BY` (and `HAVING` in some databases) executes after `SELECT`, so aliases are already resolved and usable.
+3. **What's the difference between DDL and DML, and why does it matter for transactions?**
+   DDL (`CREATE`, `ALTER`, `DROP`) defines schema structure; DML (`INSERT`, `UPDATE`, `DELETE`) modifies data. In many databases (e.g., MySQL, Oracle), DDL statements implicitly commit the current transaction, meaning you can't roll back a `CREATE TABLE` inside a transaction the way you can an `UPDATE`.
+4. **Give an example of a SQL dialect difference that could break portability between MySQL and PostgreSQL.**
+   Auto-increment columns: MySQL uses `AUTO_INCREMENT` while PostgreSQL uses `SERIAL` or `GENERATED ALWAYS AS IDENTITY`. Similarly, upsert syntax differs (`ON DUPLICATE KEY UPDATE` vs `ON CONFLICT ... DO UPDATE`), requiring dialect-aware code or ORM abstraction.
+5. **Where does `HAVING` fit in the logical execution order, and why can't `WHERE` be used instead for filtering on aggregates?**
+   `HAVING` executes after `GROUP BY`, once aggregates are computed, so it can filter on expressions like `COUNT(*) > 5`. `WHERE` executes before grouping/aggregation, so at that point aggregate values don't exist yet — using an aggregate in `WHERE` raises an error.
+6. **What are TCL statements and why are they a separate category from DML?**
+   TCL (Transaction Control Language: `COMMIT`, `ROLLBACK`, `SAVEPOINT`) manages the scope and durability of a set of DML changes as a unit, rather than modifying data itself. They enforce ACID guarantees by letting you group multiple DML operations into an atomic unit of work.

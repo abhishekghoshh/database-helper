@@ -256,4 +256,26 @@ The constant `6378.1` is the Earth's radius in **kilometers**. For miles, use `3
 | Geo-fencing | `$geoIntersects` | Detect when a user enters a defined region |
 | Radius search | `$centerSphere` | Find all restaurants within 2km |
 
+---
 
+## Geospatial Indexing
+
+
+Geospatial indexes (`2dsphere` for GeoJSON/earth-like geometry, `2d` for legacy planar coordinates) allow efficient queries on location data, such as finding documents within a radius, inside a polygon, or nearest to a point.
+
+```javascript
+db.places.createIndex({ location: "2dsphere" });
+db.places.find({
+  location: {
+    $near: {
+      $geometry: { type: "Point", coordinates: [-73.99, 40.73] },
+      $maxDistance: 5000
+    }
+  }
+});
+```
+
+**Interview Questions:**
+- What is the difference between a `2d` index and a `2dsphere` index? — A `2d` index supports legacy planar (flat) coordinate geometry, while a `2dsphere` index supports GeoJSON objects and calculates distances on a spherical (earth-like) surface, making it suitable for real-world geographic data.
+- What GeoJSON operators can be used alongside a `2dsphere` index (e.g., `$near`, `$geoWithin`, `$geoIntersects`)? — Common operators include `$near`/`$nearSphere` for proximity queries, `$geoWithin` for containment within a shape, and `$geoIntersects` for finding geometries that intersect a given shape.
+- What real-world features would require a geospatial index? — Features like "find nearby stores," "drivers within delivery radius," or "properties within a drawn map boundary" all require efficient location-based queries powered by a geospatial index.

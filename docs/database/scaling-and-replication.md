@@ -1143,6 +1143,66 @@ echo "host replication replicator all md5" >> "$PGDATA/pg_hba.conf"
 
 ---
 
+
+### DBMS Notes — Quick Reference
+
+
+### Vertical Scaling
+
+Vertical scaling (scaling up) increases capacity by adding more resources — CPU, RAM, faster disks — to a single existing server. It's simple to implement (no application changes) but has a hard ceiling (hardware limits) and typically requires downtime to apply, plus the single node remains a single point of failure.
+
+### Horizontal Scaling
+
+Horizontal scaling (scaling out) increases capacity by adding more servers/nodes and distributing load across them. It offers near-limitless scalability and improved fault tolerance, but requires the application/database to support data distribution (replication, sharding) and handle the added complexity of coordination between nodes.
+
+| Aspect | Vertical Scaling | Horizontal Scaling |
+|---|---|---|
+| Approach | Bigger single machine | More machines |
+| Ceiling | Hardware limit | Practically unlimited |
+| Complexity | Low (no app changes) | Higher (distribution, consistency) |
+| Fault tolerance | Single point of failure | Can tolerate node failures |
+| Downtime to scale | Often required | Can often be done without downtime |
+
+### Replication
+
+Replication maintains copies of the same data on multiple database nodes, keeping them synchronized so that reads (and sometimes failover writes) can be served from more than one place. Replication can be synchronous (all replicas confirm before commit — strong consistency, higher latency) or asynchronous (primary commits immediately, replicas catch up — lower latency, risk of replica lag/data loss on failover).
+
+```mermaid
+flowchart LR
+    Primary[(Primary DB<br/>Read/Write)] -- replicates --> Replica1[(Replica 1<br/>Read Only)]
+    Primary -- replicates --> Replica2[(Replica 2<br/>Read Only)]
+    Primary -- replicates --> Replica3[(Replica 3<br/>Read Only)]
+```
+
+- **Advantages:** improved read throughput, high availability/failover capability, geographic distribution for lower latency
+- **Disadvantages:** replication lag can cause stale reads, added operational complexity, write throughput still limited by primary
+
+### Read Replicas
+
+Read replicas are replicated copies of a database used specifically to offload read (SELECT) traffic from the primary node, which continues handling all writes. This is a common pattern for read-heavy applications like e-commerce catalogs, where product browsing traffic vastly outweighs order-write traffic.
+
+**Real-life scenario:** An e-commerce site during a flash sale has thousands of users browsing products (reads) but comparatively few completing checkout (writes). By routing product search/browse queries to read replicas and sending only checkout/order writes to the primary, the primary stays responsive under heavy read load.
+
+### Interview Questions (Quick Reference)
+
+- **Q: What is the fundamental difference between vertical and horizontal scaling?**
+  A: Vertical scaling adds more resources to a single machine, while horizontal scaling adds more machines and distributes load/data across them; horizontal scaling offers a higher ceiling but more complexity.
+- **Q: When would you introduce read replicas versus sharding?**
+  A: Read replicas solve read-heavy scaling where the full dataset still fits on one primary node and writes are moderate; sharding is needed when the dataset or write throughput itself is too large for a single node.
+- **Q: What is the risk of asynchronous replication in a failover scenario?**
+  A: Because replicas may lag behind the primary, a failover to a replica can lose the most recent uncommitted-to-replica writes, causing data loss or inconsistency.
+- **Q: How is sharding different from partitioning?**
+  A: Sharding distributes data across multiple separate database servers/instances, while partitioning splits a table into smaller pieces typically within a single database instance for manageability and performance.
+- **Q: Design scenario: An e-commerce platform's product catalog reads are 100x more frequent than order writes. How would you scale this?**
+  A: Add read replicas for the catalog/browse queries and route all writes (orders, inventory updates) to the primary, potentially adding caching in front of the replicas for further read scaling.
+- **Q: What challenges arise when querying across multiple shards?**
+  A: Joins and aggregations across shards require scatter-gather queries, application-level merging, and can't rely on database-native joins, making cross-shard queries slower and more complex than single-node queries.
+- **Q: Why can't you simply add unlimited RAM/CPU as a permanent scaling strategy?**
+  A: Vertical scaling hits physical/hardware ceilings and cost inefficiencies, and a single node remains a single point of failure regardless of its size.
+- **Q: What is replication lag and how can it affect application behavior?**
+  A: Replication lag is the delay between a write on the primary and its propagation to replicas; applications reading from a replica right after a write on the primary may see stale data (a "read-your-own-write" consistency problem).
+
+
 ### Summary
 
 ```

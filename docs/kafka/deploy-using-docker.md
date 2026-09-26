@@ -1,9 +1,24 @@
-# Kafka Cluster Docker Compose Documentation
+# Deploy Kafka Using Docker
 
 This document provides a comprehensive explanation of the Kafka cluster deployment using Docker Compose. The setup includes a 3-node Kafka cluster running in KRaft mode (without Zookeeper), along with supporting services for monitoring, management, and data integration.
 
+Apache Kafka is the standard for real-time data pipelines and streaming applications. This guide walks you through setting up a Kafka cluster using Docker Compose in KRaft mode (no Zookeeper required).
+
+Two setups are covered:
+
+- **Minimal setup** — a 3-node Kafka cluster plus Kafka UI. Ideal for learning the basics and lightweight development.
+- **Full setup** — a production-like stack: a 3-node Kafka cluster running in KRaft mode, along with supporting services for monitoring, management, and data integration (Schema Registry, Kafka Connect, Kafka UI, Prometheus, FileBrowser).
+
 ## Table of Contents
+
+- [Prerequisites](#prerequisites)
 - [Architecture Overview](#architecture-overview)
+- [Project Setup](#project-setup)
+- [Docker Compose Configuration](#docker-compose-configuration)
+  - [Minimal Setup (3 Brokers + Kafka UI)](#minimal-setup-3-brokers--kafka-ui)
+  - [Full Setup (3 Brokers + Ecosystem)](#full-setup-3-brokers--ecosystem)
+  - [Generating the CLUSTER_ID](#generating-the-cluster_id)
+  - [Configuration Breakdown](#configuration-breakdown)
 - [Networks](#networks)
 - [Volumes](#volumes)
 - [Services](#services)
@@ -16,19 +31,219 @@ This document provides a comprehensive explanation of the Kafka cluster deployme
   - [kafka-connect](#kafka-connect)
   - [prometheus](#prometheus)
   - [filebrowser](#filebrowser)
+- [Architecture Diagram](#architecture-diagram)
+- [Quick Start Guide](#quick-start-guide)
 - [Testing the Cluster](#testing-the-cluster)
+- [Working with Producers and Consumers](#working-with-producers-and-consumers)
+- [Advanced Producer/Consumer Scenarios](#advanced-producerconsumer-scenarios)
+- [Cluster Management Commands](#cluster-management-commands)
+- [Key Features](#key-features)
+- [Production Considerations](#production-considerations)
+- [Troubleshooting](#troubleshooting)
+- [Resources](#resources)
+- [Conclusion](#conclusion)
+
+---
+
+## Prerequisites
+
+- **Docker & Docker Compose** (tested with Docker 27.0.3)
+- **Kafka basics** (Kafka 3.8+)
 
 ---
 
 ## Architecture Overview
 
 This setup creates a production-ready Kafka cluster with the following components:
+
+The minimal setup creates a Kafka cluster with the following components:
+
+- **3 Kafka brokers** (KRaft mode)
+- **Kafka UI** for management
+- **Docker network** for communication
+- **Persistent volumes** for data
+
+The full setup creates a production-ready Kafka cluster with the following components:
+
 - **3-node Kafka cluster** in KRaft mode (Kafka without Zookeeper)
 - **Schema Registry** for managing Avro/JSON schemas
 - **Kafka Connect** for data integration
 - **Kafka UI** for cluster management and monitoring
 - **Prometheus** for metrics collection
 - **FileBrowser** for browsing cluster data and logs
+
+KRaft mode replaces Zookeeper with a built-in consensus mechanism, simplifying the architecture.
+
+---
+
+## Project Setup
+
+For the minimal setup, create the project layout with per-broker data directories:
+
+```bash
+mkdir kafka-cluster
+cd kafka-cluster
+mkdir -p kafka1/data kafka2/data kafka3/data
+```
+
+The full setup instead relies on the `init-kafka` service (see [init-kafka](#init-kafka)) to create the directory structure inside a shared named volume, so no manual directory creation is needed there.
+
+---
+
+## Docker Compose Configuration
+
+### Minimal Setup (3 Brokers + Kafka UI)
+
+Create `docker-compose.yml`:
+
+```yaml
+version: '3.8'
+
+networks:
+    kafka-net:
+        driver: bridge
+
+services:
+    kafka1:
+        image: confluentinc/cp-kafka:7.8.0
+        hostname: kafka1
+        container_name: kafka1
+        ports:
+            - "9092:9092"
+            - "9093:9093"
+        environment:
+            KAFKA_NODE_ID: 1
+            KAFKA_BROKER_ID: 1
+            KAFKA_PROCESS_ROLES: 'broker,controller'
+            KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:9093,2@kafka2:9093,3@kafka3:9093'
+            KAFKA_LISTENERS: 'PLAINTEXT://kafka1:9092,CONTROLLER://kafka1:9093'
+            KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka1:9092'
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
+            KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+            KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+            CLUSTER_ID: 'EmptNWtoR4GGWx-BH6nGLQ'
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+            KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+            KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+            KAFKA_MIN_INSYNC_REPLICAS: 2
+        volumes:
+            - ./kafka1/data:/var/lib/kafka/data
+        networks:
+            - kafka-net
+
+    kafka2:
+        image: confluentinc/cp-kafka:7.8.0
+        hostname: kafka2
+        container_name: kafka2
+        ports:
+            - "9094:9092"
+            - "9095:9093"
+        environment:
+            KAFKA_NODE_ID: 2
+            KAFKA_BROKER_ID: 2
+            KAFKA_PROCESS_ROLES: 'broker,controller'
+            KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:9093,2@kafka2:9093,3@kafka3:9093'
+            KAFKA_LISTENERS: 'PLAINTEXT://kafka2:9092,CONTROLLER://kafka2:9093'
+            KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka2:9092'
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
+            KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+            KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+            CLUSTER_ID: 'EmptNWtoR4GGWx-BH6nGLQ'
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+            KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+            KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+            KAFKA_MIN_INSYNC_REPLICAS: 2
+        volumes:
+            - ./kafka2/data:/var/lib/kafka/data
+        networks:
+            - kafka-net
+
+    kafka3:
+        image: confluentinc/cp-kafka:7.8.0
+        hostname: kafka3
+        container_name: kafka3
+        ports:
+            - "9096:9092"
+            - "9097:9093"
+        environment:
+            KAFKA_NODE_ID: 3
+            KAFKA_BROKER_ID: 3
+            KAFKA_PROCESS_ROLES: 'broker,controller'
+            KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:9093,2@kafka2:9093,3@kafka3:9093'
+            KAFKA_LISTENERS: 'PLAINTEXT://kafka3:9092,CONTROLLER://kafka3:9093'
+            KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka3:9092'
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
+            KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+            KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+            CLUSTER_ID: 'EmptNWtoR4GGWx-BH6nGLQ'
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+            KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+            KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+            KAFKA_MIN_INSYNC_REPLICAS: 2
+        volumes:
+            - ./kafka3/data:/var/lib/kafka/data
+        networks:
+            - kafka-net
+
+    kafka-ui:
+        image: provectuslabs/kafka-ui:latest
+        container_name: kafka-cluster-ui
+        ports:
+            - "8080:8080"
+        environment:
+            KAFKA_CLUSTERS_0_NAME: local
+            KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka1:9092,kafka2:9092,kafka3:9092
+        depends_on:
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+            - kafka-net
+```
+
+### Full Setup (3 Brokers + Ecosystem)
+
+The full setup uses the compose file at `docs/kafka/docker-compose/docker-compose.yaml` in this repository. It defines the same 3-broker KRaft core plus the ecosystem services documented under [Services](#services): `init-kafka`, `busybox`, `kafka-init-topics`, `kafka-ui`, `schema-registry`, `kafka-connect`, `prometheus`, and `filebrowser`.
+
+Differences from the minimal file above:
+
+- Brokers mount a shared named volume (`kafka-cluster:/mnt/shared`) with per-broker data/log directories configured via `KAFKA_LOG_DIRS` and `LOG_DIR`, instead of host bind mounts.
+- `kafka1` additionally exposes a JMX metrics port (`9997:9997`) with `KAFKA_JMX_PORT` / `KAFKA_JMX_OPTS` configured on the brokers for Prometheus scraping.
+- `kafka-ui` uses the `ghcr.io/kafbat/kafka-ui:latest` image with metrics, Kafka Connect, and Schema Registry integrations (see [kafka-ui](#kafka-ui)).
+
+### Generating the CLUSTER_ID
+
+Kafka provides a helper command to generate a random cluster ID:
+
+```bash
+kafka-storage.sh random-uuid
+```
+
+You can use the output of this command as your `CLUSTER_ID` in the Docker Compose configuration. The value must be identical across all brokers in the cluster.
+
+### Configuration Breakdown
+
+### Network
+
+```yaml
+networks:
+    kafka-net:
+        driver: bridge
+```
+Creates an isolated network for secure container communication.
+
+### Brokers
+
+- **KRaft mode:**  
+    `KAFKA_PROCESS_ROLES: 'broker,controller'`
+- **Listeners:**  
+    `KAFKA_LISTENERS` and `KAFKA_ADVERTISED_LISTENERS` define how brokers and clients connect.
+- **Replication:**  
+    - `KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR`: Replication for `__consumer_offsets` topic.
+    - `KAFKA_DEFAULT_REPLICATION_FACTOR`: Default partition replication.
+    - `KAFKA_MIN_INSYNC_REPLICAS`: Minimum replicas for write acknowledgment.
+
+See [kafka1, kafka2, kafka3](#kafka1-kafka2-kafka3) for the full per-broker reference used by the full setup.
 
 ---
 
@@ -410,6 +625,8 @@ kafka-ui:
 
 **What it is**: A modern web-based UI for managing and monitoring Kafka clusters (formerly known as kafka-ui by Provectus).
 
+See [Kafbat UI](kafbat-ui.md) for details.
+
 **Image**: `ghcr.io/kafbat/kafka-ui:latest` - Latest version of Kafbat UI
 
 **Ports**:
@@ -474,6 +691,8 @@ kafka-ui:
 - Manages schemas and connectors
 - Visualizes metrics and cluster health
 - Allows producing/consuming messages for testing
+
+**Minimal-setup variant**: The minimal setup instead uses image `provectuslabs/kafka-ui:latest` with container name `kafka-cluster-ui`, only the cluster name/bootstrap-servers environment variables, and a `depends_on` on the three brokers (no metrics, Connect, or Schema Registry integration).
 
 ---
 
@@ -781,212 +1000,6 @@ filebrowser:
 
 ---
 
-## Quick Start Guide
-
-### Step 1: Start the Cluster
-
-Launch the entire stack:
-```bash
-docker-compose -f docker-compose.yml up -d
-```
-
-### Step 2: Check Service Health
-
-Check all containers are running:
-```bash
-docker-compose ps
-```
-
-You should see all services in "Up" state.
-
-### Step 3: View Logs
-
-```bash
-# All services
-docker-compose logs -f
-
-# Specific service
-docker-compose logs -f kafka1
-docker-compose logs -f kafka-ui
-```
-
-### Step 4: Access Web UIs
-
-- **Kafka UI**: http://localhost:8080 - Cluster management and monitoring
-- **Prometheus**: http://localhost:9090 - Metrics and monitoring
-- **FileBrowser**: http://localhost:9999 - Browse volume data and logs
-- **Schema Registry**: http://localhost:8081 - Schema management API
-- **Kafka Connect**: http://localhost:8083 - Connector management API
-
----
-
-## Testing the Cluster
-
-
-### Open the kafka sandbox environment
-
-```bash
-docker exec -it busybox  bash
-
-
-# Sample producer directly on console to test
-docker exec -it busybox  bash /scripts/producer.sh
-
-# Sample consumer directly on console to test
-docker exec -it busybox  bash /scripts/consumer.sh
-```
-
-### Create a Topic
-
-Create a test topic with 3 partitions and replication factor of 3:
-
-```bash
-kafka-topics \
-    --create \
-    --topic test-topic \
-    --bootstrap-server kafka1:9092,kafka2:9092,kafka3:9092 \
-    --replication-factor 3 \
-    --partitions 3
-```
-
-### List All Topics
-
-View all topics in the cluster:
-
-```bash
-kafka-topics \
-    --list \
-    --bootstrap-server kafka1:9092
-```
-
-### Describe a Topic
-
-Get detailed information about a topic (partitions, replicas, leaders):
-
-```bash
-kafka-topics \
-    --describe \
-    --topic test-topic \
-    --bootstrap-server kafka1:9092
-```
-
----
-
-## Working with Producers and Consumers
-
-### Basic Producer
-
-Produce messages to your topic using the Kafka CLI:
-
-```bash
-kafka-console-producer \
-    --broker-list kafka1:9092 \
-    --topic test-topic
-```
-
-Type your messages and press **Enter** to send them. Press **Ctrl+C** to exit.
-
-### Basic Consumer
-
-Consume messages from the beginning of the topic:
-
-```bash
-kafka-console-consumer \
-    --bootstrap-server kafka1:9092 \
-    --topic test-topic \
-    --from-beginning
-```
-
-This will display all messages from offset 0. Press **Ctrl+C** to exit.
-
----
-
-## Advanced Producer/Consumer Scenarios
-
-### Produce Messages with Keys
-
-Produce messages with keys for partition routing:
-
-```bash
-kafka-console-producer \
-    --broker-list kafka1:9092 \
-    --topic test-topic \
-    --property "parse.key=true" \
-    --property "key.separator=:"
-```
-
-Type messages in the format `key1:value1`, `key2:value2`, etc.
-
-**Example messages:**
-```
-user1:{"name":"Alice","age":30}
-user2:{"name":"Bob","age":25}
-user1:{"name":"Alice","age":31}
-```
-
-Messages with the same key will go to the same partition.
-
-### Consumer Groups with Load Balancing
-
-Create two consumers in the same consumer group to enable partition assignment and load balancing.
-
-**Consumer 1:**
-```bash
-kafka-console-consumer \
-    --bootstrap-server kafka1:9092 \
-    --topic test-topic \
-    --group my-consumer-group
-```
-
-**Consumer 2 (in a separate terminal):**
-```bash
-kafka-console-consumer \
-    --bootstrap-server kafka2:9092 \
-    --topic test-topic \
-    --group my-consumer-group
-```
-
-**How it works:**
-- Both consumers share the same group ID (`my-consumer-group`)
-- Kafka automatically assigns partitions to each consumer
-- With 3 partitions and 2 consumers, one consumer gets 2 partitions, the other gets 1
-- Messages are load-balanced across consumers
-- Each message is delivered to only one consumer in the group
-
----
-
-## Cluster Management Commands
-
-### Stop the Stack
-
-Stop all services (data persists in volumes):
-```bash
-docker-compose down
-```
-
-### Stop and Remove All Data
-
-Stop services and delete all volumes (removes all data):
-```bash
-docker-compose down -v
-```
-
-**Warning**: This will permanently delete all Kafka data, logs, and configurations.
-
-### Restart a Specific Service
-
-```bash
-docker-compose restart kafka1
-```
-
-### View Resource Usage
-
-```bash
-docker stats
-```
-
----
-
 ## Architecture Diagram
 
 ```
@@ -1026,16 +1039,260 @@ docker stats
 
 ---
 
+## Quick Start Guide
+
+### Step 1: Start the Cluster
+
+Launch the entire stack:
+```bash
+docker-compose -f docker-compose.yml up -d
+```
+
+With newer Compose v2, the equivalent is:
+
+```bash
+docker compose -f docker-compose.yml up -d
+```
+
+Check containers:
+
+```bash
+docker compose ps
+```
+
+### Step 2: Check Service Health
+
+Check all containers are running:
+```bash
+docker-compose ps
+```
+
+You should see all services in "Up" state.
+
+### Step 3: View Logs
+
+```bash
+# All services
+docker-compose logs -f
+
+# Specific service
+docker-compose logs -f kafka1
+docker-compose logs -f kafka-ui
+```
+
+### Step 4: Access Web UIs
+
+- **Kafka UI**: http://localhost:8080 - Cluster management and monitoring
+- **Prometheus**: http://localhost:9090 - Metrics and monitoring
+- **FileBrowser**: http://localhost:9999 - Browse volume data and logs
+- **Schema Registry**: http://localhost:8081 - Schema management API
+- **Kafka Connect**: http://localhost:8083 - Connector management API
+
+The Kafka UI covers broker health, topic management, consumer groups, message browsing, and metrics.
+
+(Access [http://localhost:8080](http://localhost:8080) for the UI.)
+
+---
+
+## Testing the Cluster
+
+### Open the kafka sandbox environment
+
+```bash
+docker exec -it busybox  bash
+
+
+# Sample producer directly on console to test
+docker exec -it busybox  bash /scripts/producer.sh
+
+# Sample consumer directly on console to test
+docker exec -it busybox  bash /scripts/consumer.sh
+```
+
+### Create a Topic
+
+Create a topic:
+
+Create a test topic with 3 partitions and replication factor of 3:
+
+```bash
+kafka-topics \
+    --create \
+    --topic test-topic \
+    --bootstrap-server kafka1:9092,kafka2:9092,kafka3:9092 \
+    --replication-factor 3 \
+    --partitions 3
+```
+
+### List All Topics
+
+List topics:
+
+View all topics in the cluster:
+
+```bash
+kafka-topics \
+    --list \
+    --bootstrap-server kafka1:9092
+```
+
+### Describe a Topic
+
+Describe topic:
+
+Get detailed information about a topic (partitions, replicas, leaders):
+
+```bash
+kafka-topics \
+    --describe \
+    --topic test-topic \
+    --bootstrap-server kafka1:9092
+```
+
+---
+
+## Working with Producers and Consumers
+
+### Basic Producer
+
+You can produce messages to your topic using the Kafka CLI:
+
+Produce messages to your topic using the Kafka CLI:
+
+```bash
+kafka-console-producer \
+    --broker-list kafka1:9092 \
+    --topic test-topic
+```
+
+Type your messages and press **Enter** to send them. Press **Ctrl+C** to exit.
+
+(Type your messages and press Enter to send them.)
+
+### Basic Consumer
+
+Consume messages from the beginning of the topic:
+
+```bash
+kafka-console-consumer \
+    --bootstrap-server kafka1:9092 \
+    --topic test-topic \
+    --from-beginning
+```
+
+This will display all messages from offset 0. Press **Ctrl+C** to exit.
+
+(This displays all messages from offset 0.)
+
+---
+
+## Advanced Producer/Consumer Scenarios
+
+### Produce Messages with Keys
+
+You can produce messages with a key using the Kafka CLI:
+
+Produce messages with keys for partition routing:
+
+```bash
+kafka-console-producer \
+    --broker-list kafka1:9092 \
+    --topic test-topic \
+    --property "parse.key=true" \
+    --property "key.separator=:"
+```
+
+Type messages in the format `key1:value1`, `key2:value2`, etc.
+
+**Example messages:**
+```
+user1:{"name":"Alice","age":30}
+user2:{"name":"Bob","age":25}
+user1:{"name":"Alice","age":31}
+```
+
+Messages with the same key will go to the same partition.
+
+### Consumer Groups with Load Balancing
+
+Create two consumers in the same consumer group to enable partition assignment and load balancing.
+
+(Start two consumers with the same group ID to enable partition assignment and load balancing.)
+
+**Consumer 1:**
+```bash
+kafka-console-consumer \
+    --bootstrap-server kafka1:9092 \
+    --topic test-topic \
+    --group my-consumer-group
+```
+
+**Consumer 2 (in a separate terminal):**
+
+(**Consumer 2:**)
+```bash
+kafka-console-consumer \
+    --bootstrap-server kafka2:9092 \
+    --topic test-topic \
+    --group my-consumer-group
+```
+
+**How it works:**
+- Both consumers share the same group ID (`my-consumer-group`)
+- Kafka automatically assigns partitions to each consumer
+- With 3 partitions and 2 consumers, one consumer gets 2 partitions, the other gets 1
+- Messages are load-balanced across consumers
+- Each message is delivered to only one consumer in the group
+- Both consumers will share the workload and receive messages according to partition assignment within the group.
+
+---
+
+## Cluster Management Commands
+
+### Stop the Stack
+
+Stop all services (data persists in volumes):
+```bash
+docker-compose down
+```
+
+### Stop and Remove All Data
+
+Stop services and delete all volumes (removes all data):
+```bash
+docker-compose down -v
+```
+
+**Warning**: This will permanently delete all Kafka data, logs, and configurations.
+
+### Restart a Specific Service
+
+```bash
+docker-compose restart kafka1
+```
+
+### View Resource Usage
+
+```bash
+docker stats
+```
+
+---
+
 ## Key Features
 
 ### High Availability
 - 3-node cluster with replication factor of 3
+- Three-node redundancy
 - Survives single broker failure
 - Automatic leader election via KRaft
+- KRaft consensus (no Zookeeper)
 
 ### Monitoring & Management
 - Kafka UI for visual management
 - Prometheus for metrics collection
+- Prometheus metrics
+- Grafana dashboards (can be added)
 - JMX endpoints on all brokers
 - FileBrowser for data inspection
 
@@ -1049,6 +1306,9 @@ docker stats
 - Sample data loading
 - Easy access to all services
 - Persistent data storage
+- Persistent storage
+- Network isolation
+- Web UI
 
 ---
 
@@ -1059,6 +1319,8 @@ For production deployments, consider these changes:
 1. **Security**:
    - Enable SSL/TLS for all listeners
    - Configure SASL authentication
+   - Set ACLs
+   - Secure Kafka UI
    - Secure JMX endpoints
    - Use secrets management for credentials
 
@@ -1068,6 +1330,9 @@ For production deployments, consider these changes:
    - Increase `KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS`
 
 3. **Resources**:
+   - Tune replica fetch/batch sizes
+   - Set retention policies
+   - Adjust JVM heap
    - Set JVM heap sizes
    - Configure resource limits in Docker
    - Allocate sufficient disk space
@@ -1081,6 +1346,7 @@ For production deployments, consider these changes:
    - Enable authentication on Prometheus
    - Set up alerting rules
    - Configure log aggregation
+   - Alerts/log aggregation
 
 ---
 
@@ -1107,6 +1373,38 @@ For production deployments, consider these changes:
 
 ---
 
+## Resources
+
+- [Apache Kafka Documentation](https://kafka.apache.org/documentation/)
+- [Confluent Docker Images](https://hub.docker.com/r/confluentinc/cp-kafka)
+- [Kafka UI GitHub](https://github.com/provectus/kafka-ui)
+
+## FAQ
+
+### How can I define my `cluster_id`?
+
+Kafka provides a helper command to generate a random cluster ID:
+
+```bash
+kafka-storage.sh random-uuid
+```
+
+You can use the output of this command as your `CLUSTER_ID` in the Docker Compose configuration.
+
+---
+
 ## Conclusion
 
 This Docker Compose setup provides a complete, production-like Kafka environment for development and testing. It includes all necessary components for a modern Kafka deployment with monitoring, management, and integration capabilities.
+
+You now have a production-ready Kafka cluster in Docker with:
+
+- Three-node redundancy
+- KRaft consensus (no Zookeeper)
+- Web UI
+- Persistent storage
+- Network isolation
+
+This setup is a solid foundation for scalable streaming applications.
+
+Thank you, it's very helpful for me.

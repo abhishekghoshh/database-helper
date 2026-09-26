@@ -14,6 +14,21 @@
 
 ## Medium
 
+
+### Internal Working
+
+- [PostgreSQL Architecture Explained: A Deep Dive into How PostgreSQL Works](https://medium.com/@FancyAngeline/postgresql-architecture-explained-a-deep-dive-into-how-postgresql-works-ac7e41b15b95)
+- [How PostgreSQL actually works under the hood](https://medium.com/@singhprajjawal87/how-postgresql-actually-works-under-the-hood-056ae22aae1b)
+- [Understanding PostgreSQL Architecture: The Client-Server Model Demystified](https://medium.com/@jramcloud1/understanding-postgresql-architecture-the-client-server-model-demystified-c83bad65b090)
+- [Understanding the Fundamentals of PostgreSQL® Architecture](https://instaclustr.medium.com/understanding-the-fundamentals-of-postgresql-architecture-98ce3672376f)
+- [PostgreSQL Deep Dive: Key Components and Query Flow (Part 1)](https://medium.com/@salmanhoque/postgresql-deep-dive-key-components-and-query-flow-part-1-6e92c33eb08b)
+- [PostgreSQL Process Architecture](https://medium.com/@hnasr/postgresql-process-architecture-f21e16459907)
+- [The Internal Structure of PostgreSQL: A Deep Dive into How PostgreSQL Organizes Data](https://medium.com/@jramcloud1/the-internal-structure-of-postgresql-a-deep-dive-into-how-postgresql-organizes-data-7a0952ec0569)
+
+
+
+### General 
+
 - [6 Reasons Why PostgreSQL is Not So Popular, Yet!](https://blog.stackademic.com/6-reason-for-why-postgresql-is-not-so-popular-yet-2c46bdfd0f03)
 
 
@@ -39,17 +54,20 @@
 - [Using PostgreSQL WAL as a Video Stream Transport in Go: A Deep Dive](https://www.youtube.com/watch?v=IcMjwFotY6A)
 - [Postgres Just Got It's Biggest Upgrade In Years](https://www.youtube.com/watch?v=4Lmqvn_yz-c)
 - [Postgres is dropping a crazy new feature](https://www.youtube.com/watch?v=zPsr0n9DQ7o)
+- [Postgres IS Right Choice For Everything](https://www.youtube.com/watch?v=nQMALB3vSUI)
+- [Postgres now supports Graph Natively 🤯](https://www.youtube.com/watch?v=0K3P5aR1g1g)
 
 
 
 ## Internal
 
 - [Postgres Architecture Explained](https://www.youtube.com/watch?v=Q56kljmIN14)
+- [you won't forget how postgres works after this](https://www.youtube.com/watch?v=q9jixKv4h2I)
 - [5 Secrets for making PostgreSQL run BLAZING FAST. How to improve database performance.](https://www.youtube.com/watch?v=YON9PliOYFk)
 - [The Database That Keeps Every Mistake | PostgreSQL Documentary](https://www.youtube.com/watch?v=_rfXU8mCZkk)
 - [Postgres Trick I bet you didn't knew!](https://www.youtube.com/watch?v=4-Z_I4SwgJQ)
 - [Solving one of PostgreSQL's biggest weaknesses.](https://www.youtube.com/watch?v=ruUlK6zRwS8)
-
+- [Stop Scaling Postgres: The $22 Fix for Connection Crashes](https://www.youtube.com/watch?v=eIABrB2QT2M)
 
 
 ## Playlists and tutorial

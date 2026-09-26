@@ -288,3 +288,68 @@ db.products.find(
 ```
 
 - One Document can hold a maximum of 100 levels of nesting.
+
+---
+
+## Bulk, Upsert and Replace
+
+### Bulk Operations
+
+
+Bulk operations allow grouping multiple insert, update, and delete operations into a single request via `bulkWrite()`, reducing network round trips and improving throughput for batch processing. Operations can be executed in `ordered` mode (stops at first error, preserves order) or `unordered` mode (continues past errors, can run in parallel server-side).
+
+```javascript
+db.orders.bulkWrite([
+  { insertOne: { document: { customerId: 4, total: 15 } } },
+  { updateOne: { filter: { customerId: 1 }, update: { $set: { total: 65 } } } },
+  { deleteOne: { filter: { customerId: 2 } } }
+])
+```
+
+**Interview Questions:**
+- What is the benefit of using `bulkWrite()` over issuing individual operations? — `bulkWrite()` batches multiple insert, update, and delete operations into a single network round trip, reducing latency overhead and improving throughput compared to issuing each operation individually.
+- What is the difference between ordered and unordered bulk operations? — Ordered bulk operations execute sequentially and stop at the first error, preserving execution order, while unordered operations continue past errors and can be executed in parallel server-side for better performance.
+- How does the server handle errors mid-way through an unordered bulk operation? — In unordered mode, the server continues attempting all remaining operations even after individual failures, then returns a summary of all successes and errors once the batch completes.
+
+### Upsert
+
+
+An upsert is an update operation that inserts a new document if no document matches the filter, or updates the existing document if a match is found, enabled via the `{ upsert: true }` option. This is useful for "create or update" patterns, such as maintaining a counter or caching computed data, without requiring a separate existence check.
+
+```javascript
+db.counters.updateOne(
+  { _id: "orderId" },
+  { $inc: { seq: 1 } },
+  { upsert: true }
+)
+```
+
+**Interview Questions:**
+- What does the `upsert` option do in an update operation? — The `upsert` option makes the update insert a new document based on the filter and update when no document matches, instead of doing nothing, enabling a single "create or update" call.
+- What value would `_id` take if an upsert results in an insert, and how is it determined? — If the filter includes an `_id` value it's used directly; otherwise, MongoDB auto-generates a new `ObjectId` for the inserted document, similar to a normal insert.
+- What race conditions can occur with upserts under concurrent writes, and how can unique indexes help? — Two concurrent upserts with the same filter can both see no matching document and attempt to insert simultaneously, causing a duplicate key error on one of them if a unique index exists on the filtered field(s), which the application should handle by retrying as an update.
+
+### Replace Operations
+
+
+`replaceOne()` replaces an entire matched document with a new document (except for `_id`, which cannot be changed), as opposed to `updateOne()` which modifies specific fields using operators. Because the whole document is replaced, any fields not included in the replacement document are removed.
+
+```javascript
+db.users.replaceOne(
+  { _id: 1 },
+  { name: "Frank", email: "frank@example.com" }
+)
+```
+
+**Differences:**
+
+| Aspect | `updateOne()` with `$set` | `replaceOne()` |
+|---|---|---|
+| Scope of change | Only specified fields | Entire document body |
+| Fields not mentioned | Left untouched | Removed |
+| `_id` field | Untouched | Cannot be changed, preserved |
+
+**Interview Questions:**
+- How does `replaceOne()` differ from `updateOne()` in terms of what gets modified? — `replaceOne()` replaces the entire matched document body with a new one, while `updateOne()` with operators like `$set` only modifies the specific fields named in the update.
+- What happens to fields present in the old document but absent in the replacement document? — Those fields are removed, since `replaceOne()` overwrites the whole document except for `_id`, unlike `updateOne()` which leaves unmentioned fields untouched.
+- Can you change a document's `_id` using `replaceOne()`? — No, `_id` is immutable during a replace operation; MongoDB preserves the original `_id` regardless of what's specified in the replacement document.
